@@ -1,4 +1,8 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; hao-emacs-customization ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; -*- coding: utf-8 -*-
+;; author: Hao Ruan
+;; date: 2013/09/27
+
+;; hao-emacs-customization
 
 (defun hao-show-system-type ()
   "find out what OS Emacs is currently running on"
@@ -10,26 +14,28 @@
   (interactive)
   (message "%S" features))
 
-(defun hao-regexp-word-at-point ()
+(defun hao-pick-word-at-point ()
+  "pick current word under cursor
+this function would move cursor to the beginning of the word"
+  (let (tail-point)
+    (skip-chars-forward "-_A-Za-z0-9")
+    (setq tail-point (point))
+    (skip-chars-backward "-_A-Za-z0-9")
+    (buffer-substring-no-properties (point) tail-point)))
+
+(defun hao-pick-regexp-word-at-point ()
   "pick current regexp word at point"
   (save-excursion
-    (let (head-point tail-point word (skip-chars "-_A-Za-z0-9"))
-      (skip-chars-forward skip-chars)
-      (setq tail-point (point))
-      (skip-chars-backward skip-chars)
-      (setq head-point (point))
-      (setq word (buffer-substring-no-properties head-point tail-point))
-      (concat "\\b" word "\\b"))))
+      (concat "\\b" (hao-pick-word-at-point) "\\b")))
 
 ;; highlight word at point
 ;; bind to [f3]
 (defun hao-highlight-word-at-point ()
   "highlight the word at point"
   (interactive)
-  (let (regexp-word color hi-colors)
+  (let ((regexp-word (hao-pick-regexp-word-at-point)) color hi-colors)
     (unless (boundp 'hao-highlight-word-at-point)
       (setq hao-highlight-word-at-point 0))
-    (setq regexp-word (hao-regexp-word-at-point))
     (unhighlight-regexp regexp-word)
     (add-to-list 'regexp-search-ring regexp-word)
     ;; only 4 highlight colors supported now
@@ -53,7 +59,7 @@
   ;; in case of a lot of overlays 
   (interactive)
   (dotimes (i 10)
-    (unhighlight-regexp (hao-regexp-word-at-point))))
+    (unhighlight-regexp (hao-pick-regexp-word-at-point))))
 
 (defun hao-buffer-menu-friendly ()
   "show buffer menu friendly"
@@ -84,15 +90,7 @@
 (global-set-key (kbd "M-n") 'other-window)
 (global-set-key (kbd "M-p") 'hao-other-window-backward)
 
-(defun hao-pick-current-word ()
-  "pick current word under cursor"
-  (save-excursion
-    (let (head-point tail-point word)
-      (skip-chars-forward "-_A-Za-z0-9")
-      (setq tail-point (point))
-      (skip-chars-backward "-_A-Za-z0-9")
-      (setq head-point (point))
-      (buffer-substring-no-properties head-point tail-point))))
+
 
 (defun hao-erlang-pair-keyword-valid-p ()
   (let ((line-head-point (line-beginning-position)))
@@ -159,16 +157,16 @@
   (interactive)
   (let ((keywords '("case" "if" "begin" "receive" "fun")))
     (when (hao-erlang-pair-keyword-valid-p)
-      (if (member (hao-pick-current-word) keywords)
+      (if (member (hao-pick-word-at-point) keywords)
 	  (progn
 	    (forward-char)
 	    (hao-erlang-pair-find 'search-forward-regexp '(1) (point)))
-	(if (equal (hao-pick-current-word) "end")
+	(if (equal (hao-pick-word-at-point) "end")
 	    (progn
-	      (backward-char)
+;;	      (backward-char)
 	      (hao-erlang-pair-find 'search-backward-regexp '(-1) (point))))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Emacs customization basic part ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs customization basic part
 
 ;; set default mode
 (setq default-major-mode 'text-mode)
@@ -210,7 +208,7 @@
 (setq scroll-step 1)
 (setq scroll-conservatively 9999)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Emacs customization advanced part ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs customization advanced part
 
 ;; set molokai theme
 (cond
@@ -224,16 +222,16 @@
 ;; Emacs Erlang mode setup
 
 ;; osx
-;; (add-to-list 'load-path
-;; 	     (car (file-expand-wildcards "/Users/ruan/Library/Erlang/otp16b01/lib/erlang/lib/tools-*/emacs")))
-;; (setq erlang-root-dir "/Users/ruan/Library/Erlang/otp16b01/lib/erlang")
-;; (add-to-list 'exec-path "/Users/ruan/Library/Erlang/otp16b01/lib/erlang/bin")
+(add-to-list 'load-path
+	     (car (file-expand-wildcards "/Users/ruan/Library/Erlang/otp16b01/lib/erlang/lib/tools-*/emacs")))
+(setq erlang-root-dir "/Users/ruan/Library/Erlang/otp16b01/lib/erlang")
+(add-to-list 'exec-path "/Users/ruan/Library/Erlang/otp16b01/lib/erlang/bin")
 
 ;; centos
-(add-to-list 'load-path
-	     (car (file-expand-wildcards "/usr/local/lib/erlang/lib/tools-*/emacs")))
-(setq erlang-root-dir "/usr/local/lib/erlang")
-(add-to-list 'exec-path "/usr/local/lib/erlang/bin")
+;; (add-to-list 'load-path
+;; 	     (car (file-expand-wildcards "/usr/local/lib/erlang/lib/tools-*/emacs")))
+;; (setq erlang-root-dir "/usr/local/lib/erlang")
+;; (add-to-list 'exec-path "/usr/local/lib/erlang/bin")
 
 ;; sun sparc
 ;; (add-to-list 'load-path
@@ -277,3 +275,4 @@
 	    (modify-syntax-entry ?_ "w")
             ;; when starting an Erlang shell in Emacs, set default node name
             (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
+
