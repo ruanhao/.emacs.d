@@ -94,16 +94,14 @@
       (setq head-point (point))
       (buffer-substring-no-properties head-point tail-point))))
 
-(defun hao-erlang-pair-commentp ()
-  (save-excursion
-    (let ((line-head-point (line-beginning-position)))
-      (backward-char)
-      (catch 'commented
-	(while (>= (point) line-head-point)
-	  (if (equal (char-after) ?%)
-	      (throw 'commented t)
-	    (backward-char)))
-	nil))))
+(defun hao-erlang-pair-keyword-valid-p ()
+  (let ((line-head-point (line-beginning-position)))
+    (if (and
+         (= 0 (% (count-matches "\"" line-head-point (point)) 2))
+         (= 0 (% (count-matches "'" line-head-point (point)) 2))
+         (= 0 (count-matches "%" line-head-point (point))))
+        t
+      nil)))
 
 (defun hao-erlang-pair-construct-stack (value old-stack)
   (if (= 0 (+ value (car old-stack)))
@@ -118,7 +116,7 @@
 ;; 	  (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
 ;; 	  (goto-char (match-beginning 2))
 ;; 	  (setq new-stack
-;; 		(if (hao-erlang-pair-commentp)
+;; 		(if (not (hao-erlang-pair-keyword-valid-p))
 ;; 		    stack
 ;; 		  (if (looking-at "end")
 ;; 		      (hao-erlang-pair-construct-stack -1 stack)
@@ -141,7 +139,7 @@
             (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
             (goto-char (match-beginning 2))
             (setq stack
-                  (if (hao-erlang-pair-commentp)
+                  (if (not (hao-erlang-pair-keyword-valid-p))
                       stack
                     (if (looking-at "end")
                         (hao-erlang-pair-construct-stack -1 stack)
@@ -160,7 +158,7 @@
   "find pair for if, case, begin for Erlang mode"
   (interactive)
   (let ((keywords '("case" "if" "begin" "receive" "fun")))
-    (unless (hao-erlang-pair-commentp)
+    (when (hao-erlang-pair-keyword-valid-p)
       (if (member (hao-pick-current-word) keywords)
 	  (progn
 	    (forward-char)
