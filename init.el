@@ -1,4 +1,5 @@
-;; hao-emacs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; hao-emacs-customization ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun hao-show-system-type ()
   "find out what OS Emacs is currently running on"
   (interactive)
@@ -114,7 +115,7 @@
 ;;   (let ((new-stack nil))
 ;;     (condition-case nil
 ;; 	(progn
-;; 	  (funcall direction "\\(^\\|[\s\t=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
+;; 	  (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
 ;; 	  (goto-char (match-beginning 2))
 ;; 	  (setq new-stack
 ;; 		(if (hao-erlang-pair-commentp)
@@ -137,7 +138,7 @@
     (while t
       (condition-case nil
           (progn
-            (funcall direction "\\(^\\|[\s\t=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
+            (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
             (goto-char (match-beginning 2))
             (setq stack
                   (if (hao-erlang-pair-commentp)
@@ -169,22 +170,13 @@
 	      (backward-char)
 	      (hao-erlang-pair-find 'search-backward-regexp '(-1) (point))))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Emacs customization ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Emacs customization basic part ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; set default mode
 (setq default-major-mode 'text-mode)
 
 ;; can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
-
-;; set molokai theme
-(cond
- ((= emacs-major-version 23)
-  (add-to-list 'load-path "~/.emacs.d/themes/")
-  (require 'molokai-theme))
- ((= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-  (load-theme 'molokai t)))
 
 ;; prevent Emacs from making backup files
 (setq backup-inhibited t)
@@ -216,11 +208,20 @@
 (require 'saveplace)
 (setq save-place t)
 
-;; emacs-lisp-mode-hook
-(add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    (modify-syntax-entry ?- "w")
-	    (setq indent-tabs-mode nil)))
+;; scroll line by line
+(setq scroll-step 1)
+(setq scroll-conservatively 9999)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Emacs customization advanced part ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; set molokai theme
+(cond
+ ((= emacs-major-version 23)
+  (add-to-list 'load-path "~/.emacs.d/themes/")
+  (require 'molokai-theme))
+ ((= emacs-major-version 24)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+  (load-theme 'molokai t)))
 
 ;; Emacs Erlang mode setup
 
@@ -242,15 +243,7 @@
 ;; (setq erlang-root-dir "/vobs/otp/otp_delivery/solaris8_sparc/erts-5.9.1")
 ;; (add-to-list 'exec-path "/vobs/otp/otp_delivery/solaris8_sparc/erts-5.9.1/bin")
 
-
 (require 'erlang-start)
-(add-hook 'erlang-mode-hook 
-          (lambda ()
-	    (setq indent-tabs-mode nil)
-            (erlang-font-lock-level-3)
-	    (modify-syntax-entry ?_ "w")
-            ;; when starting an Erlang shell in Emacs, set default node name
-            (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
 (add-to-list 'auto-mode-alist '("\\.\\(erl\\|hrl\\|app\\|app.src\\)" . erlang-mode))
 
 ;; distel setup (Emacs Erlang IDE)
@@ -264,9 +257,11 @@
 (load-file "~/.emacs.d/autopair.el")
 (autopair-global-mode)
 
-;; scroll line by line
-(setq scroll-step 1)
-(setq scroll-conservatively 9999)
+;; emacs-lisp-mode-hook
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    (modify-syntax-entry ?- "w")
+	    (setq indent-tabs-mode nil)))
 
 ;; kernel style
 (add-hook 'c-mode-hook
@@ -276,4 +271,11 @@
 	     (setq indent-tabs-mode nil)
 	     (setq c-basic-offset 4)))
 
-
+;; erlang-mode-hook
+(add-hook 'erlang-mode-hook 
+          (lambda ()
+	    (setq indent-tabs-mode nil)
+            (erlang-font-lock-level-3)
+	    (modify-syntax-entry ?_ "w")
+            ;; when starting an Erlang shell in Emacs, set default node name
+            (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
