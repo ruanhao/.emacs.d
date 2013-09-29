@@ -111,7 +111,7 @@ this function would move cursor to the beginning of the word"
 ;;   (let ((new-stack nil))
 ;;     (condition-case nil
 ;; 	(progn
-;; 	  (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
+;; 	  (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*\\|end\\)\\($\\|[\s\t,;.(]\\)")
 ;; 	  (goto-char (match-beginning 2))
 ;; 	  (setq new-stack
 ;; 		(if (not (hao-erlang-pair-keyword-valid-p))
@@ -134,7 +134,7 @@ this function would move cursor to the beginning of the word"
     (while t
       (condition-case nil
           (progn
-            (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(.*)[\s\t\n]*->\\|end\\)\\($\\|[\s\t,;.]\\)")
+            (funcall direction "\\(^\\|[\s\t(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*\\|end\\)\\($\\|[\s\t,;.(]\\)")
             (goto-char (match-beginning 2))
             (setq stack
                   (if (not (hao-erlang-pair-keyword-valid-p))
