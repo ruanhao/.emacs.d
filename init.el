@@ -155,16 +155,18 @@ this function would move cursor to the beginning of the word"
 (defun hao-erlang-pair ()
   "find pair for if, case, begin for Erlang mode"
   (interactive)
-  (let ((keywords '("case" "if" "begin" "receive" "fun")))
-    (when (hao-erlang-pair-keyword-valid-p)
-      (if (member (hao-pick-word-at-point) keywords)
-	  (progn
-	    (forward-char)
-	    (hao-erlang-pair-find 'search-forward-regexp '(1) (point)))
-	(if (equal (hao-pick-word-at-point) "end")
-	    (progn
-;;	      (backward-char)
-	      (hao-erlang-pair-find 'search-backward-regexp '(-1) (point))))))))
+  (when (eq major-mode 'erlang-mode)
+    (let ((keywords '("case" "if" "begin" "receive")))
+      (when (hao-erlang-pair-keyword-valid-p)
+        (if (or (member (hao-pick-word-at-point) keywords)
+                (looking-at "fun[\s\t\n]*(")) ; 'fun' is an except
+            (progn
+              (forward-char)
+              (hao-erlang-pair-find 'search-forward-regexp '(1) (point)))
+          (if (equal (hao-pick-word-at-point) "end")
+              (progn
+                ;; (backward-char)
+                (hao-erlang-pair-find 'search-backward-regexp '(-1) (point)))))))))
 
 ;; Emacs customization basic part
 
@@ -201,12 +203,15 @@ this function would move cursor to the beginning of the word"
 (display-time)
 
 ;; save place
-(require 'saveplace)
 (setq save-place t)
+(require 'saveplace)
 
 ;; scroll line by line
 (setq scroll-step 1)
 (setq scroll-conservatively 9999)
+
+;; delete whole line
+(global-set-key (kbd "M-9") 'kill-whole-line)
 
 ;; Emacs customization advanced part
 
