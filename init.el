@@ -302,6 +302,11 @@ this function would move cursor to the beginning of the word"
             ;; when starting an Erlang shell in Emacs, set default node name
             (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
 
+(add-to-list 'load-path "~/.emacs.d/yasnippet")
+(require 'yasnippet)
+(setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
+(yas/global-mode 1)
+
 ;; auto-complete
 (add-to-list 'load-path "~/.emacs.d/auto-complete")
 (require 'auto-complete-config)
