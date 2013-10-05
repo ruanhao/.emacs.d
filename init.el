@@ -213,7 +213,26 @@ this function would move cursor to the beginning of the word"
 ;; delete whole line
 (global-set-key (kbd "M-9") 'kill-whole-line)
 
+;; show whitespace
+(require 'whitespace)
+(global-set-key [f6] 'whitespace-mode)
+
 ;; Emacs customization advanced part
+
+;; fill column indicator
+(load-file "~/.emacs.d/fill-column-indicator.el")
+(defun hao-toggle-column-ruler ()
+  "toggle column ruler"
+  (interactive)
+  (setq fill-column 80)
+  (unless (boundp 'hao-toggle-column-ruler)
+    (setq hao-toggle-column-ruler nil))
+  (if (not hao-toggle-column-ruler)
+      (fci-mode 1)
+    (fci-mode 0))
+  (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
+(global-set-key [f7] 'hao-toggle-column-ruler)
+
 
 ;; set molokai theme
 (cond
@@ -268,9 +287,11 @@ this function would move cursor to the beginning of the word"
 (add-hook 'c-mode-hook
 	  '(lambda ()
 	     (c-set-style "linux")
-	     ;;(c-set-offset 'case-label '+)
 	     (setq indent-tabs-mode nil)
-	     (setq c-basic-offset 4)))
+	     (setq c-basic-offset 4)
+             ;; cscope setup
+             (load-file "~/.emacs.d/cscope/contrib/xcscope/xcscope.el")
+))
 
 ;; erlang-mode-hook
 (add-hook 'erlang-mode-hook 
@@ -280,4 +301,15 @@ this function would move cursor to the beginning of the word"
 	    (modify-syntax-entry ?_ "w")
             ;; when starting an Erlang shell in Emacs, set default node name
             (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
+
+;; yasnippet
+(load-file "~/.emacs.d/yasnippet/yasnippet.el")
+(setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
+(yas/global-mode 1)
+
+;; auto-complete
+(add-to-list 'load-path "~/.emacs.d/auto-complete")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
+(ac-config-default)
 
