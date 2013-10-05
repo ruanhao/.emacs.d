@@ -303,9 +303,9 @@ this function would move cursor to the beginning of the word"
             (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
 
 ;; yasnippet
-;; (load-file 'load-path "~/.emacs.d/yasnippet/yasnippet.el")
-;; (setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
-;; (yas/global-mode 1)
+(load-file "~/.emacs.d/yasnippet/yasnippet.el")
+(setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
+(yas/global-mode 1)
 
 ;; auto-complete
 (add-to-list 'load-path "~/.emacs.d/auto-complete")
