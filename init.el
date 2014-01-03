@@ -90,7 +90,15 @@ this function would move cursor to the beginning of the word"
 (global-set-key (kbd "M-n") 'other-window)
 (global-set-key (kbd "M-p") 'hao-other-window-backward)
 
-
+(defun hao-same-line ()
+  "set all windows at the same line"
+  (interactive)
+  (let ((line-number (line-number-at-pos)))
+    (dotimes (i (length (window-list)))
+      (goto-line line-number)
+      (recenter-top-bottom)
+    (other-window 1))))
+(global-set-key (kbd "\C-c l") 'hao-same-line)
 
 (defun hao-erlang-pair-keyword-valid-p ()
   (let ((line-head-point (line-beginning-position)))
@@ -106,29 +114,6 @@ this function would move cursor to the beginning of the word"
       (cdr old-stack)
     (cons value old-stack)))
 
-;; ;; i prefer this version, but Emacs Lisp does not optimize tail-recursion :(
-;; (defun hao-erlang-pair-find (direction stack origin-point)
-;;   (let ((new-stack nil))
-;;     (condition-case nil
-;; 	(progn
-;; 	  (funcall direction "\\(^\\|[\s\t\\[(=>]\\)\\(case\\|if\\|begin\\|receive\\|fun[\s\t\n]*(\.*\\|end\\)\\($\\|[\s\t,;.]\\)")
-;; 	  (goto-char (match-beginning 2))
-;; 	  (setq new-stack
-;; 		(if (not (hao-erlang-pair-keyword-valid-p))
-;; 		    stack
-;; 		  (if (looking-at "end")
-;; 		      (hao-erlang-pair-construct-stack -1 stack)
-;; 		    (hao-erlang-pair-construct-stack 1 stack))))
-;; 	  (when new-stack
-;; 	    (forward-char)		; a trick here, there is no need to use
-;; 					; (backward-char) here when do backward-search,
-;; 					; but you have to use (forward-char) when do forward-search
-;; 	    (hao-erlang-pair-find direction new-stack origin-point)))
-;;       (error (progn
-;; 	      (message "Wrong format")
-;; 	      (goto-char origin-point))))))
-
-;; implementation with 'while'
 (defun hao-erlang-pair-find (direction stack origin-point)
   (catch 'ok
     (while t
