@@ -90,6 +90,21 @@ this function would move cursor to the beginning of the word"
 (global-set-key (kbd "M-n") 'other-window)
 (global-set-key (kbd "M-p") 'hao-other-window-backward)
 
+(defun hao-kill-till-beginning-of-line()
+  "delete reversely till head of current line"
+  (interactive)
+  (kill-line 0)
+  (indent-according-to-mode))
+(global-set-key (kbd "\C-u") 'hao-kill-till-beginning-of-line)
+
+(defun hao-kill-till-end-of-line()
+  "delete till end of line"
+  (interactive)
+  (kill-line)
+  (delete-horizontal-space)
+  (indent-according-to-mode))
+(global-set-key (kbd "\C-k") 'hao-kill-till-end-of-line)
+
 (defun hao-join-lines ()
   "merge lines into one line"
   (interactive)
