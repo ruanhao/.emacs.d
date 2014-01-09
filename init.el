@@ -90,6 +90,17 @@ this function would move cursor to the beginning of the word"
 (global-set-key (kbd "M-n") 'other-window)
 (global-set-key (kbd "M-p") 'hao-other-window-backward)
 
+(defun hao-join-lines ()
+  "merge lines into one line"
+  (interactive)
+  (let* ((rbegin (region-beginning))
+         (rend (region-end))
+         (num-of-lines (count-lines rbegin rend))
+         (bottom-position (max rbegin rend)))
+    (goto-char bottom-position)
+    (dotimes (i (1- num-of-lines))
+      (join-line))))
+
 (defun hao-same-line ()
   "set all windows at the same line"
   (interactive)
