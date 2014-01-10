@@ -184,6 +184,9 @@ this function would move cursor to the beginning of the word"
 ;; set default mode
 (setq default-major-mode 'text-mode)
 
+(if (not (equal major-mode 'text-mode))
+    (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
 ;; can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
 
