@@ -40,7 +40,7 @@ this function would move cursor to the beginning of the word"
     (add-to-list 'regexp-search-ring regexp-word)
     ;; only 4 highlight colors supported now
     (setq hi-colors '("hi-yellow" "hi-pink" "hi-green" "hi-blue"))
-    (setq color 
+    (setq color
 	  (nth (% hao-highlight-word-at-point (length hi-colors)) hi-colors))
     (highlight-regexp regexp-word color)
     (setq hao-highlight-word-at-point (1+ hao-highlight-word-at-point))))
@@ -56,7 +56,7 @@ this function would move cursor to the beginning of the word"
 
 (defun hao-unhighlight-word-at-point ()
   "unhighlight the word at point"
-  ;; in case of a lot of overlays 
+  ;; in case of a lot of overlays
   (interactive)
   (dotimes (i 10)
     (unhighlight-regexp (hao-pick-regexp-word-at-point))))
@@ -75,7 +75,7 @@ this function would move cursor to the beginning of the word"
   (split-window-horizontally)
   (windmove-right))
   (global-set-key (kbd "\C-x 3") 'hao-open-window-horizontally-friendly)
-  
+
 (defun hao-open-window-vertically-friendly ()
   "open a new widow at beneth side and move into it"
   (interactive)
@@ -96,14 +96,14 @@ this function would move cursor to the beginning of the word"
   (kill-line 0))
 (global-set-key (kbd "\C-u") 'hao-kill-till-beginning-of-line)
 
-(defun hao-kill-till-end-of-line()
-  "delete till end of line"
-  (interactive)
-  (let ((current-point (point)))
-    (kill-line)
-    (skip-chars-forward "\s\t")
-    (delete-region current-point (point))))
-(global-set-key (kbd "\C-k") 'hao-kill-till-end-of-line)
+;; (defun hao-kill-till-end-of-line()
+;;   "delete till end of line"
+;;   (interactive)
+;;   (let ((current-point (point)))
+;;     (kill-line)
+;;     (skip-chars-forward "\s\t")
+;;     (delete-region current-point (point))))
+;; (global-set-key (kbd "\C-k") 'hao-kill-till-end-of-line)
 
 (defun hao-join-lines ()
   "merge lines into one line"
@@ -308,7 +308,7 @@ this function would move cursor to the beginning of the word"
 ))
 
 ;; erlang-mode-hook
-(add-hook 'erlang-mode-hook 
+(add-hook 'erlang-mode-hook
           (lambda ()
 	    (setq indent-tabs-mode nil)
             (erlang-font-lock-level-3)
@@ -342,3 +342,11 @@ this function would move cursor to the beginning of the word"
 
 (my-ac-config)
 
+(defun ac-linum-workaround ()
+  "linum-mode tries to display the line numbers even for the
+completion menu. This workaround stops that annoying behavior."
+  (interactive)
+  (defadvice linum-update (around ac-linum-update-workaround activate)
+    (unless ac-completing
+      ad-do-it)))
+(ac-linum-workaround)
