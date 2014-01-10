@@ -93,16 +93,16 @@ this function would move cursor to the beginning of the word"
 (defun hao-kill-till-beginning-of-line()
   "delete reversely till head of current line"
   (interactive)
-  (kill-line 0)
-  (indent-according-to-mode))
+  (kill-line 0))
 (global-set-key (kbd "\C-u") 'hao-kill-till-beginning-of-line)
 
 (defun hao-kill-till-end-of-line()
   "delete till end of line"
   (interactive)
-  (kill-line)
-  (delete-horizontal-space)
-  (indent-according-to-mode))
+  (let ((current-point (point)))
+    (kill-line)
+    (skip-chars-forward "\s\t")
+    (delete-region current-point (point))))
 (global-set-key (kbd "\C-k") 'hao-kill-till-end-of-line)
 
 (defun hao-join-lines ()
