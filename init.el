@@ -179,13 +179,39 @@ this function would move cursor to the beginning of the word"
                 ;; (backward-char)
                 (hao-erlang-pair-find 'search-backward-regexp '(-1) (point)))))))))
 
+;; toggle window form horizontal to vertical and vice versa
+(defun hao-toggle-window ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+	     (next-win-buffer (window-buffer (next-window)))
+	     (this-win-edges (window-edges (selected-window)))
+	     (next-win-edges (window-edges (next-window)))
+	     (this-win-2nd (not (and (<= (car this-win-edges)
+					 (car next-win-edges))
+				     (<= (cadr this-win-edges)
+					 (cadr next-win-edges)))))
+	     (splitter
+	      (if (= (car this-win-edges)
+		     (car (window-edges (next-window))))
+		  'split-window-horizontally
+		'split-window-vertically)))
+	(delete-other-windows)
+	(let ((first-win (selected-window)))
+	  (funcall splitter)
+	  (if this-win-2nd (other-window 1))
+	  (set-window-buffer (selected-window) this-win-buffer)
+	  (set-window-buffer (next-window) next-win-buffer)
+	  (select-window first-win)
+	  (if this-win-2nd (other-window 1))))))
+
 ;; Emacs customization basic part
 
 ;; set default mode
 (setq default-major-mode 'text-mode)
 
-(if (not (equal major-mode 'text-mode))
-    (add-hook 'before-save-hook 'delete-trailing-whitespace))
+;; (if (not (equal major-mode 'text-mode))
+;;     (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;; can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
@@ -210,8 +236,12 @@ this function would move cursor to the beginning of the word"
 ;; yes or no
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; no menu bar
+;; no menu-bar, welcome screen at startup and tool-bar
 (menu-bar-mode -1)
+(tool-bar-mode -1)
+(setq inhibit-splash-screen t)
+
+(setq tags-revert-without-query t)
 
 ;; display time and system load
 (display-time)
@@ -258,29 +288,15 @@ this function would move cursor to the beginning of the word"
   (load-theme 'molokai t)))
 
 ;; Emacs Erlang mode setup
-
-;; osx
-(add-to-list 'load-path
-	     (car (file-expand-wildcards "/Users/ruan/Library/Erlang/otp16b01/lib/erlang/lib/tools-*/emacs")))
-(setq erlang-root-dir "/Users/ruan/Library/Erlang/otp16b01/lib/erlang")
-(add-to-list 'exec-path "/Users/ruan/Library/Erlang/otp16b01/lib/erlang/bin")
-
-;; centos
-;; (add-to-list 'load-path
-;; 	     (car (file-expand-wildcards "/usr/local/lib/erlang/lib/tools-*/emacs")))
-;; (setq erlang-root-dir "/usr/local/lib/erlang")
-;; (add-to-list 'exec-path "/usr/local/lib/erlang/bin")
-
-;; sun sparc
-;; (add-to-list 'load-path
-;; 	     (car (file-expand-wildcards "/vobs/otp/otp_delivery/solaris8_sparc/lib/tools-*/emacs")))
-;; (setq erlang-root-dir "/vobs/otp/otp_delivery/solaris8_sparc/erts-5.9.1")
-;; (add-to-list 'exec-path "/vobs/otp/otp_delivery/solaris8_sparc/erts-5.9.1/bin")
+(setq load-path (cons "/lab/testtools/rhel664/otp/R15B01_halfword/lib/erlang/lib/tools-2.6.7/emacs"
+		      load-path))
+(setq erlang-root-dir "/lab/testtools/rhel664/otp/R15B01_halfword/lib/erlang/erts-5.9.1")
+(setq exec-path (cons "/lab/testtools/rhel664/otp/R15B01_halfword/lib/erlang/erts-5.9.1/bin" exec-path))
 
 (require 'erlang-start)
 (add-to-list 'auto-mode-alist '("\\.\\(erl\\|hrl\\|app\\|app.src\\)" . erlang-mode))
 
-;; distel setup (Emacs Erlang IDE)
+;; distel setup
 (add-to-list 'load-path "~/.emacs.d/distel/elisp")
 (require 'distel)
 (distel-setup)
@@ -298,14 +314,14 @@ this function would move cursor to the beginning of the word"
 	    (setq indent-tabs-mode nil)))
 
 ;; kernel style
-(add-hook 'c-mode-common-hook
-	  '(lambda ()
-	     (c-set-style "linux")
-	     (setq indent-tabs-mode nil)
-	     (setq c-basic-offset 4)
-             ;; cscope setup
-             (load-file "~/.emacs.d/cscope/contrib/xcscope/xcscope.el")
-))
+;; (add-hook 'c-mode-common-hook
+;; 	  '(lambda ()
+;; 	     (c-set-style "linux")
+;; 	     (setq indent-tabs-mode nil)
+;; 	     (setq c-basic-offset 4)
+;;              ;; cscope setup
+;;              (load-file "~/.emacs.d/cscope/contrib/xcscope/xcscope.el")
+;; ))
 
 ;; erlang-mode-hook
 (add-hook 'erlang-mode-hook
@@ -317,36 +333,13 @@ this function would move cursor to the beginning of the word"
             (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
 
 ;; yasnippet
-(load-file "~/.emacs.d/yasnippet/yasnippet.el")
-(setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
-(yas/global-mode 1)
+;; (load-file "~/.emacs.d/yasnippet/yasnippet.el")
+;; (setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
+;; (yas/global-mode 1)
 
 ;; auto-complete
 (add-to-list 'load-path "~/.emacs.d/auto-complete")
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
 (ac-config-default)
-
-;; auto-complete-clang-async
-(load-file "~/.emacs.d/auto-complete-clang-async.el")
-
-(defun ac-cc-mode-setup ()
-  (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
-  (setq ac-sources '(ac-source-clang-async))
-  (ac-clang-launch-completion-process))
-
-(defun my-ac-config ()
-  (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-  (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-  (global-auto-complete-mode t))
-
-(my-ac-config)
-
-(defun ac-linum-workaround ()
-  "linum-mode tries to display the line numbers even for the
-completion menu. This workaround stops that annoying behavior."
-  (interactive)
-  (defadvice linum-update (around ac-linum-update-workaround activate)
-    (unless ac-completing
-      ad-do-it)))
-(ac-linum-workaround)
+(global-auto-complete-mode t)
