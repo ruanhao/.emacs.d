@@ -6,6 +6,7 @@ CONFIG_LIST=$( grep -v '^[[:space:]]*#' $DIR/emacs.config )
 for item in $CONFIG_LIST; do
     echo "Generating config ($item)..."
     cat $DIR/$item.el >> $DIR/init.el
+    echo >> $DIR/init.el
 done
 
 echo "Completed"
