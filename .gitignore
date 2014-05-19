@@ -5,3 +5,4 @@ distel/ebin
 *.dat
 auto-complete-clang-async.el
 clang-complete
+init.el
