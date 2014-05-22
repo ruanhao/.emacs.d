@@ -6,3 +6,4 @@ distel/ebin
 auto-complete-clang-async.el
 clang-complete
 init.el
+*.o
