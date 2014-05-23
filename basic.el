@@ -68,17 +68,3 @@
  ((= emacs-major-version 24)
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
   (load-theme 'molokai t)))
-
-;; Fill column indicator
-(load-file "~/.emacs.d/fill-column-indicator.el")
-(defun hao-toggle-column-ruler ()
-  "Toggle column ruler"
-  (interactive)
-  (setq fill-column 80)
-  (unless (boundp 'hao-toggle-column-ruler)
-    (setq hao-toggle-column-ruler nil))
-  (if (not hao-toggle-column-ruler)
-      (fci-mode 1)
-    (fci-mode 0))
-  (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
-(global-set-key [f7] 'hao-toggle-column-ruler)

@@ -134,3 +134,17 @@ this function would move cursor to the beginning of the word"
 	  (set-window-buffer (next-window) next-win-buffer)
 	  (select-window first-win)
 	  (if this-win-2nd (other-window 1))))))
+
+;; Fill column indicator
+(load-file "~/.emacs.d/fill-column-indicator.el")
+(defun hao-toggle-column-ruler ()
+  "Toggle column ruler"
+  (interactive)
+  (setq fill-column 80)
+  (unless (boundp 'hao-toggle-column-ruler)
+    (setq hao-toggle-column-ruler nil))
+  (if (not hao-toggle-column-ruler)
+      (fci-mode 1)
+    (fci-mode 0))
+  (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
+(global-set-key [f7] 'hao-toggle-column-ruler)
