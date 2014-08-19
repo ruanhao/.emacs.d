@@ -1,10 +1,8 @@
 (require 'auto-complete-clang)
-;; (setq ac-clang-auto-save t)
-(setq ac-auto-start t)
-;; (setq ac-auto-start nil)
+;; (setq ac-auto-start t)
+(setq ac-auto-start nil)
 (setq ac-quick-help-delay 0.5)
-;; (ac-set-trigger-key "TAB")
-;; (define-key ac-mode-map  [(control tab)] 'auto-complete)
+(define-key ac-mode-map (kbd "\C-m") 'ac-complete-clang)
 ;; To find the include files in you system, please do:
 ;; $ echo "" | g++ -v -x c++ -E -
 (defun my-ac-config ()
