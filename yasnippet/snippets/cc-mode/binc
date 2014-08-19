@@ -1,0 +1,7 @@
+#name : basic include
+#key  : binc
+# --
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>

@@ -1,4 +1,5 @@
 ;; yasnippet
-;; (load-file "~/.emacs.d/yasnippet/yasnippet.el")
+(load-file "~/.emacs.d/yasnippet/yasnippet.el")
 ;; (setq yas/snippet-dirs "~/.emacs.d/yasnippet/snippets")
-;; (yas/global-mode 1)
+(require 'yasnippet)
+(yas/global-mode 1)

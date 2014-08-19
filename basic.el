@@ -2,6 +2,8 @@
 ;; author: Hao Ruan
 ;; date: 2013/09/27
 
+(add-to-list 'load-path "~/.emacs.d/")
+
 ;; Can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
 
