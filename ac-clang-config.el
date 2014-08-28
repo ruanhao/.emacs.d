@@ -2,7 +2,7 @@
 ;; (setq ac-auto-start t)
 (setq ac-auto-start nil)
 (setq ac-quick-help-delay 0.5)
-(define-key ac-mode-map (kbd "\C-m") 'ac-complete-clang)
+(define-key ac-mode-map (kbd "M-RET") 'ac-complete-clang)
 ;; To find the include files in you system, please do:
 ;; $ echo "" | g++ -v -x c++ -E -
 (defun my-ac-config ()
