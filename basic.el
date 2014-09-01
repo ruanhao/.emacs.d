@@ -70,3 +70,5 @@
  ((= emacs-major-version 24)
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
   (load-theme 'molokai t)))
+
+(global-set-key (kbd "M--") 'kill-whole-line)
