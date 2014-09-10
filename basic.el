@@ -73,6 +73,13 @@
 
 (global-set-key (kbd "M--") 'kill-whole-line)
 
+;; Set CUA-Utils
 (setq cua-enable-cua-keys nil)
 (cua-mode)
 (global-set-key [f5] 'cua-set-rectangle-mark)
+
+;; Set multiple-cursors
+(add-to-list 'load-path "~/.emacs.d/multiple-cursors")
+(require 'multiple-cursors)
+(global-set-key [f8] 'mc/mark-next-word-like-this)
+(global-set-key [f7] 'mc/mark-previous-word-like-this)
