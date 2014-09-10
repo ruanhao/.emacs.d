@@ -72,3 +72,7 @@
   (load-theme 'molokai t)))
 
 (global-set-key (kbd "M--") 'kill-whole-line)
+
+(setq cua-enable-cua-keys nil)
+(cua-mode)
+(global-set-key [f5] 'cua-set-rectangle-mark)
