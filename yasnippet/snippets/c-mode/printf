@@ -2,4 +2,4 @@
 # name: printf
 # key: pr
 # --
-printf("${1:format string}\n");
+printf("${1:hello world}\n"${});
