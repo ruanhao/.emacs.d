@@ -82,7 +82,6 @@
 (add-to-list 'load-path "~/.emacs.d/multiple-cursors")
 (require 'multiple-cursors)
 (global-set-key [f8] 'mc/mark-next-word-like-this)
-(global-set-key [f7] 'mc/mark-previous-word-like-this)
 
 ;; Set delete-pair
 (global-set-key (kbd "M-)") 'delete-pair)
