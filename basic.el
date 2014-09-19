@@ -85,3 +85,7 @@
 
 ;; Set delete-pair
 (global-set-key (kbd "M-)") 'delete-pair)
+
+;; Set direction
+(global-set-key (kbd "<down>") 'next-logical-line)
+(global-set-key (kbd "<up>") 'previous-logical-line)
