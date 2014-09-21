@@ -86,6 +86,14 @@
 ;; Set delete-pair
 (global-set-key (kbd "M-)") 'delete-pair)
 
+;; Delete pair backward
+(defun hao-delete-pair-backward ()
+  "Delete a pair of characters enclosing the sexp that follows point (backward)."
+  (interactive)
+  (save-excursion (backward-sexp 1) (delete-char 1))
+  (delete-char -1))
+(global-set-key (kbd "M-(") 'hao-delete-pair-backward)
+
 ;; Set direction
 (global-set-key (kbd "<down>") 'next-logical-line)
 (global-set-key (kbd "<up>") 'previous-logical-line)
