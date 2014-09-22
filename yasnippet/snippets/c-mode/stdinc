@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: stdinc
+# key: inc
+# --
+/* include basic */
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>

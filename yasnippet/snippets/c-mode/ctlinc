@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ctlinc
+# key: ctlinc
+# --
+/* include control */
+#include <fcntl.h>
+#include <sys/ioctl.h> /* BSD and Linux */
