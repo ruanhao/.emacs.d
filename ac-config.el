@@ -4,3 +4,4 @@
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
 (ac-config-default)
 (global-auto-complete-mode t)
+(ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
