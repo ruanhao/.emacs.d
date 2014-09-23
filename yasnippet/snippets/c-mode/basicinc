@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: stdinc
-# key: inc
+# name: basicinc
+# key: binc
 # --
 /* include basic */
 #include <stdio.h>
