@@ -1,4 +1,14 @@
-.emacs.d
-========
+Emacs editor environment setup
+==============================
 
-Emacs init file
+
+Usage
+=====
+    - select features in emacs.config
+    - run `./setup`
+
+Note
+====
+You need to make *cscope* and *clang* by yourself :)
+
+
