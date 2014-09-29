@@ -5,3 +5,4 @@
 (ac-config-default)
 (global-auto-complete-mode t)
 (ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
+(define-key ac-mode-map (kbd "M-/") 'auto-complete)
