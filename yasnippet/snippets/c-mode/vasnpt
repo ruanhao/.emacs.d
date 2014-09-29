@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: vasnpt
+# key: vasnpt
+# --
+va_list ap;
+va_start(ap, ${1:anchor});
+$0
+va_end(ap);

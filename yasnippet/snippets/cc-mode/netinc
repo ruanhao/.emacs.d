@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: netinc
+# key: netinc
+# --
+/* include socket */
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>

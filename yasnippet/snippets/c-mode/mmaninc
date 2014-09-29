@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: mmaninc
-# key: mmaninc
-# --
-/* include mapped memory */
-#include <sys/mman.h>
