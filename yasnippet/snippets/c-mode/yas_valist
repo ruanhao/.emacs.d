@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: yas_valist
+# key: yas_valist
+# --
+${1:Rtype} ${2:Func_name}(${3:Ptype} ${4:Para}, ...) {
+    va_list ap;
+    va_start(ap, $4);
+    $0
+    va_end(ap);
+}

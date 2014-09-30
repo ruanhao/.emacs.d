@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: netinc
-# key: netinc
+# name: inc_socket
+# key: inc_socket
 # --
 /* include socket */
 #include <netinet/in.h>

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inc_1
+# key: inc_1
+# --
+#include "$0"

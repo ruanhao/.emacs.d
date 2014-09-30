@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: union
-# key: union
+# name: sc_union
+# key: sc_union
 # --
 typedef union {
-        $0
+    $0
 } ${1:name};

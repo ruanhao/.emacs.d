@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: sc_for
+# key: sc_for
+# --
+for (${1:Init}; ${2:Cond}; ${3:Next}) {
+    $0
+}

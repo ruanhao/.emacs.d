@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: typedef
-# key: typedef
+# name: sc_typedef
+# key: sc_typedef
 # --
 typedef ${1:type} ${2:alias};

@@ -1,0 +1,101 @@
+# -*- mode: snippet -*-
+# name: yas_tcpv4srv
+# key: yas_tcpv4srv
+# --
+#define err_quit(fmt, ...) (fprintf(stderr, fmt, ##__VA_ARGS__), fflush(stderr), exit(1))
+
+union OPTVAL {
+    int            i_val;
+    struct linger  linger_val;
+    struct timeval timeval_val;
+};
+
+static struct SOCKOPT {
+    int          opt_level;
+    int          opt_name;
+    union OPTVAL opt_val;
+    socklen_t    opt_len;
+} SOCKOPTS[] = {                /* Supply options here */
+    {SOL_SOCKET, SO_REUSEADDR, {.i_val = 1}, sizeof(int)},
+    {0,          0,            {.i_val = 0}, 0}
+};
+
+static void init_zero(void *p_addr, size_t s) {
+    bzero(p_addr, s);
+    return;
+}
+
+static void init_fmly(struct sockaddr_in *ptr) {
+    ptr->sin_family = AF_INET;
+    return;
+}
+
+static void init_addr(struct sockaddr_in *ptr, const char *host) {
+    struct in_addr inaddr;
+    if (host == NULL)
+        ptr->sin_addr.s_addr = htonl(INADDR_ANY);
+    else {
+        if (inet_aton(host, &inaddr) == 0)
+            err_quit("invalid host name for server: %s", host);
+        ptr->sin_addr = inaddr;
+    }
+    return;
+}
+
+static void init_port(struct sockaddr_in *ptr, in_port_t port) {
+    ptr->sin_port = htons(port);
+    return;
+}
+
+static void initsockfd(int *p_sockfd) {
+    int sockfd;
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+        err_quit("socket() error");
+    *p_sockfd = sockfd;
+    return;
+}
+
+static void setopts(int sockfd) {
+    struct SOCKOPT *ptr;
+    for (ptr = SOCKOPTS; ptr->opt_level != 0; ptr++) {
+        if (setsockopt(sockfd, ptr->opt_level, ptr->opt_name, &ptr->opt_val, ptr->opt_len) < 0)
+            err_quit("setsockopt of SO_REUSEADDR error");
+    }
+    return;
+}
+
+static void binding(int sockfd, const void *p_servaddr, socklen_t addrlen) {
+    if (bind(sockfd, (struct sockaddr *) p_servaddr, addrlen) < 0)
+        err_quit("can't bind local address");
+    return;
+}
+
+static void listening(int sockfd) {
+    listen(sockfd, 5);
+    return;
+}
+
+static void loop(int sockfd, void (*worker)(int)) {
+    int connfd;
+    for ( ; ; ) {
+        if ((connfd = accept(sockfd, NULL, NULL)) < 0)
+            err_quit("accept() error");
+        worker(connfd);
+    }
+}
+
+void tcpv4_srv_open(const char *host, in_port_t port, void (*worker)(int)) {
+    struct sockaddr_in servaddr;
+    int                sockfd;
+
+    init_zero(&servaddr, sizeof(servaddr));
+    init_fmly(&servaddr);
+    init_addr(&servaddr, host);
+    init_port(&servaddr, port);
+
+    initsockfd(&sockfd);
+    setopts(sockfd);
+    binding(sockfd, &servaddr, sizeof(servaddr));
+    listening(sockfd);
+    loop(sockfd, worker);
+}

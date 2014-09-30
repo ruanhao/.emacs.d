@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: tellwaitsnpt
-# key: tellwaitsnpt
+# name: yas_sigtw
+# key: yas_sigtw
 # --
 static volatile sig_atomic_t sigflag; /* set nonzero by signal handler */
 

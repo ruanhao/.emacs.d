@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: while
-# key: while
+# name: sc_while
+# key: sc_while
 # --
 while (${1:condition}) {
       $0

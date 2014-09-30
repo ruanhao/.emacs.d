@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: relsigsnpt
-# key: relsigsnpt
+# name: yas_sig2
+# key: yas_sig2
 # --
 /* Reliable version of signal(), using POSIX sigaction(). */
 void (*signal(int signo, void (*func)(int)))(int) {

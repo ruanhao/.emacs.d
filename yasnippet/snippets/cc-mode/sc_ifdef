@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: ifdef
-# key: ifdef
+# name: sc_ifdef
+# key: sc_ifdef
 # --
 #ifdef ${1:MACRO}
 

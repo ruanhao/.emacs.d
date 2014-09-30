@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: tcpv4srvsnpt
-# key:  tcpv4srvsnpt
+# name: yas_tcpv4cli
+# key: yas_tcpv4cli
 # --
 #define err_quit(fmt, ...) (fprintf(stderr, fmt, ##__VA_ARGS__), fflush(stderr), exit(1))
 
@@ -15,13 +15,13 @@ static struct SOCKOPT {
     int          opt_name;
     union OPTVAL opt_val;
     socklen_t    opt_len;
-} SOCKOPTS[] = { /* Supply options here */
+} SOCKOPTS[] = {                /* Supply options here */
     {SOL_SOCKET, SO_REUSEADDR, {.i_val = 1}, sizeof(int)},
     {0,          0,            {.i_val = 0}, 0}
 };
 
-static void init_zero(void *addr, size_t s) {
-    bzero(addr, s);
+static void init_zero(void *p_addr, size_t s) {
+    bzero(p_addr, s);
     return;
 }
 
@@ -64,8 +64,8 @@ static void setopts(int sockfd) {
     return;
 }
 
-static void binding(int sockfd, const void *servaddr, socklen_t addrlen) {
-    if (bind(sockfd, (struct sockaddr *) servaddr, addrlen) < 0)
+static void binding(int sockfd, const void *p_srvaddr, socklen_t addrlen) {
+    if (bind(sockfd, (struct sockaddr *) p_srvaddr, addrlen) < 0)
         err_quit("can't bind local address");
     return;
 }
@@ -75,29 +75,46 @@ static void listening(int sockfd) {
     return;
 }
 
-static void loop(int sockfd, void (*p_worker_fn)(int cfd, struct sockaddr_in caddr)) {
-    int                clisockfd;
-    struct sockaddr_in cliaddr;
-    socklen_t          size = sizeof(cliaddr);
+static void connecting(int sockfd,
+                       const void *p_srvaddr,
+                       socklen_t addrlen,
+                       void (*p_worker_fn)(int)) {
     for ( ; ; ) {
-        if ((clisockfd = accept(sockfd, (struct sockaddr *) &cliaddr, &size)) < 0)
-            err_quit("accept() error");
-        p_worker_fn(clisockfd, cliaddr);
+        if (connect(sockfd, (struct sockaddr *) p_srvaddr, addrlen) == 0) {
+            p_worker_fn(sockfd);
+            break;                     /* All OK */
+        }
+        if (errno == EINTR)            /* Can happen with SIGIO */
+            continue;
+        if (errno == EISCONN)          /* Can happen with SIGIO */
+            break;
+        err_quit("connect() error");
     }
+    return;
 }
 
-void tcpv4_srv_open(char *host, in_port_t port, void (*worker)(int, struct sockaddr_in)) {
-    struct sockaddr_in servaddr;
+void tcpv4_cli_connect(const char *srvhost, in_port_t srvport,
+                       const char *clihost, in_port_t cliport,
+                       void (*worker)(int)) {
+    struct sockaddr_in srvaddr;
+    struct sockaddr_in cliaddr;
     int                sockfd;
 
-    init_zero(&servaddr, sizeof(servaddr));
-    init_fmly(&servaddr);
-    init_addr(&servaddr, host);
-    init_port(&servaddr, port);
+    init_zero(&srvaddr, sizeof(srvaddr));
+    init_fmly(&srvaddr);
+    init_addr(&srvaddr, srvhost);
+    init_port(&srvaddr, srvport);
+
+    init_zero(&cliaddr, sizeof(cliaddr));
+    init_fmly(&cliaddr);
+    init_addr(&cliaddr, clihost);
+    init_port(&cliaddr, cliport);  /* cliport can be 0 */
 
     initsockfd(&sockfd);
     setopts(sockfd);
-    binding(sockfd, &servaddr, sizeof(servaddr));
-    listening(sockfd);
-    loop(sockfd, worker);
+    binding(sockfd, &cliaddr, sizeof(cliaddr));
+
+    connecting(sockfd, &srvaddr, sizeof(srvaddr), worker);
+
+    return;
 }
