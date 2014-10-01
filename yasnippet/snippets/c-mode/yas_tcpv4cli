@@ -2,93 +2,34 @@
 # name: yas_tcpv4cli
 # key: yas_tcpv4cli
 # --
-#define err_quit(fmt, ...) (fprintf(stderr, fmt, ##__VA_ARGS__), fflush(stderr), exit(1))
-
 union OPTVAL {
     int            i_val;
     struct linger  linger_val;
     struct timeval timeval_val;
 };
 
-static struct SOCKOPT {
+struct SOCKOPT {
     int          opt_level;
     int          opt_name;
     union OPTVAL opt_val;
     socklen_t    opt_len;
-} SOCKOPTS[] = {                /* Supply options here */
-    {SOL_SOCKET, SO_REUSEADDR, {.i_val = 1}, sizeof(int)},
-    {0,          0,            {.i_val = 0}, 0}
 };
 
-static void init_zero(void *p_addr, size_t s) {
-    bzero(p_addr, s);
-    return;
+void err_quit(const char *fmt, ...) {
+    char *str;
+    va_list ap;
+    va_start(ap, fmt);
+    vasprintf(&str, fmt, ap);
+    va_end(ap);
+    perror(str);
+    free(str);
+    exit(1);
 }
 
-static void init_fmly(struct sockaddr_in *ptr) {
-    ptr->sin_family = AF_INET;
-    return;
-}
-
-static void init_addr(struct sockaddr_in *ptr, const char *host) {
-    struct in_addr inaddr;
-    if (host == NULL)
-        ptr->sin_addr.s_addr = htonl(INADDR_ANY);
-    else {
-        if (inet_aton(host, &inaddr) == 0)
-            err_quit("invalid host name for server: %s", host);
-        ptr->sin_addr = inaddr;
-    }
-    return;
-}
-
-static void init_port(struct sockaddr_in *ptr, in_port_t port) {
-    ptr->sin_port = htons(port);
-    return;
-}
-
-static void initsockfd(int *p_sockfd) {
-    int sockfd;
-    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-        err_quit("socket() error");
-    *p_sockfd = sockfd;
-    return;
-}
-
-static void setopts(int sockfd) {
-    struct SOCKOPT *ptr;
-    for (ptr = SOCKOPTS; ptr->opt_level != 0; ptr++) {
-        if (setsockopt(sockfd, ptr->opt_level, ptr->opt_name, &ptr->opt_val, ptr->opt_len) < 0)
-            err_quit("setsockopt of SO_REUSEADDR error");
-    }
-    return;
-}
-
-static void binding(int sockfd, const void *p_srvaddr, socklen_t addrlen) {
-    if (bind(sockfd, (struct sockaddr *) p_srvaddr, addrlen) < 0)
-        err_quit("can't bind local address");
-    return;
-}
-
-static void listening(int sockfd) {
-    listen(sockfd, 5);
-    return;
-}
-
-static void connecting(int sockfd,
-                       const void *p_srvaddr,
-                       socklen_t addrlen,
-                       void (*p_worker_fn)(int)) {
-    for ( ; ; ) {
-        if (connect(sockfd, (struct sockaddr *) p_srvaddr, addrlen) == 0) {
-            p_worker_fn(sockfd);
-            break;                     /* All OK */
-        }
-        if (errno == EINTR)            /* Can happen with SIGIO */
-            continue;
-        if (errno == EISCONN)          /* Can happen with SIGIO */
-            break;
-        err_quit("connect() error");
+static void setopts(int sockfd, const struct SOCKOPT *optp) {
+    for(; optp->opt_level != 0; optp++) {
+        if (setsockopt(sockfd, optp->opt_level, optp->opt_name, &optp->opt_val, optp->opt_len) < 0)
+            err_quit("setsockopt() error [level: %d, name: %d]", optp->opt_level, optp->opt_name);
     }
     return;
 }
@@ -98,23 +39,46 @@ void tcpv4_cli_connect(const char *srvhost, in_port_t srvport,
                        void (*worker)(int)) {
     struct sockaddr_in srvaddr;
     struct sockaddr_in cliaddr;
+    struct in_addr     inaddr;
     int                sockfd;
+    struct SOCKOPT     sockopts[] = {
+        {SOL_SOCKET, SO_REUSEADDR, {.i_val = 1}, sizeof(int)},
+        {0,          0,            {.i_val = 0}, 0}
+    };
 
-    init_zero(&srvaddr, sizeof(srvaddr));
-    init_fmly(&srvaddr);
-    init_addr(&srvaddr, srvhost);
-    init_port(&srvaddr, srvport);
+    bzero(&srvaddr, sizeof(srvaddr));
+    srvaddr.sin_family = AF_INET;
+    if (inet_aton(srvhost, &inaddr) == 0)
+        err_quit("Invalid host name for server [%s]", srvhost);
+    srvaddr.sin_addr = inaddr;
+    srvaddr.sin_port = htons(srvport);
 
-    init_zero(&cliaddr, sizeof(cliaddr));
-    init_fmly(&cliaddr);
-    init_addr(&cliaddr, clihost);
-    init_port(&cliaddr, cliport);  /* cliport can be 0 */
+    bzero(&cliaddr, sizeof(cliaddr));
+    cliaddr.sin_family = AF_INET;
+    if (clihost == NULL)
+        cliaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    else {
+        if (inet_aton(clihost, &inaddr) == 0)
+            err_quit("Invalid address for client [%s]", clihost);
+        cliaddr.sin_addr = inaddr;
+    }
+    cliaddr.sin_port = htons(cliport);  /* cliport can be 0 */
 
-    initsockfd(&sockfd);
-    setopts(sockfd);
-    binding(sockfd, &cliaddr, sizeof(cliaddr));
-
-    connecting(sockfd, &srvaddr, sizeof(srvaddr), worker);
-
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+        err_quit("socket() error");
+    setopts(sockfd, sockopts);
+    if (bind(sockfd, (struct sockaddr *) &cliaddr, sizeof(cliaddr)) < 0)
+        err_quit("bind() error");
+    for ( ; ; ) {
+        if (connect(sockfd, (struct sockaddr *) &srvaddr, sizeof(srvaddr)) == 0) {
+            worker(sockfd);
+            break;                     /* All OK */
+        }
+        if (errno == EINTR)            /* Can happen with SIGIO */
+            continue;
+        if (errno == EISCONN)          /* Can happen with SIGIO */
+            break;
+        err_quit("connect() error");
+    }
     return;
 }
