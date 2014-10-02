@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_sigtw
-# key: yas_sigtw
+# name: yas_sig_sigtw
+# key: yas_sig_sigtw
 # --
 static volatile sig_atomic_t sigflag; /* set nonzero by signal handler */
 

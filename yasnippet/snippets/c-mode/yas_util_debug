@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_debug
-# key: yas_debug
+# name: yas_util_debug
+# key: yas_util_debug
 # --
 #ifndef H_DEBUG_MSG_H
 #define H_DEBUG_MSG_H

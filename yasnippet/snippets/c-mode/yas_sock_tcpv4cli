@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_tcpv4cli
-# key: yas_tcpv4cli
+# name: yas_sock_tcpv4cli
+# key: yas_sock_tcpv4cli
 # --
 union OPTVAL {
     int            i_val;

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_valist
-# key: yas_valist
+# name: yas_util_valist
+# key: yas_util_valist
 # --
 ${1:Rtype} ${2:Func_name}(${3:Ptype} ${4:Para}, ...) {
     va_list ap;
