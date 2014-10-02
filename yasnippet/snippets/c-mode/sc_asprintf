@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: sc_asprintf
+# key: sc_asprintf
+# --
+char *${1:str};
+asprintf(&$1, "${2:fmt}"$3);
+$0
+free($1);
