@@ -34,16 +34,14 @@ static void setopts(int sockfd, const struct SOCKOPT *optp) {
     return;
 }
 
-void tcpv4_srv_open(const char *host, in_port_t port, void (*worker)(int)) {
+static int initsock(const char *host, in_port_t port) {
     struct sockaddr_in servaddr;
     struct in_addr     inaddr;
     int                sockfd;
-    int                connfd;
     struct SOCKOPT     sockopts[] = {
         {SOL_SOCKET, SO_REUSEADDR, {.i_val = 1}, sizeof(int)},
         {0,          0,            {.i_val = 0}, 0}
     };
-
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     if (host == NULL)
@@ -54,17 +52,28 @@ void tcpv4_srv_open(const char *host, in_port_t port, void (*worker)(int)) {
         servaddr.sin_addr = inaddr;
     }
     servaddr.sin_port = htons(port);
-
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         err_quit("socket() error");
     setopts(sockfd, sockopts);
     if (bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
         err_quit("bind() error");
     listen(sockfd, 5);
+    return sockfd;
+}
 
+static void loop(int sockfd, void (*worker)(int)) {
+    int connfd;
     for ( ; ; ) {
         if ((connfd = accept(sockfd, NULL, NULL)) < 0)
             err_quit("accept() error");
         worker(connfd);
     }
+    return;
+}
+
+void tcpv4_srv_open(const char *host, in_port_t port, void (*worker)(int)) {
+    int                sockfd;
+    sockfd = initsock(host, port);
+    loop(sockfd, worker);
+    return;
 }

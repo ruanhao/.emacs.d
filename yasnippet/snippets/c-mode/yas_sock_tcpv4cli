@@ -34,44 +34,49 @@ static void setopts(int sockfd, const struct SOCKOPT *optp) {
     return;
 }
 
-void tcpv4_cli_connect(const char *srvhost, in_port_t srvport,
-                       const char *clihost, in_port_t cliport,
-                       void (*worker)(int)) {
-    struct sockaddr_in srvaddr;
+static void init_server_address(struct sockaddr_in *serveraddr_p,
+                                const char *host,
+                                in_port_t   port) {
+    struct in_addr inaddr;
+    bzero(serveraddr_p, sizeof(struct sockaddr_in));
+    serveraddr_p->sin_family = AF_INET;
+    if (inet_aton(host, &inaddr) == 0)
+        err_quit("Invalid host name for server [%s]", host);
+    serveraddr_p->sin_addr = inaddr;
+    serveraddr_p->sin_port = htons(port);
+    return;
+}
+
+static int init_client_sock(const char *host, in_port_t port) {
+    int                sockfd;
     struct sockaddr_in cliaddr;
     struct in_addr     inaddr;
-    int                sockfd;
     struct SOCKOPT     sockopts[] = {
         {SOL_SOCKET, SO_REUSEADDR, {.i_val = 1}, sizeof(int)},
         {0,          0,            {.i_val = 0}, 0}
     };
-
-    bzero(&srvaddr, sizeof(srvaddr));
-    srvaddr.sin_family = AF_INET;
-    if (inet_aton(srvhost, &inaddr) == 0)
-        err_quit("Invalid host name for server [%s]", srvhost);
-    srvaddr.sin_addr = inaddr;
-    srvaddr.sin_port = htons(srvport);
-
     bzero(&cliaddr, sizeof(cliaddr));
     cliaddr.sin_family = AF_INET;
-    if (clihost == NULL)
+    if (host == NULL)
         cliaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     else {
-        if (inet_aton(clihost, &inaddr) == 0)
-            err_quit("Invalid address for client [%s]", clihost);
+        if (inet_aton(host, &inaddr) == 0)
+            err_quit("Invalid address for client [%s]", host);
         cliaddr.sin_addr = inaddr;
     }
-    cliaddr.sin_port = htons(cliport);  /* cliport can be 0 */
-
+    cliaddr.sin_port = htons(port);  /* port can be 0 */
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         err_quit("socket() error");
     setopts(sockfd, sockopts);
     if (bind(sockfd, (struct sockaddr *) &cliaddr, sizeof(cliaddr)) < 0)
         err_quit("bind() error");
+    return sockfd;
+}
+
+static void do_connect(int clisockfd, const void *serveraddr_p, void (*worker)(int)) {
     for ( ; ; ) {
-        if (connect(sockfd, (struct sockaddr *) &srvaddr, sizeof(srvaddr)) == 0) {
-            worker(sockfd);
+        if (connect(clisockfd, (struct sockaddr *) serveraddr_p, sizeof(struct sockaddr_in)) == 0) {
+            worker(clisockfd);
             break;                     /* All OK */
         }
         if (errno == EINTR)            /* Can happen with SIGIO */
@@ -80,5 +85,17 @@ void tcpv4_cli_connect(const char *srvhost, in_port_t srvport,
             break;
         err_quit("connect() error");
     }
+    return;
+}
+
+
+void tcpv4_cli_connect(const char *srvhost, in_port_t srvport,
+                       const char *clihost, in_port_t cliport,
+                       void (*worker)(int)) {
+    struct sockaddr_in srvaddr;
+    int clisockfd;
+    init_server_address(&srvaddr, srvhost, srvport);
+    clisockfd = init_client_sock(clihost, cliport);
+    do_connect(clisockfd, &srvaddr, worker);
     return;
 }
