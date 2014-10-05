@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: yas_tcp_accept
+# key: yas_tcp_accept
+# --
+int Tcp_accept(int listenfd) {
+    int connfd;
+    while (1) {
+        if ((connfd = accept(listenfd, NULL, NULL)) < 0)
+#ifdef EPROTO
+            if (errno == EPROTO || errno == ECONNABORTED)
+#else
+            if (errno == ECONNABORTED)
+#endif
+                continue;
+            else
+                err_quit("accept() error");
+        break;
+    }
+    return(connfd);
+}

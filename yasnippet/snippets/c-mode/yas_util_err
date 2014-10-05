@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_err_quit
-# key: yas_err_quit
+# name: yas_util_err
+# key: yas_util_err
 # --
 void err_quit(const char *fmt, ...) {
     char *str;
