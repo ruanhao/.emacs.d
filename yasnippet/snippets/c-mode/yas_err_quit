@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: yas_err_quit
+# key: yas_err_quit
+# --
+void err_quit(const char *fmt, ...) {
+    char *str;
+    va_list ap;
+    va_start(ap, fmt);
+    vasprintf(&str, fmt, ap);
+    va_end(ap);
+    perror(str);
+    free(str);
+    exit(1);
+}

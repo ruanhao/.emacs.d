@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: yas_tcp_connect
+# key: yas_tcp_connect
+# --
+int Tcp_connect(const char *host, const char *svcport) {
+    int sockfd, n;
+    struct addrinfo hints, *res, *aihp;
+
+    bzero(&hints, sizeof(struct addrinfo));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+
+    if ((n = getaddrinfo(host, svcport, &hints, &res)) != 0)
+        err_quit("Tcp_connect error for %s, %s: %s",
+                 host, svcport, gai_strerror(n));
+    aihp = res;
+
+    do {
+        sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+        if (sockfd < 0)
+            continue;	        /* ignore this one */
+
+        if (connect(sockfd, res->ai_addr, res->ai_addrlen) == 0)
+            break;		/* success */
+
+        close(sockfd);	        /* ignore this one */
+    } while ( (res = res->ai_next) != NULL);
+
+    if (res == NULL)	        /* errno set from final connect() */
+        err_quit("Tcp_connect error for %s, %s", host, svcport);
+
+    freeaddrinfo(aihp);
+
+    return(sockfd);
+}
