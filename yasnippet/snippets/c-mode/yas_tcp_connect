@@ -23,7 +23,7 @@ int Tcp_connect(const char *host, const char *service) {
             break;                   /* success */
         if (close(sockfd) == -1)     /* ignore this one */
 	    err_quit("close() error");
-    } while ( (res = res->ai_next) != NULL);
+    } while ((res = res->ai_next) != NULL);
 
     if (res == NULL)	        /* errno set from final connect() */
         err_quit("Tcp_connect error for %s, %s", host, service);
