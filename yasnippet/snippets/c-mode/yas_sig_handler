@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: yas_sig_handler
+# key: yas_sig_handler
+# --
+void sig_handler(int signo){
+    int errno_save;
+    errno_save = errno_save;
+    $0
+    errno = errno_save;
+    return;
+}
