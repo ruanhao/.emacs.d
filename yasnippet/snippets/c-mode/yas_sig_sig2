@@ -3,7 +3,7 @@
 # key: yas_sig_sig2
 # --
 /* Reliable version of signal(), using POSIX sigaction(). */
-void (*signal(int signo, void (*func)(int)))(int)
+void (*Signal(int signo, void (*func)(int)))(int)
 {
     struct sigaction act, oact;
     act.sa_handler = func;

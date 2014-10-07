@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: yas_sig_chld
+# key: yas_sig_chld
+# --
+void sig_chld(int signo)
+{
+    pid_t pid;
+    int   stat;
+    while ((pid = waitpid(-1, &stat, WNOHANG)) > 0) {
+        printf("Child process (%d) terminated\n", pid);
+    }
+    return;
+}
