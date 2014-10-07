@@ -8,9 +8,9 @@ int Tcp_accept(int listenfd)
     while (1) {
         if ((connfd = accept(listenfd, NULL, NULL)) < 0)
 #ifdef EPROTO
-            if (errno == EPROTO || errno == ECONNABORTED)
+            if (errno == EPROTO || errno == ECONNABORTED || errno == EINTR)
 #else
-            if (errno == ECONNABORTED)
+            if (errno == ECONNABORTED || errno == EINTR)
 #endif
                 continue;
             else
