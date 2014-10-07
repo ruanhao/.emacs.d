@@ -22,7 +22,8 @@ void h_error_msg(const char *fmt, ...);
 
 #endif /* H_DEBUG_MSG_H */
 
-static void h_do_msg(int errflag, const char *fmt, va_list ap) {
+static void h_do_msg(int errflag, const char *fmt, va_list ap)
+{
     char *str;
     vasprintf(&str, fmt, ap);
     if (errflag) {
@@ -38,7 +39,8 @@ static void h_do_msg(int errflag, const char *fmt, va_list ap) {
     return;
 }
 
-void h_debug_msg(const char *fmt, ...) {
+void h_debug_msg(const char *fmt, ...)
+{
     va_list ap;
     va_start(ap, fmt);
     h_do_msg(0, fmt, ap);
@@ -46,7 +48,8 @@ void h_debug_msg(const char *fmt, ...) {
     return;
 }
 
-void h_error_msg(const char *fmt, ...) {
+void h_error_msg(const char *fmt, ...)
+{
     va_list ap;
     va_start(ap, fmt);
     h_do_msg(1, fmt, ap);

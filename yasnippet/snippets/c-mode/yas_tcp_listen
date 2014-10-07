@@ -2,7 +2,8 @@
 # name: yas_tcp_listen
 # key: yas_tcp_listen
 # --
-int Tcp_listen(const char *host, const char *service) {
+int Tcp_listen(const char *host, const char *service)
+{
     int listenfd, n;
     const int on = 1;
     struct addrinfo hints, *res, *head;

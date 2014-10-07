@@ -2,7 +2,8 @@
 # name: yas_util_sockntop
 # key: yas_util_sockntop
 # --
-char *Sock_ntop(const struct sockaddr *sa) {
+char *Sock_ntop(const struct sockaddr *sa)
+{
     char        portstr[8];
     static char str[128];  /* Unix domain is largest */
 

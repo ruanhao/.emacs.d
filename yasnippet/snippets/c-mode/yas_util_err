@@ -2,7 +2,8 @@
 # name: yas_util_err
 # key: yas_util_err
 # --
-void err_quit(const char *fmt, ...) {
+void err_quit(const char *fmt, ...)
+{
     char *str;
     va_list ap;
     va_start(ap, fmt);

@@ -2,7 +2,8 @@
 # name: yas_tcp_accept
 # key: yas_tcp_accept
 # --
-int Tcp_accept(int listenfd) {
+int Tcp_accept(int listenfd)
+{
     int connfd;
     while (1) {
         if ((connfd = accept(listenfd, NULL, NULL)) < 0)
