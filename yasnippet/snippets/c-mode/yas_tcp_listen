@@ -14,7 +14,7 @@ int Tcp_listen(const char *host, const char *service)
     hints.ai_socktype = SOCK_STREAM;
 
     if ((n = getaddrinfo(host, service, &hints, &res)) != 0)
-        err_quit("Tcp_listen() error for %s, %s: %s",
+        err_quit("getaddrinfo() error for %s, %s: %s",
                  host, service, gai_strerror(n));
     head = res;
     do {
@@ -29,8 +29,8 @@ int Tcp_listen(const char *host, const char *service)
             err_quit("close() error");
     } while ((res = res->ai_next) != NULL);
 
-    if (res == NULL)    /* errno from final socket() or bind() */
-        err_quit("Tcp_listen() error for %s, %s", host, service);
+    if (res == NULL)
+        err_quit("socket() or bind() error for %s, %s", host, service);
 
     if (listen(listenfd, 5) < 0)
         err_quit("listen() error");
