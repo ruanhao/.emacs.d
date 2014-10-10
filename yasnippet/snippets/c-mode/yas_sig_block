@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: yas_sig_block
+# key: yas_sig_block
+# --
+int err;
+sigset_t mask;
+sigset_t oldmask;
+
+sigemptyset(&mask);
+sigaddset(&mask, ${1:SIGXXX});
+if ((err = pthread_sigmask(SIG_BLOCK, &mask, &oldmask)) != 0)
+    err_quit("pthread_sigmask(SIG_BLOCK) error (%s)", strerror(err));
+
+// TODO $0
+
+/* reset signal mask */
+if ((err = pthread_sigmask(SIG_SETMASK, &oldmask, NULL)) != 0)
+    err_quit("pthread_sigmask(SIG_SETMASK) error (%s)", strerror(err));

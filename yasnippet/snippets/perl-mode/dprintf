@@ -1,0 +1,12 @@
+# name: dprintf
+# key: dprintf
+# --
+use File::Basename qw/basename/;
+
+sub dp {
+    my ($fmt, @va) = @_;
+    my (undef, $fname, $line) = caller; ## note the use of 'undef'
+    printf "[%s:%d] ", basename($fname), $line;
+    printf $fmt, @va;
+    printf "\n";
+}

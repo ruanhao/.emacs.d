@@ -1,0 +1,4 @@
+# name: jhash
+# key: jh
+# --
+"(" . join("; ", map { "$_ => $${1:hash}{$_}" } keys %$1) . ")"$0

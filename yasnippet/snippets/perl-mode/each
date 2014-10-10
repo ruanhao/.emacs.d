@@ -1,0 +1,6 @@
+# name: each
+# key: each
+# --
+while (my($key, $value) = each ${1:name}) {
+    $0
+}

@@ -1,0 +1,10 @@
+# name: routinename
+# key: rname
+# --
+use B qw(svref_2object);
+sub rname {
+    my ($ref) = @_;
+    my $cv = svref_2object($ref);
+    my $gv = $cv->GV;
+    $gv->NAME;
+}
