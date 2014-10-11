@@ -1,0 +1,4 @@
+# name: sc_rname
+# key: rname
+# --
+rname($${1:subref});$0

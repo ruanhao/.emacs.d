@@ -1,0 +1,15 @@
+# name: yas_sub_runcmd
+# key: yas_sub_runcmd
+# --
+sub run_cmd {
+    my ($command, $chomp, $catch_stderr) = @_;
+    $chomp = 0 unless defined($chomp);
+    $catch_stderr = 0 unless defined($catch_stderr);
+    my $redirect = $catch_stderr ? '2>&1' : '';
+    my $output = qx($command $redirect);
+    if ($chomp) {
+	chomp($output);
+	$output =~ s/\r//g; # bash can insert CR at end of row of terminal
+    }
+    return ($? >> 8, $output);
+}

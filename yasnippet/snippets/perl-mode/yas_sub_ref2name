@@ -1,8 +1,8 @@
-# name: routinename
-# key: rname
+# name: yas_sub_ref2name
+# key: yas_sub_ref2name
 # --
 use B qw(svref_2object);
-sub rname {
+sub sref2name {
     my ($ref) = @_;
     my $cv = svref_2object($ref);
     my $gv = $cv->GV;

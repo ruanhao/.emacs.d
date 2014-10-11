@@ -1,0 +1,4 @@
+# name: sc_runcmd
+# key: rc
+# --
+run_cmd(${1:coommand}, ${2:chomp}, ${3:catch_stderr})$0

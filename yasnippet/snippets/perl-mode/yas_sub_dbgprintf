@@ -1,9 +1,9 @@
-# name: dprintf
-# key: dprintf
+# name: yas_sub_dbgprintf
+# key: yas_sub_dbgprintf
 # --
 use File::Basename qw/basename/;
 
-sub dp {
+sub dprintf {
     my ($fmt, @va) = @_;
     my (undef, $fname, $line) = caller; ## note the use of 'undef'
     printf "[%s:%d] ", basename($fname), $line;

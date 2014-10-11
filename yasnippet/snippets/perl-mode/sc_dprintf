@@ -1,0 +1,4 @@
+# name: sc_dprintf
+# key: dp
+# --
+dprintf "${1:name}: $2$1"$0
