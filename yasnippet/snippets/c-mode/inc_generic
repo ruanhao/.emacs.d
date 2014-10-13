@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
 # name: inc_generic
-# key: incg
+# key: ginc
 # --
-/* include basic */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>

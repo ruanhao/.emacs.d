@@ -2,7 +2,7 @@
 # name: yas_thrd_mkthrd
 # key: yas_thrd_mkthrd
 # --
-pthread_t Makethread(void *(*fn)(void *), void *arg)
+pthread_t MkThrd(void *(*fn)(void *), void *arg)
 {
     int err;
     pthread_t tid;

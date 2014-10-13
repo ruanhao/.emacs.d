@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
 # name: inc_socket
-# key: inc_socket
+# key: sockinc
 # --
-/* include socket */
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/socket.h>

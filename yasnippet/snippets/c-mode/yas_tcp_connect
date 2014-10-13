@@ -2,7 +2,7 @@
 # name: yas_tcp_connect
 # key: yas_tcp_connect
 # --
-int Tcp_connect(const char *host, const char *service)
+int Connect(const char *host, const char *service)
 {
     int sockfd, n;
     struct addrinfo hints, *res, *head;
