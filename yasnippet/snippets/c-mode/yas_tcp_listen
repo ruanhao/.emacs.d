@@ -14,7 +14,7 @@ int Listen(const char *host, const char *service)
     hints.ai_socktype = SOCK_STREAM;
 
     if ((n = getaddrinfo(host, service, &hints, &res)) != 0)
-        err_quit("getaddrinfo() error for %s, %s: %s",
+        err_sys("getaddrinfo() error for %s, %s: %s",
                  host, service, gai_strerror(n));
     head = res;
     do {
@@ -22,18 +22,18 @@ int Listen(const char *host, const char *service)
         if (listenfd < 0)
             continue;                  /* error, try next one */
         if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0)
-            err_quit("setsockopt() for SO_REUSEADDR error");
+            err_sys("setsockopt() for SO_REUSEADDR error");
         if (bind(listenfd, res->ai_addr, res->ai_addrlen) == 0)
             break;                     /* success */
         if (close(listenfd) == -1)     /* bind error, close and try next one */
-            err_quit("close() error");
+            err_sys("close() error");
     } while ((res = res->ai_next) != NULL);
 
     if (res == NULL)
-        err_quit("socket() or bind() error for %s, %s", host, service);
+        err_sys("socket() or bind() error for %s, %s", host, service);
 
     if (listen(listenfd, 5) < 0)
-        err_quit("listen() error");
+        err_sys("listen() error");
 
     freeaddrinfo(head);
     return(listenfd);

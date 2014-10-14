@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_util_writen
-# key: yas_util_writen
+# name: yas_io_writen
+# key: yas_io_writen
 # --
 /* Write "n" bytes to a descriptor. */
 ssize_t Writen(int fd, const void *vptr, size_t n)
