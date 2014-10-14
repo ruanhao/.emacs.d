@@ -9,9 +9,9 @@ sigset_t oldmask;
 sigemptyset(&mask);
 sigaddset(&mask, ${1:SIGXXX});
 if ((err = pthread_sigmask(SIG_BLOCK, &mask, &oldmask)) != 0)
-    err_quit("pthread_sigmask(SIG_BLOCK) error (%s)", strerror(err));
+    err_sys("pthread_sigmask(SIG_BLOCK) error (%s)", strerror(err));
 
 $0 /* TODO */
 
 if ((err = pthread_sigmask(SIG_SETMASK, &oldmask, NULL)) != 0)
-    err_quit("pthread_sigmask(SIG_SETMASK) error (%s)", strerror(err));
+    err_sys("pthread_sigmask(SIG_SETMASK) error (%s)", strerror(err));

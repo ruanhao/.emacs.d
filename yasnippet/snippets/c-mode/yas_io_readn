@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: yas_util_readn
-# key: yas_util_readn
+# name: yas_io_readn
+# key: yas_io_readn
 # --
 /* Read "n" bytes from a descriptor. */
 ssize_t Readn(int fd, void *vptr, size_t n)

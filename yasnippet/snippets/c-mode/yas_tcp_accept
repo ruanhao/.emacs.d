@@ -14,7 +14,7 @@ int Accept(int listenfd)
 #endif
                 continue;
             else
-                err_quit("accept() error");
+                err_sys("accept() error");
         break;
     }
     return(connfd);
