@@ -10,7 +10,7 @@ FD_SET(${1:fd1}, &allset);
 maxfd = $1;
 
 while (1) {
-    reset = allset;
+    rset = allset;
     nready = Select(maxfd + 1, &rset, NULL, NULL, NULL);
 
     if (FD_ISSET($1, &rset)) {
