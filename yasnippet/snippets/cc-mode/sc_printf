@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: sc_printf
-# key: pr
+# key: printf
 # --
 printf("${1:hello world}\n"${});

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sc_hdebug
+# key: pr
+# --
+H_DEBUG_MSG("${1:hello world!}"$2);$0

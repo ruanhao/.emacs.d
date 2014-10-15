@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: inc_hlib_header
+# key: hh
+# --
+#include "hlib.h"
+$0
