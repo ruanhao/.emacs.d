@@ -1,7 +1,3 @@
-# -*- mode: snippet -*-
-# name: yas_hlib_header
-# key: yas_hlib_header
-# --
 #ifndef INC_LIB_H
 #define INC_LIB_H
 

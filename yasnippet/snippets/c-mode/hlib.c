@@ -1,7 +1,3 @@
-# -*- mode: snippet -*-
-# name: yas_hlib
-# key: yas_hlib
-# --
 #include "hlib.h"
 
 static void h_do_msg(int errflag, const char *fmt, va_list ap)

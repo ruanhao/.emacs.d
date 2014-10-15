@@ -1,0 +1,29 @@
+[alias]
+    lg   = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    rt = rev-parse --show-toplevel
+    co   = checkout
+    ci   = commit
+    st   = status -sb
+    br   = branch
+    rb   = rebase
+
+[color]
+    ui          = true
+    status      = auto
+    branch      = auto
+    diff        = auto
+    interactive = auto
+
+[diff]
+        tool = ediff
+        guitool = ediff
+
+[difftool "ediff"]
+        cmd = ~/.emacs.d/ediff.sh $LOCAL $REMOTE $MERGED
+
+[merge]
+        tool = ediff
+
+[mergetool "ediff"]
+        cmd = ~/.emacs.d/ediff.sh $LOCAL $REMOTE $MERGED $BASE
+        trustExitCode = true
