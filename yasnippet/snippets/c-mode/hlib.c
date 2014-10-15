@@ -6,7 +6,7 @@ static void h_do_msg(int errflag, const char *fmt, va_list ap)
     vasprintf(&str, fmt, ap);
     if (errflag) {
         char *str_with_err;
-        asprintf(&str_with_err, "%s: %s", str, strerror(errno));
+        asprintf(&str_with_err, "%s [%s]", str, strerror(errno));
         free(str);
         fprintf(stderr, "%s\n", str_with_err);
         free(str_with_err);

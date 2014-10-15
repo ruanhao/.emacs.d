@@ -21,11 +21,11 @@
 void err_sys(const char *fmt, ...);
 void h_debug_msg(const char *fmt, ...);
 void h_error_msg(const char *fmt, ...);
-#define H_DEBUG_MSG(fmt, ...) h_debug_msg("<%s>(%s@%d)[%s]: "           \
-                                          fmt, __FILE__, __func__, __LINE__, __TIME__, ##__VA_ARGS__)
+#define H_DEBUG_MSG(fmt, ...) h_debug_msg("[%s]<%s>(%s@%d)=> "           \
+                                          fmt, __TIME__, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
-#define H_ERROR_MSG(fmt, ...) h_error_msg("<%s>(%s@%d)[%s]: "           \
-                                          fmt, __FILE__, __func__, __LINE__, __TIME__, ##__VA_ARGS__)
+#define H_ERROR_MSG(fmt, ...) h_error_msg("[%s]<%s>(%s@%d)=> "           \
+                                          fmt, __TIME__, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 /* IO */
 int Poll(struct pollfd *fdarray, unsigned long nfds, int timeout);
 int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
