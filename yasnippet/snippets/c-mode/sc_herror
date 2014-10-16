@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: sc_herror
-# key: he
+# key: pre
 # --
 H_ERROR_MSG("${1:fmt}"$2);$0

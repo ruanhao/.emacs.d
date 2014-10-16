@@ -1,36 +1,51 @@
 #include "hlib.h"
 
-static void h_do_msg(int errflag, const char *fmt, va_list ap)
+void print_trace (void)
+{
+    void  *array[256];
+    size_t size;
+    char **strings;
+    size_t i;
+    size = backtrace (array, 256);
+    strings = backtrace_symbols (array, size);
+    fprintf(stderr, "==================== BACKTRACE (%zd stack frames) ====================\n", size);
+    for (i = 0; i < size; i++)
+        fprintf(stderr, "%s\n", strings[i]);
+    fprintf(stderr, "====================================================================\n");
+    free (strings);
+}
+
+void h_do_msg(int errflag, const char *file, const char *func, int line, const char *fmt, va_list ap)
 {
     char *str;
+    char *str_with_err;
     vasprintf(&str, fmt, ap);
-    if (errflag) {
-        char *str_with_err;
-        asprintf(&str_with_err, "%s [%s]", str, strerror(errno));
-        free(str);
-        fprintf(stderr, "%s\n", str_with_err);
-        free(str_with_err);
-        return;
-    }
-    fprintf(stderr, "%s\n", str);
+    asprintf(&str_with_err, "%s (%s)", str, strerror(errno));
+    fprintf(stderr, "[%s] %s%s" ANSI_COLOR_RESET "  %-101s  <%s#%s@%d>\n",
+            __TIME__,
+            errflag ? ANSI_COLOR_RED : ANSI_COLOR_GREEN,
+            errflag ? "ERROR" : "DEBUG",
+            errflag ? str_with_err : str,
+            file, func, line);
     free(str);
+    free(str_with_err);
     return;
 }
 
-void h_debug_msg(const char *fmt, ...)
+void h_debug_msg(const char *file, const char *func, int line, const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    h_do_msg(0, fmt, ap);
+    h_do_msg(0, file, func, line, fmt, ap);
     va_end(ap);
     return;
 }
 
-void h_error_msg(const char *fmt, ...)
+void h_error_msg(const char *file, const char *func, int line, const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    h_do_msg(1, fmt, ap);
+    h_do_msg(1, file, func, line, fmt, ap);
     va_end(ap);
     return;
 }
@@ -42,7 +57,8 @@ void err_sys(const char *fmt, ...)
     va_start(ap, fmt);
     vasprintf(&str, fmt, ap);
     va_end(ap);
-    perror(str);
+    fprintf(stderr, "[%s] %s%s" ANSI_COLOR_RESET "  %s (%s)\n", __TIME__, ANSI_COLOR_MAGENTA, "FATAL", str, strerror(errno));
+    print_trace();
     free(str);
     exit(1);
 }

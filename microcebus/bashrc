@@ -8,7 +8,7 @@ alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lh'
 alias ec='emacs -nw'
 alias dirs='dirs -v'
-alias gcc='gcc -lpthread'
+alias gcc='gcc -g -rdynamic -lpthread'
 # alias diff='diff -Naur'
 # alias patch='patch -b'
 
