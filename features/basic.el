@@ -18,6 +18,8 @@
 
 (line-number-mode t)
 (column-number-mode t)
+(global-hl-line-mode 1)
+(set-face-foreground 'highlight nil)
 
 ;; Dynamicaly update line number
 (require 'linum)

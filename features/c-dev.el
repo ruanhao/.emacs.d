@@ -11,6 +11,7 @@
 (add-hook 'c-mode-common-hook
 	  '(lambda ()
 	     (c-set-style "linux")
+             (flyspell-prog-mode)
 	     (setq indent-tabs-mode nil)
 	     (setq c-basic-offset 4)
              ;; cscope setup
@@ -18,4 +19,5 @@
              (setq cscope-do-not-update-database t)
              (global-set-key (kbd "M-.") 'cscope-find-global-definition-no-prompting)
              (global-set-key (kbd "M-,") 'cscope-pop-mark)
-             (global-set-key (kbd "\C-x 1") 'hao-only-one-window)))
+             ;; (global-set-key (kbd "\C-x 1") 'hao-only-one-window)
+             ))
