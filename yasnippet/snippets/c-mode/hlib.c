@@ -1,32 +1,34 @@
 #include "hlib.h"
 
-void print_trace (void)
+void PrintTrace(void)
 {
-    void  *array[256];
-    size_t size;
-    char **strings;
-    size_t i;
-    size = backtrace (array, 256);
-    strings = backtrace_symbols (array, size);
+    void   *array[256];
+    size_t  size;
+    char * *strings;
+    size_t  i;
+    size    = backtrace(array, 256);
+    strings = backtrace_symbols(array, size);
     fprintf(stderr, "==================== BACKTRACE (%zd stack frames) ====================\n", size);
     for (i = 0; i < size; i++)
         fprintf(stderr, "%s\n", strings[i]);
     fprintf(stderr, "====================================================================\n");
-    free (strings);
+    free(strings);
 }
 
 void h_do_msg(int errflag, const char *file, const char *func, int line, const char *fmt, va_list ap)
 {
     char *str;
     char *str_with_err;
+    FILE *fp = errflag ? stderr : stdout;
     vasprintf(&str, fmt, ap);
     asprintf(&str_with_err, "%s (%s)", str, strerror(errno));
-    fprintf(stderr, "[%s] %s%s" ANSI_COLOR_RESET "  %-101s  <%s#%s@%d>\n",
+    fprintf(fp, "[%s] %s%s" ANSI_COLOR_RESET "  %-70s  <%s#%s@%d>\n",
             __TIME__,
             errflag ? ANSI_COLOR_RED : ANSI_COLOR_GREEN,
             errflag ? "ERROR" : "DEBUG",
             errflag ? str_with_err : str,
             file, func, line);
+    fflush(fp);
     free(str);
     free(str_with_err);
     return;
@@ -58,7 +60,7 @@ void err_sys(const char *fmt, ...)
     vasprintf(&str, fmt, ap);
     va_end(ap);
     fprintf(stderr, "[%s] %s%s" ANSI_COLOR_RESET "  %s (%s)\n", __TIME__, ANSI_COLOR_MAGENTA, "FATAL", str, strerror(errno));
-    print_trace();
+    PrintTrace();
     free(str);
     exit(1);
 }

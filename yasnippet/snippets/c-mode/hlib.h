@@ -28,7 +28,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 /* DEBUG */
-void print_trace(void);
+void PrintTrace(void);
 void err_sys(const char *fmt, ...);
 void h_do_msg(int errflag, const char *file, const char *func, int line, const char *fmt, va_list ap);
 void h_debug_msg(const char *file, const char *func, int line, const char *fmt, ...);
