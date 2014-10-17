@@ -84,33 +84,41 @@ int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struc
 ssize_t Read(int fd, void *ptr, size_t nbytes)
 {
     ssize_t n;
-    if ((n = read(fd, ptr, nbytes)) == -1)
+    if ((n = read(fd, ptr, nbytes)) == -1) {
+        if (errno == EINTR || errno == ECONNRESET)
+            return 0;
         err_sys("read() error");
-    return(n);
+    }
+    return n;
 }
 
-/* Read "n" bytes from a descriptor. */
-ssize_t Readn(int fd, void *vptr, size_t n)
+static ssize_t readn(int fd, void *vptr, size_t n)
 {
-    size_t  nleft;
-    ssize_t nread;
+    size_t   nleft;
+    ssize_t  nread;
     char    *ptr;
-
-    ptr = vptr;
+    ptr   = vptr;
     nleft = n;
     while (nleft > 0) {
         if ((nread = read(fd, ptr, nleft)) < 0) {
-            if (errno == EINTR)
+            if (errno == EINTR || errno == ECONNRESET)
                 nread = 0;      /* and call read() again */
             else
                 return(-1);
         } else if (nread == 0)
             break;              /* EOF */
-
         nleft -= nread;
         ptr   += nread;
     }
     return(n - nleft);          /* return >= 0 */
+}
+
+ssize_t Readn(int fd, void *ptr, size_t nbytes)
+{
+    ssize_t n;
+    if ((n = readn(fd, ptr, nbytes)) < 0)
+        err_sys("readn() error");
+    return(n);
 }
 
 void Write(int fd, void *ptr, size_t nbytes)
@@ -119,14 +127,12 @@ void Write(int fd, void *ptr, size_t nbytes)
         err_sys("write() error");
 }
 
-/* Write "n" bytes to a descriptor. */
-ssize_t Writen(int fd, const void *vptr, size_t n)
+static ssize_t writen(int fd, const void *vptr, size_t n)
 {
     size_t      nleft;
     ssize_t     nwritten;
-    const char  *ptr;
-
-    ptr = vptr;
+    const char *ptr;
+    ptr   = vptr;
     nleft = n;
     while (nleft > 0) {
         if ((nwritten = write(fd, ptr, nleft)) <= 0) {
@@ -135,11 +141,16 @@ ssize_t Writen(int fd, const void *vptr, size_t n)
             else
                 return(-1);         /* error */
         }
-
         nleft -= nwritten;
         ptr   += nwritten;
     }
     return(n);
+}
+
+void Writen(int fd, const void *ptr, size_t nbytes)
+{
+    if (writen(fd, ptr, nbytes) != nbytes)
+        err_sys("writen() error");
 }
 
 int Listen(const char *host, const char *service)
@@ -228,7 +239,7 @@ int Connect(const char *host, const char *service)
     return(sockfd);
 }
 
-char *Sock_ntop(const struct sockaddr *sa)
+char *SockNtop(const struct sockaddr *sa)
 {
     char        portstr[8];
     static char str[128];  /* Unix domain is largest */
@@ -267,8 +278,7 @@ char *Sock_ntop(const struct sockaddr *sa)
     return(str);
 }
 
-/* Reliable version of signal(), using POSIX sigaction(). */
-void (*Signal(int signo, void (*func)(int)))(int)
+static void (*signal2(int signo, void (*func)(int)))(int)
 {
     struct sigaction act, oact;
     act.sa_handler = func;
@@ -286,6 +296,37 @@ void (*Signal(int signo, void (*func)(int)))(int)
     if (sigaction(signo, &act, &oact) < 0)
         return(SIG_ERR);
     return(oact.sa_handler);
+}
+
+/* Reliable version of signal(), using POSIX sigaction(). */
+void (*Signal(int signo, void (*func)(int)))(int)
+{
+    void (*sigfunc)(int);
+    if ((sigfunc = signal2(signo, func)) == SIG_ERR)
+        err_sys("signal2() error");
+    return(sigfunc);
+}
+
+static void (*signal_intr(int signo, void (*func)(int)))(int)
+{
+    struct sigaction act, oact;
+    act.sa_handler = func;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+#ifdef SA_INTERRUPT
+    act.sa_flags |= SA_INTERRUPT;
+#endif
+    if (sigaction(signo, &act, &oact) < 0)
+        return(SIG_ERR);
+    return(oact.sa_handler);
+}
+
+void (*SignalIntr(int signo, void (*func)(int)))(int)
+{
+    void (*sigfunc)(int);
+    if ((sigfunc = signal_intr(signo, func)) == SIG_ERR)
+        err_sys("signal_intr() error");
+    return(sigfunc);
 }
 
 pthread_t MkThrd(void *(*fn)(void *), void *arg)

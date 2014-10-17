@@ -18,6 +18,11 @@
 #include <poll.h>
 #include <execinfo.h>
 
+/* default file access permissions for new files */
+#define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+/* default permissions for new directories */
+#define DIR_MODE  (FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
+
 /* COLOR */
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -42,16 +47,17 @@ int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struc
 ssize_t Read(int fd, void *ptr, size_t nbytes);
 ssize_t Readn(int fd, void *vptr, size_t n);
 void Write(int fd, void *ptr, size_t nbytes);
-ssize_t Writen(int fd, const void *vptr, size_t n);
+void Writen(int fd, const void *vptr, size_t n);
 
 /* SOCKET */
 int Listen(const char *host, const char *service);
 int Accept(int listenfd);
 int Connect(const char *host, const char *service);
-char *Sock_ntop(const struct sockaddr *sa);
+char *SockNtop(const struct sockaddr *sa);
 
 /* SIGNAL */
 void (*Signal(int signo, void (*func)(int)))(int);
+void (*SignalIntr(int signo, void (*func)(int)))(int);
 
 /* THREAD */
 pthread_t MkThrd(void *(*fn)(void *), void *arg);

@@ -21,6 +21,7 @@
 (global-hl-line-mode 1)
 (set-face-foreground 'highlight nil)
 (set-face-background 'hl-line "#303030")
+(set-face-attribute 'region nil :background "#2C9067")
 
 ;; Dynamicaly update line number
 (require 'linum)
