@@ -1,0 +1,33 @@
+# -*- mode: snippet -*-
+# name: yas_util_dbgif
+# key: yas_util_dbgif
+# --
+static void dbg_if_driver(const char *cmd)
+{
+    if (strcmp(cmd, "$1") == 0)
+        $2
+    else
+        H_ERROR_MSG("No command matched");
+}
+
+static void *dbg_if_thrd_worker(void *arg)
+{
+    char *fifo = DBG_INTERFACE, buf[1024];
+    int n, fd;
+    if (access(fifo, F_OK) < 0)
+        mkfifo(fifo, FILE_MODE);
+    while (1) {
+        fd = open(fifo, O_RDONLY);
+        if ((n = Read(fd, buf, 1023)) > 0) {
+            buf[n - (buf[n - 1] == '\n' ? 1 : 0)] = '\0';
+            dbg_if_driver(buf);
+        }
+        close(fd);
+    }
+    return NULL;
+}
+
+static void run_dbg_if()
+{
+    MkThrd(dbg_if_thrd_worker, NULL);
+}

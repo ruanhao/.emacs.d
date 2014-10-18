@@ -59,8 +59,8 @@ function parse_git_branch {
 }
 
 function setup_workspace() {
-    rm -rf hlib.h hlib.c >/dev/null 2>&1
-    cp ~/.emacs.d/yasnippet/snippets/c-mode/hlib.[ch] ./
+    rm -rf lib.[ch] def.h >/dev/null 2>&1
+    cp ~/.emacs.d/yasnippet/snippets/c-mode/*.[ch] ./
 }
 
 if [[ -n $DISPLAY ]]; then

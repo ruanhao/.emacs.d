@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: inc_lib_hdr
+# key: ll
+# --
+#include "lib.h"
+
+$0
