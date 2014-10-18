@@ -161,8 +161,8 @@ int Listen(const char *host, const char *service)
 
     bzero(&hints, sizeof(struct addrinfo));
     hints.ai_flags    = AI_PASSIVE;
-    hints.ai_family   = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_family   = AI_FAMILY;
+    hints.ai_socktype = AI_SOCKTYPE;
 
     if ((n = getaddrinfo(host, service, &hints, &res)) != 0)
         err_sys("getaddrinfo() error for %s, %s: %s",
@@ -214,8 +214,8 @@ int Connect(const char *host, const char *service)
     struct addrinfo hints, *res, *head;
 
     bzero(&hints, sizeof(struct addrinfo));
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_family = AI_FAMILY;
+    hints.ai_socktype = AI_SOCKTYPE;
 
     if ((n = getaddrinfo(host, service, &hints, &res)) != 0)
         err_sys("getaddrinfo() error for %s, %s: %s",

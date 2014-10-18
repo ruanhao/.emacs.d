@@ -18,10 +18,23 @@
 #include <poll.h>
 #include <execinfo.h>
 
+#ifndef FILE_MODE
 /* default file access permissions for new files */
 #define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+#endif /* FILE_MODE */
+
+#ifndef DIR_MODE
 /* default permissions for new directories */
 #define DIR_MODE  (FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
+#endif /* DIR_MODE */
+
+#ifndef AI_FAMILY
+#define AI_FAMILY AF_UNSPEC
+#endif /* AI_FAMILY */
+
+#ifndef AI_SOCKTYPE
+#define AI_SOCKTYPE SOCK_STREAM
+#endif /* AI_SOCKTYPE */
 
 /* COLOR */
 #define ANSI_COLOR_RED     "\x1b[31m"
