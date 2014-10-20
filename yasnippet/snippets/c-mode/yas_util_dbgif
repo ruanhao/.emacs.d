@@ -7,7 +7,7 @@ static void dbg_if_driver(const char *cmd)
     if (strcmp(cmd, "$1") == 0)
         $0
     else
-        H_ERROR_MSG("No command matched");
+        H_DEBUG_MSG("No command matched");
 }
 
 static void *dbg_if_thrd_worker(void *arg)

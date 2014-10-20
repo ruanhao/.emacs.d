@@ -15,20 +15,37 @@ void PrintTrace(void)
     free(strings);
 }
 
+char *HHMMSS()
+{
+    time_t      current_time;
+    struct tm  *time_info;
+    char       *time_str;
+    size_t      space;
+
+    time(&current_time);
+    time_info = localtime(&current_time);
+    space     = sizeof(char) * 9; // space for "HH:MM:SS\0"
+    time_str  = (char *) Malloc(space);
+    strftime(time_str, space, "%H:%M:%S", time_info);
+    return time_str;
+}
+
 void h_do_msg(int errflag, const char *file, const char *func, int line, const char *fmt, va_list ap)
 {
     char *str;
     char *str_with_err;
     FILE *fp = errflag ? stderr : stdout;
+    char *current_time = HHMMSS();
     vasprintf(&str, fmt, ap);
     asprintf(&str_with_err, "%s (%s)", str, strerror(errno));
     fprintf(fp, "[%s] %s%s" ANSI_COLOR_RESET "  %-70s  <%s#%s@%d>\n",
-            __TIME__,
+            current_time,
             errflag ? ANSI_COLOR_RED : ANSI_COLOR_GREEN,
             errflag ? "ERROR" : "DEBUG",
             errflag ? str_with_err : str,
             file, func, line);
     fflush(fp);
+    free(current_time);
     free(str);
     free(str_with_err);
     return;
@@ -56,11 +73,13 @@ void err_sys(const char *fmt, ...)
 {
     char *str;
     va_list ap;
+    char *current_time = HHMMSS();
     va_start(ap, fmt);
     vasprintf(&str, fmt, ap);
     va_end(ap);
-    fprintf(stderr, "[%s] %s%s" ANSI_COLOR_RESET "  %s (%s)\n", __TIME__, ANSI_COLOR_MAGENTA, "FATAL", str, strerror(errno));
+    fprintf(stderr, "[%s] %s%s" ANSI_COLOR_RESET "  %s (%s)\n", current_time, ANSI_COLOR_MAGENTA, "FATAL", str, strerror(errno));
     PrintTrace();
+    free(current_time);
     free(str);
     exit(1);
 }
@@ -92,6 +111,7 @@ ssize_t Read(int fd, void *ptr, size_t nbytes)
     return n;
 }
 
+#ifndef MSG_WAITALL
 static ssize_t readn(int fd, void *vptr, size_t n)
 {
     size_t   nleft;
@@ -120,6 +140,7 @@ ssize_t Readn(int fd, void *ptr, size_t nbytes)
         err_sys("readn() error");
     return(n);
 }
+#endif /* MSG_WAITALL */
 
 void Write(int fd, void *ptr, size_t nbytes)
 {
@@ -239,16 +260,17 @@ int Connect(const char *host, const char *service)
     return(sockfd);
 }
 
-char *SockNtop(const struct sockaddr *sa)
+static char *SockNtop(const struct sockaddr *sa)
 {
-    char        portstr[8];
-    static char str[128];  /* Unix domain is largest */
+    size_t SIZE = 128 * sizeof(char); /* Unix domain is largest */
+    char   portstr[8];
+    char  *str = (char *) Malloc(SIZE);
 
     switch (sa->sa_family) {
     case AF_INET:
     {
         struct sockaddr_in *sin = (struct sockaddr_in *) sa;
-        if (inet_ntop(AF_INET, &sin->sin_addr, str, sizeof(str)) == NULL)
+        if (inet_ntop(AF_INET, &sin->sin_addr, str, SIZE) == NULL)
             return(NULL);
         if (ntohs(sin->sin_port) != 0) {
             snprintf(portstr, sizeof(portstr), ":%d", ntohs(sin->sin_port));
@@ -261,7 +283,7 @@ char *SockNtop(const struct sockaddr *sa)
         struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *) sa;
 
         str[0] = '[';
-        if (inet_ntop(AF_INET6, &sin6->sin6_addr, str + 1, sizeof(str) - 1) == NULL)
+        if (inet_ntop(AF_INET6, &sin6->sin6_addr, str + 1, SIZE - 1) == NULL)
             return(NULL);
         strcat(str, "]");
         if (ntohs(sin6->sin6_port) != 0) {
@@ -272,10 +294,29 @@ char *SockNtop(const struct sockaddr *sa)
         break;
     }
     default:
-        snprintf(str, sizeof(str), "Unknown AF_xxx: %d", sa->sa_family);
+        snprintf(str, SIZE, "Unknown AF_xxx: %d", sa->sa_family);
         break;
     } // end switch
     return(str);
+}
+
+void PrintSockInfo(int connfd)
+{
+    struct sockaddr localsock;
+    struct sockaddr peersock;
+    char  *localsockstr;
+    char  *peersockstr;
+    socklen_t len = sizeof(struct sockaddr);
+
+    if (getsockname(connfd, &localsock, &len) < 0)
+        err_sys("getsockname() error");
+    if (getpeername(connfd, &peersock, &len) < 0)
+        err_sys("getpeername() error");
+    localsockstr = SockNtop(&localsock);
+    peersockstr  = SockNtop(&peersock);
+    H_DEBUG_MSG("Socket Tuple: %s <===> %s", localsockstr, peersockstr);
+    free(localsockstr);
+    free(peersockstr);
 }
 
 static void (*signal2(int signo, void (*func)(int)))(int)
@@ -344,3 +385,148 @@ pthread_t MkThrd(void *(*fn)(void *), void *arg)
     pthread_attr_destroy(&attr);
     return tid;
 }
+
+void *Malloc(size_t size)
+{
+    void *ptr;
+
+    if ((ptr = malloc(size)) == NULL)
+        err_sys("malloc() error");
+    return(ptr);
+}
+
+
+/* PrintSocketOpts */
+static union val {
+    int                   i_val;
+    long                  l_val;
+    struct linger         linger_val;
+    struct timeval        timeval_val;
+} val;
+
+static char strres[128];
+
+static char *sock_str_flag(union val *ptr, int len)
+{
+    if (len != sizeof(int))
+        snprintf(strres, sizeof(strres), "size (%d) not sizeof(int)", len);
+    else
+        snprintf(strres, sizeof(strres), "%s", (ptr->i_val == 0) ? "off" : "on");
+    return(strres);
+}
+
+static char *sock_str_int(union val *ptr, int len)
+{
+    if (len != sizeof(int))
+        snprintf(strres, sizeof(strres), "size (%d) not sizeof(int)", len);
+    else
+        snprintf(strres, sizeof(strres), "%d", ptr->i_val);
+    return(strres);
+}
+
+static char *sock_str_linger(union val *ptr, int len)
+{
+    struct linger *lptr = &ptr->linger_val;
+    if (len != sizeof(struct linger))
+        snprintf(strres, sizeof(strres), "size (%d) not sizeof(struct linger)", len);
+    else
+        snprintf(strres, sizeof(strres), "l_onoff = %d, l_linger = %d", lptr->l_onoff, lptr->l_linger);
+    return(strres);
+}
+
+static char *sock_str_timeval(union val *ptr, int len)
+{
+    struct timeval *tvptr = &ptr->timeval_val;
+    if (len != sizeof(struct timeval))
+        snprintf(strres, sizeof(strres), "size (%d) not sizeof(struct timeval)", len);
+    else
+        snprintf(strres, sizeof(strres), "%d sec, %d usec", tvptr->tv_sec, tvptr->tv_usec);
+    return(strres);
+}
+
+static struct sock_opts {
+    const char   *opt_str;
+    int           opt_level;
+    int           opt_name;
+    char       *(*opt_val_str)(union val *, int);
+} sock_opts[] = {
+    { "SO_BROADCAST",               SOL_SOCKET,     SO_BROADCAST,      sock_str_flag    },
+    { "SO_DEBUG",                   SOL_SOCKET,     SO_DEBUG,          sock_str_flag    },
+    { "SO_DONTROUTE",               SOL_SOCKET,     SO_DONTROUTE,      sock_str_flag    },
+    { "SO_ERROR",                   SOL_SOCKET,     SO_ERROR,          sock_str_int     },
+    { "SO_KEEPALIVE",               SOL_SOCKET,     SO_KEEPALIVE,      sock_str_flag    },
+    { "SO_LINGER",                  SOL_SOCKET,     SO_LINGER,         sock_str_linger  },
+    { "SO_OOBINLINE",               SOL_SOCKET,     SO_OOBINLINE,      sock_str_flag    },
+    { "SO_RCVBUF",                  SOL_SOCKET,     SO_RCVBUF,         sock_str_int     },
+    { "SO_SNDBUF",                  SOL_SOCKET,     SO_SNDBUF,         sock_str_int     },
+    { "SO_RCVLOWAT",                SOL_SOCKET,     SO_RCVLOWAT,       sock_str_int     },
+    { "SO_SNDLOWAT",                SOL_SOCKET,     SO_SNDLOWAT,       sock_str_int     },
+    { "SO_RCVTIMEO",                SOL_SOCKET,     SO_RCVTIMEO,       sock_str_timeval },
+    { "SO_SNDTIMEO",                SOL_SOCKET,     SO_SNDTIMEO,       sock_str_timeval },
+    { "SO_REUSEADDR",               SOL_SOCKET,     SO_REUSEADDR,      sock_str_flag    },
+#ifdef  SO_REUSEPORT
+    { "SO_REUSEPORT",               SOL_SOCKET,     SO_REUSEPORT,      sock_str_flag    },
+#else
+    { "SO_REUSEPORT",               0,              0,                 NULL             },
+#endif
+    { "SO_TYPE",                    SOL_SOCKET,     SO_TYPE,           sock_str_int     },
+  /*{ "SO_USELOOPBACK",             SOL_SOCKET,     SO_USELOOPBACK,    sock_str_flag    }, */
+    { "IP_TOS",                     IPPROTO_IP,     IP_TOS,            sock_str_int     },
+    { "IP_TTL",                     IPPROTO_IP,     IP_TTL,            sock_str_int     },
+#ifdef  IPV6_DONTFRAG
+    { "IPV6_DONTFRAG",              IPPROTO_IPV6,   IPV6_DONTFRAG,     sock_str_flag    },
+#else
+    { "IPV6_DONTFRAG",              0,              0,                 NULL             },
+#endif
+#ifdef  IPV6_UNICAST_HOPS
+    { "IPV6_UNICAST_HOPS",          IPPROTO_IPV6,   IPV6_UNICAST_HOPS, sock_str_int     },
+#else
+    { "IPV6_UNICAST_HOPS",          0,              0,                 NULL             },
+#endif
+#ifdef  IPV6_V6ONLY
+    { "IPV6_V6ONLY",                IPPROTO_IPV6,   IPV6_V6ONLY,       sock_str_flag    },
+#else
+    { "IPV6_V6ONLY",                0,              0,                 NULL             },
+#endif
+    { "TCP_MAXSEG",                 IPPROTO_TCP,    TCP_MAXSEG,        sock_str_int     },
+    { "TCP_NODELAY",                IPPROTO_TCP,    TCP_NODELAY,       sock_str_flag    },
+#ifdef  SCTP_AUTOCLOSE
+    { "SCTP_AUTOCLOSE",             IPPROTO_SCTP,   SCTP_AUTOCLOSE,    sock_str_int     },
+#else
+    { "SCTP_AUTOCLOSE",             0,              0,                 NULL             },
+#endif
+#ifdef  SCTP_MAXBURST
+    { "SCTP_MAXBURST",              IPPROTO_SCTP,   SCTP_MAXBURST,     sock_str_int     },
+#else
+    { "SCTP_MAXBURST",              0,              0,                 NULL             },
+#endif
+#ifdef  SCTP_MAXSEG
+    { "SCTP_MAXSEG",                IPPROTO_SCTP,   SCTP_MAXSEG,       sock_str_int     },
+#else
+    { "SCTP_MAXSEG",                0,              0,                 NULL             },
+#endif
+#ifdef  SCTP_NODELAY
+    { "SCTP_NODELAY",               IPPROTO_SCTP,   SCTP_NODELAY,      sock_str_flag    },
+#else
+    { "SCTP_NODELAY",               0,              0,                 NULL             },
+#endif
+    { NULL,                         0,              0,                 NULL             }
+};
+
+void PrintSocketOpts(int fd)
+{
+    socklen_t		 len;
+    struct sock_opts	*ptr;
+    for (ptr = sock_opts; ptr->opt_str != NULL; ptr++) {
+        if (ptr->opt_val_str == NULL)
+            H_DEBUG_MSG("%-20s: UNDEFINED", ptr->opt_str);
+        else {
+            len = sizeof(val);
+            if (getsockopt(fd, ptr->opt_level, ptr->opt_name, &val, &len) == -1)
+                H_DEBUG_MSG("%-20s: ######", ptr->opt_str);
+            else
+                H_DEBUG_MSG("%-20s: %s", ptr->opt_str, (*ptr->opt_val_str)(&val, len));
+        }
+    }
+}
+/* PrintSocketOpts end */
