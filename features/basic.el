@@ -2,7 +2,7 @@
 ;; author: Hao Ruan
 ;; date: 2013/09/27
 
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;; Can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
@@ -16,6 +16,7 @@
 (setq backup-inhibited t)
 (setq auto-save-default nil)
 
+(global-superword-mode t)
 (line-number-mode t)
 (column-number-mode t)
 (global-hl-line-mode 1)
@@ -61,7 +62,7 @@
 
 ;; Parenthesis pair utilities
 (show-paren-mode t)
-(load-file "~/.emacs.d/autopair.el")
+(load-file "~/.emacs.d/lisp/autopair.el")
 (autopair-global-mode)
 
 (setq tags-revert-without-query t)
@@ -101,3 +102,8 @@
 ;; Set direction
 (global-set-key (kbd "<down>") 'next-logical-line)
 (global-set-key (kbd "<up>") 'previous-logical-line)
+
+;; Dirtree
+(add-to-list 'load-path "~/.emacs.d/dirtree")
+(global-set-key [f4] 'dirtree)
+(require 'dirtree)

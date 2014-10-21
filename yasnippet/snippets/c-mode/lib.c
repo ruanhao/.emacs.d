@@ -235,7 +235,7 @@ int Connect(const char *host, const char *service)
     struct addrinfo hints, *res, *head;
 
     bzero(&hints, sizeof(struct addrinfo));
-    hints.ai_family = AI_FAMILY;
+    hints.ai_family   = AI_FAMILY;
     hints.ai_socktype = AI_SOCKTYPE;
 
     if ((n = getaddrinfo(host, service, &hints, &res)) != 0)
@@ -245,6 +245,18 @@ int Connect(const char *host, const char *service)
 
     do {
         sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+
+        // struct sockaddr_in cliaddr;
+        // struct in_addr     inaddr;
+        // char              *clihost;
+        // in_port_t          cliport;
+        // bzero(&cliaddr, sizeof(cliaddr));
+        // inet_aton(clihost, &inaddr);
+        // cliaddr.sin_family = AF_INET;
+        // cliaddr.sin_addr   = inaddr;
+        // cliaddr.sin_port   = htons(cliport);
+        // bind(sockfd, (struct sockaddr *) &cliaddr, sizeof(cliaddr));
+
         if (sockfd < 0)
             continue;	             /* ignore this one */
         if (connect(sockfd, res->ai_addr, res->ai_addrlen) == 0)

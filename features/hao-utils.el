@@ -136,7 +136,7 @@ this function would move cursor to the beginning of the word"
 	  (if this-win-2nd (other-window 1))))))
 
 ;; Fill column indicator
-(load-file "~/.emacs.d/fill-column-indicator.el")
+(load-file "~/.emacs.d/lisp/fill-column-indicator.el")
 (defun hao-toggle-column-ruler ()
   "Toggle column ruler"
   (interactive)
