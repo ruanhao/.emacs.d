@@ -5,7 +5,7 @@
 ;; Author: wenbinye@gmail.com
 ;; Version: $Id: windata.el,v 0.0 2007/12/13 00:32:15 ywb Exp $
 ;; Keywords: convenience, frames
-;; 
+;;
 ;; This file is part of PDE (Perl Development Environment).
 ;; But it is useful for generic programming.
 
@@ -155,9 +155,9 @@ windows."
               path (cdr path)))
       (select-window tree))))
 
- 
+
 ;; An example
-;;;###autoload 
+;;;###autoload
 (defun windata-name-winconf (name)
   "Save window configuration with NAME.
 After save the window configuration you can restore it by NAME using
@@ -168,7 +168,7 @@ After save the window configuration you can restore it by NAME using
          (cons name (windata-current-winconf))
          (delq (assoc name windata-named-winconf) windata-named-winconf))))
 
-;;;###autoload 
+;;;###autoload
 (defun windata-restore-named-winconf (name)
   "Restore saved window configuration."
   (interactive (list (completing-read "Save named window configuration: "

@@ -13,7 +13,7 @@
                               (unless (equal "md" (file-name-extension (buffer-file-name)))
                                 (delete-trailing-whitespace))))
 
-(setq backup-inhibited t)
+(setq backup-directory-alist `(("." . "~/.saves")))
 (setq auto-save-default nil)
 
 (global-superword-mode t)

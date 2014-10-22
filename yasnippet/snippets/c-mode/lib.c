@@ -103,11 +103,8 @@ int Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struc
 ssize_t Read(int fd, void *ptr, size_t nbytes)
 {
     ssize_t n;
-    if ((n = read(fd, ptr, nbytes)) == -1) {
-        if (errno == EINTR || errno == ECONNRESET)
-            return 0;
+    if ((n = read(fd, ptr, nbytes)) == -1)
         err_sys("read() error");
-    }
     return n;
 }
 
@@ -117,11 +114,11 @@ static ssize_t readn(int fd, void *vptr, size_t n)
     size_t   nleft;
     ssize_t  nread;
     char    *ptr;
-    ptr   = vptr;
-    nleft = n;
+    ptr   =  vptr;
+    nleft =  n;
     while (nleft > 0) {
         if ((nread = read(fd, ptr, nleft)) < 0) {
-            if (errno == EINTR || errno == ECONNRESET)
+            if (errno == EINTR)
                 nread = 0;      /* and call read() again */
             else
                 return(-1);
@@ -217,9 +214,9 @@ int Accept(int listenfd)
     while (1) {
         if ((connfd = accept(listenfd, NULL, NULL)) < 0)
 #ifdef EPROTO
-            if (errno == EPROTO || errno == ECONNABORTED || errno == EINTR)
+            if (errno == EPROTO || errno == ECONNABORTED)
 #else
-                if (errno == ECONNABORTED || errno == EINTR)
+                if (errno == ECONNABORTED)
 #endif
                     continue;
                 else

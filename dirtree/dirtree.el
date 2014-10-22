@@ -29,7 +29,7 @@
 ;;  3. use my favarite key binding
 ;;
 ;; So I wrote this one use `tree-mode'.
-;; 
+;;
 ;; See also:
 ;; http://www.splode.com/~friedman/software/emacs-lisp/src/dirtree.el
 ;; http://svn.halogen.kharkov.ua/svn/repos/alex-emacs-settings/emhacks/dir-tree.el
@@ -49,6 +49,7 @@
   "Directory tree views"
   :group 'tools)
 
+;; SET WIDTH HERE !!!
 (defcustom dirtree-windata '(frame left 0.3 delete)
   "*Arguments to set the window buffer display.
 See `windata-display-buffer' for setup the arguments."
@@ -193,6 +194,5 @@ With prefix arguement select `dirtree-buffer'"
     (if (setq file (widget-get widget :file))
         (find-file-other-window file))))
 
-(define-key dirtree-mode-map "\C-o" 'dirtree-display)
 (provide 'dirtree)
 ;;; dirtree.el ends here
