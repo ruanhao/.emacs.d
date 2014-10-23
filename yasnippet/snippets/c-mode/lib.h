@@ -20,6 +20,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/uio.h>
+#include <sys/un.h>
 #include "def.h"
 
 
@@ -50,9 +51,14 @@ void Write(int fd, void *ptr, size_t nbytes);
 void Writen(int fd, const void *vptr, size_t n);
 
 /* SOCKET */
-int Listen(const char *host, const char *service);
-int Accept(int listenfd);
-int Connect(const char *host, const char *service);
+int Listen(const char *host, const char *service);    /* For TCP */
+int Accept(int listenfd);                             /* For TCP */
+int Connect(const char *host, const char *service);   /* For TCP */
+int UnListen(const char *unpath);                     /* For Unix Domain */
+int UnAccept(int listenfd);                           /* For Unix Domain */
+int UnConnect(const char *unpath);                    /* For Unix Domain */
+void WriteFd(int fd, int sendfd);
+void ReadFd(int fd, int *recvfd);
 
 /* SIGNAL */
 void (*Signal(int signo, void (*func)(int)))(int);

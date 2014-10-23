@@ -208,6 +208,23 @@ int Listen(const char *host, const char *service)
     return(listenfd);
 }
 
+int UnListen(const char *unpath)
+{
+    int listenfd;
+    struct sockaddr_un servaddr;
+    if ((listenfd = socket(AF_LOCAL, SOCK_STREAM, 0)) < 0)
+        err_sys("socket() error");
+    unlink(unpath);
+    bzero(&servaddr, sizeof(servaddr));
+    servaddr.sun_family = AF_LOCAL;
+    strcpy(servaddr.sun_path, unpath);
+    if (bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)))
+        err_sys("bind() error");
+    if (listen(listenfd, 5) < 0)
+        err_sys("listen() error");
+    return listenfd;
+}
+
 int Accept(int listenfd)
 {
     int connfd;
@@ -224,6 +241,11 @@ int Accept(int listenfd)
         break;
     }
     return(connfd);
+}
+
+int UnAccept(int listenfd)
+{
+    return Accept(listenfd);
 }
 
 int Connect(const char *host, const char *service)
@@ -269,6 +291,104 @@ int Connect(const char *host, const char *service)
     return(sockfd);
 }
 
+int UnConnect(const char *unpath)
+{
+    int sockfd;
+    struct sockaddr_un servaddr;
+    if ((sockfd = socket(AF_LOCAL, SOCK_STREAM, 0)) < 0)
+        err_sys("socket() error");
+    bzero(&servaddr, sizeof(servaddr));
+    servaddr.sun_family = AF_LOCAL;
+    strcpy(servaddr.sun_path, unpath);
+    if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
+        err_sys("connect() error");
+    return sockfd;
+}
+
+static ssize_t writefd(int fd, int sendfd)
+{
+    struct msghdr  msg;
+    struct iovec   iov[1];
+
+    union {
+        struct cmsghdr cm;
+        char control[CMSG_SPACE(sizeof(int))];
+    } control_un;
+    struct cmsghdr  *cmptr;
+
+    msg.msg_control    = control_un.control;
+    msg.msg_controllen = sizeof(control_un.control);
+
+    cmptr = CMSG_FIRSTHDR(&msg);
+    cmptr->cmsg_len   = CMSG_LEN(sizeof(int));
+    cmptr->cmsg_level = SOL_SOCKET;
+    cmptr->cmsg_type  = SCM_RIGHTS;
+    *((int *) CMSG_DATA(cmptr)) = sendfd;
+
+    msg.msg_name    = NULL;
+    msg.msg_namelen = 0;
+
+    iov[0].iov_base = "";
+    iov[0].iov_len  = 1;
+    msg.msg_iov     = iov;
+    msg.msg_iovlen  = 1;
+
+    return(sendmsg(fd, &msg, 0));
+}
+
+void WriteFd(int fd, int sendfd)
+{
+    if (writefd(fd, sendfd) <= 0)
+        err_sys("writefd() error");
+}
+
+static void readfd(int fd, int *recvfd)
+{
+    struct msghdr  msg;
+    struct iovec   iov[1];
+    char           buf[1];
+
+    union {
+        struct cmsghdr cm;
+        char control[CMSG_SPACE(sizeof(int))];
+    } control_un;
+    struct cmsghdr *cmptr;
+
+    msg.msg_control    = control_un.control;
+    msg.msg_controllen = sizeof(control_un.control);
+
+    msg.msg_name    = NULL;
+    msg.msg_namelen = 0;
+
+    iov[0].iov_base = buf;
+    iov[0].iov_len  = sizeof(buf);
+    msg.msg_iov     = iov;
+    msg.msg_iovlen  = 1;
+
+    if (recvmsg(fd, &msg, 0) <= 0) {
+        *recvfd = -1; /* descriptor was not passed */
+        return;
+    }
+
+    if ((cmptr = CMSG_FIRSTHDR(&msg)) != NULL &&
+        cmptr->cmsg_len == CMSG_LEN(sizeof(int))) {
+        if (cmptr->cmsg_level != SOL_SOCKET)
+            err_sys("control level != SOL_SOCKET");
+        if (cmptr->cmsg_type != SCM_RIGHTS)
+            err_sys("control type != SCM_RIGHTS");
+        *recvfd = *((int *) CMSG_DATA(cmptr));
+    } else {
+        *recvfd = -1; /* descriptor was not passed */
+    }
+}
+
+void ReadFd(int fd, int *recvfd)
+{
+    readfd(fd, recvfd);
+    if (*recvfd < 0)
+        err_sys("receive fd failed");
+}
+
 static char *SockNtop(const struct sockaddr *sa)
 {
     size_t SIZE = 128 * sizeof(char); /* Unix domain is largest */
@@ -301,6 +421,16 @@ static char *SockNtop(const struct sockaddr *sa)
             return(str);
         }
         break;
+    }
+    case AF_UNIX: {
+        struct sockaddr_un *unp = (struct sockaddr_un *) sa;
+        /* OK to have no pathname bound to the socket: happens on
+           every connect() unless client calls bind() first. */
+        if (unp->sun_path[0] == 0)
+            strcpy(str, "(no pathname bound)");
+        else
+            snprintf(str, sizeof(str), "%s", unp->sun_path);
+        return(str);
     }
     default:
         snprintf(str, SIZE, "Unknown AF_xxx: %d", sa->sa_family);

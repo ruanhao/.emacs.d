@@ -7,6 +7,9 @@
 ;; Can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
 
+;; I like tap Ctrl-J to indent, not Enter
+;; (electric-indent-mode 0)
+
 (setq default-major-mode 'text-mode)
 
 (add-hook 'before-save-hook (lambda ()

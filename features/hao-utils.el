@@ -134,6 +134,7 @@ this function would move cursor to the beginning of the word"
 	  (set-window-buffer (next-window) next-win-buffer)
 	  (select-window first-win)
 	  (if this-win-2nd (other-window 1))))))
+(global-set-key [f2] 'hao-toggle-window)
 
 ;; Fill column indicator
 (load-file "~/.emacs.d/lisp/fill-column-indicator.el")
