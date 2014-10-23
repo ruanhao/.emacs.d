@@ -110,3 +110,11 @@
 (add-to-list 'load-path "~/.emacs.d/dirtree")
 (global-set-key [f4] 'dirtree)
 (require 'dirtree)
+
+;; Bookmark
+(define-key global-map [f9] 'bookmark-set)
+(define-key global-map [f10] 'bookmark-jump)
+(setq bookmark-save-flag 1)
+
+;; Revert buffer
+(define-key global-map [f11] 'revert-buffer)
