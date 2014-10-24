@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: sc_select
-# key: selfd
+# key: sc_select
 # --
 fd_set rset, allset;
 int nready, maxfd;

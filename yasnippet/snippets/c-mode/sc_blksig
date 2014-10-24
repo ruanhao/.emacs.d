@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: sc_blksig
-# key: blksig
+# key: sc_blksig
 # --
 int err;
 sigset_t mask;
