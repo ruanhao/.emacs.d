@@ -23,6 +23,9 @@
 #define DBG_INTERFACE "dbg_interface"
 #endif /* DBG_INTERFACE */
 
+/* Round up a to next multiple of which must be a power of 2 */
+#define ROUNDUP(a, size) (((a) & ((size) - 1)) ? (1 + ((a) | ((size) - 1))) : (a))
+
 /* COLOR */
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
