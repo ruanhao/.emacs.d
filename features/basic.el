@@ -118,3 +118,6 @@
 
 ;; Revert buffer
 (define-key global-map [f11] 'revert-buffer)
+
+;; Markerpen
+(load-file "~/.emacs.d/lisp/markerpen.el")
