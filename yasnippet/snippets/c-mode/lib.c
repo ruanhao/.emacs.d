@@ -669,3 +669,11 @@ void PrintSocketOpts(int fd)
     }
 }
 /* PrintSocketOpts end */
+
+void PrintFdReadBuffer(int fd)
+{
+    int nread;
+    ioctl(fd, FIONREAD, &nread);
+    H_DEBUG_MSG("Read buffer for fd(%d): %d", fd, nread);
+    return;
+}

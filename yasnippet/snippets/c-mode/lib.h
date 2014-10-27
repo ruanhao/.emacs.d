@@ -22,6 +22,8 @@
 #include <sys/uio.h>
 #include <sys/un.h>
 #include <sys/ioctl.h>
+#include <net/if.h>
+
 
 #include "def.h"
 
@@ -39,6 +41,7 @@ void h_error_msg(const char *file, const char *func, int line, const char *fmt, 
 void PrintTrace(void);
 void PrintSockInfo(int connfd);
 void PrintSocketOpts(int fd);
+void PrintFdReadBuffer(int fd);
 
 /* IO */
 int Poll(struct pollfd *fdarray, unsigned long nfds, int timeout);
