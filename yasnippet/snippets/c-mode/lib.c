@@ -139,6 +139,14 @@ ssize_t Readn(int fd, void *ptr, size_t nbytes)
 }
 #endif /* MSG_WAITALL */
 
+ssize_t Recv(int fd, void *ptr, size_t nbytes, int flags)
+{
+    ssize_t n;
+    if ((n = recv(fd, ptr, nbytes, flags)) < 0)
+        err_sys("recv error");
+    return(n);
+}
+
 void Write(int fd, void *ptr, size_t nbytes)
 {
     if (write(fd, ptr, nbytes) != nbytes)
@@ -169,6 +177,12 @@ void Writen(int fd, const void *ptr, size_t nbytes)
 {
     if (writen(fd, ptr, nbytes) != nbytes)
         err_sys("writen() error");
+}
+
+void Send(int fd, const void *ptr, size_t nbytes, int flags)
+{
+    if (send(fd, ptr, nbytes, flags) != (ssize_t) nbytes)
+        err_sys("send error");
 }
 
 int Listen(const char *host, const char *service)

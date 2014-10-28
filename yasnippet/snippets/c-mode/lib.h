@@ -64,6 +64,8 @@ int UnAccept(int listenfd);                           /* For Unix Domain */
 int UnConnect(const char *unpath);                    /* For Unix Domain */
 void WriteFd(int fd, int sendfd);
 void ReadFd(int fd, int *recvfd);
+void Send(int fd, const void *ptr, size_t nbytes, int flags);
+ssize_t Recv(int fd, void *ptr, size_t nbytes, int flags);
 
 /* SIGNAL */
 void (*Signal(int signo, void (*func)(int)))(int);
