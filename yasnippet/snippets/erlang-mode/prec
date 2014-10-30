@@ -1,0 +1,4 @@
+#name: prec
+#key: prec
+# --
+-define(PRETTY_RECORD_PRINT(RecDefination, Rec), [{record_name, RecDefination} | lists:zip(record_info(fields, RecDefination), tl(tuple_to_list(Rec)))]).  %% pretty print record

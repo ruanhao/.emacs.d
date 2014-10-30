@@ -19,7 +19,7 @@
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq auto-save-default nil)
 
-(global-superword-mode t)
+;; (global-superword-mode t)
 (line-number-mode t)
 (column-number-mode t)
 (global-hl-line-mode 1)

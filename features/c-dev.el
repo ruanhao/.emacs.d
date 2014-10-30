@@ -14,6 +14,7 @@
              (flyspell-prog-mode)
 	     (setq indent-tabs-mode nil)
 	     (setq c-basic-offset 4)
+             (modify-syntax-entry ?_ "w")
              ;; cscope setup
              (load-file "~/.emacs.d/cscope/contrib/xcscope/xcscope.el")
              (setq cscope-do-not-update-database t)
