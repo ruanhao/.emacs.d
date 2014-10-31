@@ -1,0 +1,11 @@
+#! /bin/bash
+
+
+(
+    cd ~/.emacs.d/microcebus/lib
+    \gcc -Wall -fPIC -c *.c
+    \gcc -shared -o libmicrocebus.so *.o
+    rm -rf *.o
+)
+
+cp ~/.emacs.d/microcebus/lib/*.h ./

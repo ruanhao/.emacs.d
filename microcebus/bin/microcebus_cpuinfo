@@ -1,0 +1,80 @@
+#! /bin/bash
+
+echo
+
+echo "============ CPU Topology ============"
+echo
+echo '+--------------+---------+-----------+'
+echo '| Processor ID | Core ID | Socket ID |'
+echo '+--------------+---------+-----------+'
+
+while read line; do
+	if [ -z "$line" ]; then
+        printf '| %-12s | %-7s | %-9s |\n' $p_id $c_id $s_id
+        echo '+--------------+---------+-----------+'
+        continue
+	fi
+
+	if echo "$line" | grep -q "^processor"; then
+        p_id=`echo "$line" | awk -F: '{print $2}' | tr -d ' '`
+	fi
+
+	if echo "$line" | grep -q "^core id"; then
+        c_id=`echo "$line" | awk -F: '{print $2}' | tr -d ' '`
+	fi
+
+	if echo "$line" | grep -q "^physical id"; then
+        s_id=`echo "$line" | awk -F: '{print $2}' | tr -d ' '`
+	fi
+done < /proc/cpuinfo
+
+echo
+
+echo '=========== Socket Info =========='
+
+awk -F: '{
+    if ($1 ~ /processor/) {
+        gsub(/ /,"",$2);
+        p_id = $2;
+    } else if ($1 ~ /physical id/){
+        gsub(/ /,"",$2);
+        s_id = $2;
+        arr[s_id] = sprintf("%s %-3s", arr[s_id], p_id);
+    }
+}
+
+         END{
+             for (i in arr)
+                 printf "Socket%s: %s\n", i, arr[i];
+         }' /proc/cpuinfo
+
+echo
+
+echo "============= CPU Info Summary ============="
+
+nr_socket=`grep 'physical id' /proc/cpuinfo | awk -F: '{print $2 | "sort -un"}' | wc -l`
+printf "%-30s: %s\n" "Sockets"       $nr_socket
+
+nr_cores_per_sock=`grep 'cpu cores' /proc/cpuinfo | awk -F: '{print $2 | "sort -un"}'`
+printf "%-30s: %s\n" "Cores    (per Socket)"  $nr_cores_per_sock
+
+nr_processor=`grep '^processor' /proc/cpuinfo | wc -l`
+## printf "%-30s: %s\n" "Logical processors"  $nr_processor
+printf "%-30s: %s\n" "Logicals (per Core)"  $(( nr_processor / nr_socket / nr_cores_per_sock ))
+
+## nr_siblings=`grep 'siblings' /proc/cpuinfo | awk -F: '{print $2 | "sort -un"}'`
+## printf "%-30s: %s\n" "Siblings per socket" $nr_siblings
+
+
+nr_cores=$(( nr_cores_per_sock * nr_socket ))
+## printf "%-30s: %s\n" "Cores (total)"       $nr_cores
+
+if [ "$nr_cores" = "$nr_processor" ]; then
+	printf "%-30s: %s\n" "Hyper-Threading" "off"
+else
+	printf "%-30s: %s\n" "Hyper-Threading" "on"
+fi
+
+echo "============================================"
+
+echo

@@ -1,6 +1,7 @@
 #ifndef LIB_H
 #define LIB_H
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -76,6 +77,7 @@ pthread_t MkThrd(void *(*fn)(void *), void *arg);
 
 /* PROCESS */
 void *Malloc(size_t size);
+void *Calloc(size_t n, size_t size);
 
 
 #endif /* LIB_H */
