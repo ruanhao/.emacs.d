@@ -243,15 +243,16 @@ int Accept(int listenfd)
 {
     int connfd;
     while (1) {
-        if ((connfd = accept(listenfd, NULL, NULL)) < 0)
+        if ((connfd = accept(listenfd, NULL, NULL)) < 0) {
 #ifdef EPROTO
             if (errno == EPROTO || errno == ECONNABORTED)
 #else
-                if (errno == ECONNABORTED)
+            if (errno == ECONNABORTED)
 #endif
                     continue;
-                else
-                    err_sys("accept() error");
+            else
+                err_sys("accept() error");
+        }
         break;
     }
     return(connfd);
@@ -525,7 +526,6 @@ void (*SignalIntr(int signo, void (*func)(int)))(int)
 
 pthread_t MkThrd(void *(*fn)(void *), void *arg)
 {
-    int err;
     pthread_t tid;
     pthread_attr_t attr;
 
@@ -548,6 +548,13 @@ void *Malloc(size_t size)
     return(ptr);
 }
 
+void *Calloc(size_t n, size_t size)
+{
+    void *ptr;
+    if ((ptr = calloc(n, size)) == NULL)
+        err_sys("calloc() error");
+    return(ptr);
+}
 
 /* PrintSocketOpts */
 static union val {
@@ -593,7 +600,7 @@ static char *sock_str_timeval(union val *ptr, int len)
     if (len != sizeof(struct timeval))
         snprintf(strres, sizeof(strres), "size (%d) not sizeof(struct timeval)", len);
     else
-        snprintf(strres, sizeof(strres), "%d sec, %d usec", tvptr->tv_sec, tvptr->tv_usec);
+        snprintf(strres, sizeof(strres), "%d sec, %d usec", (int) tvptr->tv_sec, (int) tvptr->tv_usec);
     return(strres);
 }
 
