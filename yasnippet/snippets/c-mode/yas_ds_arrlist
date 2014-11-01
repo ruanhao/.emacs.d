@@ -1,0 +1,167 @@
+# -*- mode: snippet -*-
+# name: yas_ds_arrlist
+# key: yas_ds_arrlist
+# --
+#define AL_SIZE 1024
+
+typedef struct {
+    int     length;
+    int     size;
+    void * *data;
+} ALHead, *ArrayList;
+
+typedef struct ALI {
+    int     length;
+    int     cidx;
+    void * *data;
+} *ALIterator;
+
+ArrayList AL_init()
+{
+    ALHead *head = (ALHead *) malloc(sizeof(ALHead));
+    if (head == NULL)
+        exit(1);
+    head->length  = 0;
+    head->size    = AL_SIZE;
+    head->data    = calloc(AL_SIZE, sizeof(void *));
+    if (head->data == NULL)
+        exit(1);
+    return (ArrayList) head;
+}
+
+int AL_length(ArrayList list)
+{
+    return list->length;
+}
+
+void AL_addAt(ArrayList list, int idx, void *val)
+{
+    while (idx >= list->size) {
+        list->data = realloc(list->data, (list->size + AL_SIZE) * sizeof(void *));
+        if (list->data == NULL)
+            exit(1);
+        bzero(list->data + list->size, AL_SIZE * sizeof(void *));
+        list->size += AL_SIZE;
+    }
+    if (idx >= list->length){
+        list->length = idx + 1;
+    } else {
+        memmove(list->data + idx + 1, list->data + idx, (list->length - idx) * sizeof(void *));
+        list->length++;
+    }
+    list->data[idx] = val;
+}
+
+ALIterator AL_iterator(ArrayList list)
+{
+    ALIterator it = (ALIterator) calloc(1, sizeof(struct ALI));
+    if (it == NULL)
+        exit(1);
+    it->cidx   = 0;
+    it->length = list->length;
+    it->data   = list->data;
+    return it;
+}
+
+void *AL_next(ALIterator it)          /*  Usage:                              */
+{                                     /*  while (AL_next(it) != (void *) -1)  */
+    if (it->cidx == it->length) {
+        free(it);
+        return (void *) -1;
+    }
+    return it->data[it->cidx++];
+}
+
+void AL_append(ArrayList list, void *val)
+{
+    AL_addAt(list, list->length, val);
+}
+
+void *AL_get(ArrayList list, int idx)
+{
+    if (idx >= list->length) {
+        return NULL;
+    }
+    return list->data[idx];
+}
+
+void AL_mergeAt(ArrayList list1, ArrayList list2, int idxOfList1)
+{
+    int len2 = list2->length;
+    int i;
+    for (i = len2 - 1; i >=0; i--) {
+        AL_addAt(list1, idxOfList1, AL_get(list2, i));
+    }
+}
+
+void AL_merge(ArrayList list1, ArrayList list2)
+{
+    AL_mergeAt(list1, list2, list1->length);
+}
+
+void AL_removeAt(ArrayList list, int idx)
+{
+    if (idx >= list->length)
+        return;
+    memmove(list->data + idx, list->data + idx + 1, (list->length - idx - 1) * sizeof(void *));
+    bzero(list->data + list->length - 1, sizeof(void *));
+    list->length--;
+}
+
+int AL_isEmpty(ArrayList list)
+{
+    return list->length == 0 ? 1 : 0;
+}
+
+int AL_indexOf(ArrayList list, void *val)
+{
+    int i;
+    for (i = 0; i < list->length; i++) {
+        if (list->data[i] == val)
+            return i;
+    }
+    return -1;
+}
+
+int AL_lastIndexOf(ArrayList list, void *val)
+{
+    int i;
+    for (i = list->length - 1; i >= 0; i--) {
+        if (list->data[i] == val)
+            return i;
+    }
+    return -1;
+}
+
+ArrayList AL_sublist(ArrayList list, int begin, int end)
+{
+    int i;
+    ArrayList l = AL_init();
+    for (i = begin; i <= end; i++) {
+        AL_append(l, AL_get(list, i));
+    }
+    return l;
+}
+
+ArrayList AL_sublist2(ArrayList list, int idx)
+{
+    return AL_sublist(list, idx, list->length - 1);
+}
+
+void * *AL_toArray(ArrayList list, int *len)
+{
+    int i;
+    void * *arr = malloc(list->length * sizeof(void *));
+    if (arr == NULL)
+        exit(1);
+    for (i = 0; i < list->length; i++)
+        arr[i] = AL_get(list, i);
+    *len = list->length;
+    return arr;
+}
+
+void AL_free(ArrayList list)
+{
+    free(list->data);
+    free(list);
+}
