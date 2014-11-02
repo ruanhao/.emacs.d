@@ -1,0 +1,214 @@
+# -*- mode: snippet -*-
+# name: yas_ds_linkedlist
+# key: yas_ds_linkedlist
+# --
+typedef struct LNode {
+    void *data;
+    struct LNode *next;
+} LNode, *LinkedList;
+
+
+static LNode *LNode_init()
+{
+    LNode *node = (LNode *) malloc(sizeof(LNode));
+    if (node == NULL)
+        exit(1);
+    return node;
+}
+
+LinkedList LL_init()
+{
+    LNode *head  = LNode_init();
+    int *lengthp = (int *) malloc(sizeof(int));
+    if (lengthp == NULL)
+        exit(1);
+    *lengthp   = 0;
+    head->data = lengthp;
+    head->next = NULL;
+    return (LinkedList) head;
+}
+
+int LL_length(LinkedList list)
+{
+    return *(int *)list->data;
+}
+
+LNode *LL_tail(LinkedList list)
+{
+    if (list->next == NULL) {
+        return NULL;
+    } else {
+        LNode *ptr;
+        for (ptr = list->next; ptr->next != NULL; ptr = ptr->next)
+            ;
+        return ptr;
+    }
+}
+
+LNode *LL_head(LinkedList list)
+{
+    if (list->next == NULL)
+        return NULL;
+    return list->next;
+}
+
+void LL_append(LinkedList list, void *val)
+{
+    LNode *node = LNode_init();
+    node->data = val;
+    node->next = NULL;
+    LNode *tail = LL_tail(list);
+    if (tail == NULL) {
+        list->next = node;
+    } else {
+        tail->next = node;
+    }
+    (*(int *)list->data)++;
+}
+
+LNode *LL_get(LinkedList list, int idx)
+{
+    int i;
+    int length = *(int *)list->data;
+    LNode *ptr;
+    if (idx < 0)
+        return NULL;
+    if (idx >= length)
+        return NULL;
+    ptr = list->next;
+    for (i = 0; i < idx; i++) {
+        ptr = ptr->next;
+    }
+    return ptr;
+}
+
+int LL_isEmpty(LinkedList list)
+{
+    if (list->next == NULL && (*(int *)list->data) == 0)
+        return 1;
+    else
+        return 0;
+}
+
+void LL_addAt(LinkedList list, int idx, void *val)
+{
+    int i;
+    int length = *(int *)list->data;
+    LNode *node = LNode_init();
+    node->data = val;
+    if (idx >= length) {
+        for (i = 0; i < idx - length; i++) {
+            LL_append(list, 0);
+        }
+        LL_append(list, val);
+    } else {
+        if (idx == 0) {
+            node->next = LL_get(list, 0);
+            list->next = node;
+        } else {
+            LNode *n = LL_get(list, idx);
+            LL_get(list, idx - 1)->next = node;
+            node->next = n;
+        }
+        (*(int *)list->data)++;
+    }
+}
+
+void LL_remove(LinkedList list, int idx)
+{
+    int length = *(int *)list->data;
+    if (idx >= length)
+        return NULL;
+    LNode *node = LL_get(list, idx);
+    if (node->next == NULL) {
+        if (idx == 0)
+            list->next = NULL;
+        else
+            LL_get(list, idx - 1)->next = NULL;
+        free(node);
+        (*(int *)list->data)--;
+        return;
+    }
+    if (idx == 0)
+        list->next = node->next;
+    else
+        LL_get(list, idx - 1)->next = node->next;
+    free(node);
+    (*(int *)list->data)--;
+}
+
+void LL_mergeAt(LinkedList list1, LinkedList list2, int idx)
+{
+    int length = *(int *)list1->data;
+    if ((idx - 1) >= length) {
+        LL_addAt(list1, idx - 1, 0);
+        LL_tail(list1)->next = LL_head(list2);
+        *(int *)list1->data += LL_length(list2);
+        return;
+    }
+    LNode *prev          = LL_get(list1, idx - 1);
+    LNode *after         = prev->next;
+    prev->next           = LL_head(list2);
+    LL_tail(list2)->next = after;
+    *(int *)list1->data += LL_length(list2);
+}
+
+void LL_merge(LinkedList list1, LinkedList list2)
+{
+    LL_mergeAt(list1, list2, LL_length(list1));
+}
+
+void LL_removeTail(LinkedList list)
+{
+    LL_remove(list, *(int *)list->data - 1);
+}
+
+void LL_reverse(LinkedList list)
+{
+    LinkedList list2 = LL_init();
+    void *v;
+    int i;
+    int length = *(int *)list->data;
+    for (i = 0; i < length; i++) {
+        v = LL_tail(list)->data;
+        LL_append(list2, v);
+        LL_removeTail(list);
+    }
+    list->next = LL_head(list2);
+    *(int *)list->data = *(int *)list2->data;
+    free(list2->data);
+    free(list2);
+}
+
+void LL_push(LinkedList list, void *val)
+{
+    LL_append(list, val);
+}
+
+void *LL_pop(LinkedList list)
+{
+    void *v = LL_tail(list)->data;
+    LL_removeTail(list);
+    return v;
+}
+
+void *LL_peekStack(LinkedList list)
+{
+    return LL_tail(list)->data;
+}
+
+void LL_free(LinkedList list)
+{
+    LNode *ptr = list->next;
+    LNode *tmp;
+    if (ptr != NULL) {
+        for (; ptr->next != NULL; ) {
+            tmp = ptr->next;
+            free(ptr);
+            ptr = tmp;
+        }
+        free(ptr);
+    }
+    free(list->data);
+    free(list);
+}
