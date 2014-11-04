@@ -118,7 +118,7 @@ void LL_remove(LinkedList list, int idx)
 {
     int length = *(int *)list->data;
     if (idx >= length)
-        return NULL;
+        return;
     LNode *node = LL_get(list, idx);
     if (node->next == NULL) {
         if (idx == 0)
@@ -192,9 +192,24 @@ void *LL_pop(LinkedList list)
     return v;
 }
 
-void *LL_peekStack(LinkedList list)
+void *LL_peekTop(LinkedList list)
 {
     return LL_tail(list)->data;
+}
+
+void LL_enqueue(LinkedList list, void *val)
+{
+    LL_append(list, val);
+}
+
+void *LL_dequeue(LinkedList list)
+{
+    if (LL_isEmpty(list)) {
+        return NULL;
+    }
+    void *v = LL_head(list)->data;
+    LL_remove(list, 0);
+    return v;
 }
 
 void LL_free(LinkedList list)
