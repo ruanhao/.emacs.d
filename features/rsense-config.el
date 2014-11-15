@@ -13,3 +13,5 @@
             (define-key ruby-mode-map (kbd "C-c t") 'rsense-type-help)
             (define-key ruby-mode-map (kbd "C-c w") 'rsense-where-is)
             (define-key ruby-mode-map (kbd "M-.")   'rsense-jump-to-definition)))
+
+(require 'ruby-end)
