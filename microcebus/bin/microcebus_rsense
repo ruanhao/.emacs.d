@@ -1,0 +1,6 @@
+#! /bin/bash
+
+
+RSENSE_HOME=~/.emacs.d/rsense
+chmod +x $RSENSE_HOME/bin/rsense
+ruby $RSENSE_HOME/etc/config.rb > ~/.rsense
