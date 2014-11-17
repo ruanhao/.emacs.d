@@ -51,14 +51,14 @@ export TERM=xterm-256color
 export PS1="\[$NORMAL\]\[\$(pick_color)\]\$(get_face)\[$BLUE_BOLD\][\A]\[$GREEN_BOLD\]\u:\[$RED_BOLD\]\w\[$YELLOW_BOLD\]\$(parse_git_branch)\[$WHITE_BOLD\] > \[$NORMAL\]"
 export HISTTIMEFORMAT="%F %T "
 export PATH="~/.emacs.d/microcebus/bin:$PATH"
-export LD_LIBRARY_PATH="/home/$USER/.emacs.d/microcebus/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$HOME/.emacs.d/microcebus/lib:$LD_LIBRARY_PATH"
 
 ### ALIAS ###
 alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lh --color=auto'
 alias ec='emacs -nw'
 alias dirs='dirs -v'
-alias gcc='gcc -g -rdynamic -L/home/$USER/.emacs.d/microcebus/lib -lpthread -lmicrocebus `pkg-config --cflags --libs glib-2.0`'
+alias gcc='gcc -g -rdynamic -L$HOME/.emacs.d/microcebus/lib -lpthread -lmicrocebus `pkg-config --cflags --libs glib-2.0`'
 alias cde='cd ~/.emacs.d'
 alias cdk='/lib/modules/$(uname -r)/kernel'
 alias j='jobs -l'

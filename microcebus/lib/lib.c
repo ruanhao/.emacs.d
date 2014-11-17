@@ -444,7 +444,7 @@ static char *SockNtop(const struct sockaddr *sa)
         if (unp->sun_path[0] == 0)
             strcpy(str, "(no pathname bound)");
         else
-            snprintf(str, sizeof(str), "%s", unp->sun_path);
+            snprintf(str, SIZE, "%s", unp->sun_path);
         return(str);
     }
     default:

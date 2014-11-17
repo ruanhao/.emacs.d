@@ -1,4 +1,4 @@
-        ;; hao-utils
+;; hao-utils
 (defun hao-show-system-type ()
   "Find out what OS Emacs is currently running on"
   (interactive)
