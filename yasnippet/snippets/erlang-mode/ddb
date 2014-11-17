@@ -1,0 +1,5 @@
+#name: ddb
+#key: ddb
+# --
+?DDBG(${1:event}, "$2", [$3]),
+$0

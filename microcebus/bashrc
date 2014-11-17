@@ -40,6 +40,10 @@ function busy() {
     cat /dev/urandom | hexdump -C | grep "ca fe"
 }
 
+function errcode() {
+    perl -le 'print $!+0, "\t", $!++ for 0..127'
+}
+
 ### EXPORT ###
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
