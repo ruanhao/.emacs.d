@@ -1,0 +1,6 @@
+#name: sc_mm
+#key: sc_mm
+# --
+def method_missing(method, *args)
+  $0
+end

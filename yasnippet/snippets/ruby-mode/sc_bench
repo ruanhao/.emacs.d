@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: bench
-# key: bench
+# name: sc_bench
+# key: sc_bench
 # --
 require "benchmark"
 

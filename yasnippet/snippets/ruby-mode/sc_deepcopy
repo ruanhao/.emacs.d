@@ -1,0 +1,4 @@
+#name:sc_deepcopy
+#key: sc_deepcopy
+# --
+Marshal.load(Marshal.dump($0))
