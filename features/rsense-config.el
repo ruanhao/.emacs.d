@@ -8,7 +8,7 @@
 (require 'rsense)
 (add-hook 'ruby-mode-hook
           (lambda ()
-            (setq ruby-indent-level 4)
+            ;;(setq ruby-indent-level 4)
             (define-key ruby-mode-map (kbd "M-RET") 'ac-complete-rsense)
             (define-key ruby-mode-map (kbd "C-c t") 'rsense-type-help)
             (define-key ruby-mode-map (kbd "C-c w") 'rsense-where-is)

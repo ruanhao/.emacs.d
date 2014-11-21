@@ -1,0 +1,4 @@
+#name: eachi
+#key: eachi
+# --
+each_index { |${i}| $0 }

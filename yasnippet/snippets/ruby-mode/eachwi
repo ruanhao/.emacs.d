@@ -1,0 +1,4 @@
+#name: eachwi
+#key: eachwi
+# --
+each_with_index { |${e}, ${i}| $0 }

@@ -19,6 +19,9 @@
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq auto-save-default nil)
 
+;; No automatically newline
+(setq mode-require-final-newline nil)
+
 ;; (global-superword-mode t)
 (line-number-mode t)
 (column-number-mode t)
