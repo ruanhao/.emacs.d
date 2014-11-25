@@ -8,3 +8,4 @@ clang-complete
 init.el
 *.o
 *.so
+.mc-lists.el
