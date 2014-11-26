@@ -9,6 +9,18 @@
   (interactive)
   (message "%S" features))
 
+(defun hao-delete-word-at-point ()
+  "Delete word at current point"
+  (interactive)
+  (let (head tail)
+    (save-excursion
+      (skip-chars-backward "-_A-Za-z0-9")
+      (setq head (point))
+      (skip-chars-forward "-_A-Za-z0-9")
+      (setq tail (point))
+      (delete-region head tail))))
+(global-set-key (kbd "\C-c \C-d") 'hao-delete-word-at-point)
+
 (defun hao-pick-word-at-point ()
   "Pick current word under cursor
 this function would move cursor to the beginning of the word"
