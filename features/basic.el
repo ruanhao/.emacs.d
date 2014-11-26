@@ -92,7 +92,7 @@
 ;; Set multiple-cursors
 (add-to-list 'load-path "~/.emacs.d/multiple-cursors")
 (require 'multiple-cursors)
-(global-set-key [f8] 'mc/mark-next-word-like-this)
+(global-set-key [f8] 'mc/mark-more-like-this-extended)
 
 ;; Set delete-pair
 (global-set-key (kbd "M-)") 'delete-pair)
@@ -106,8 +106,8 @@
 (global-set-key (kbd "M-(") 'hao-delete-pair-backward)
 
 ;; Set direction
-(global-set-key (kbd "<down>") 'next-logical-line)
-(global-set-key (kbd "<up>") 'previous-logical-line)
+;; (global-set-key (kbd "<down>") 'next-logical-line)
+;; (global-set-key (kbd "<up>") 'previous-logical-line)
 
 ;; Dirtree
 (add-to-list 'load-path "~/.emacs.d/dirtree")
@@ -129,3 +129,7 @@
   (require 'package)
   (package-initialize)
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t))
+
+(add-to-list 'load-path "~/.emacs.d/expand-region")
+(require 'expand-region)
+(global-set-key (kbd "M-@") 'er/expand-region)
