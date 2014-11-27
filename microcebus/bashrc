@@ -65,12 +65,21 @@ alias j='jobs -l'
 # alias diff='diff -Naur'
 # alias patch='patch -b'
 
-
-
-# echo '"\C-p": history-search-backward' >> ~/.inputrc
-# bind -f ~/.inputrc
-
 if [[ -n $DISPLAY ]]; then
     # Load the user's own X resource settings
     [[ -r $HOME/.Xresources ]] && xrdb $HOME/.Xresources
 fi
+
+
+
+
+
+## .inputrc
+
+## C-x C-r command re-reads this init file
+## shell-expand-line (M-C-e)
+
+## "\C-p": history-search-backward
+## "\C-n": history-search-forward
+## "\e\C-h": unix-word-rubout
+## "\e\C-?": unix-word-rubout
