@@ -27,7 +27,7 @@
 (column-number-mode t)
 (global-hl-line-mode 1)
 (set-face-foreground 'highlight nil)
-(set-face-background 'hl-line "#303030")
+(set-face-background 'hl-line "#262626")
 (set-face-attribute 'region nil :background "#808080")
 
 ;; Dynamicaly update line number
