@@ -1,4 +1,6 @@
 #! /bin/bash
+# If not running interactively, don't do anything
+[[ "$-" != *i* ]] && return
 
 ### CONSTANTS ###
 NORMAL="\e[0m"
