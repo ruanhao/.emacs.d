@@ -47,7 +47,8 @@ this function would move cursor to the beginning of the word"
     (setq hi-colors '("hi-yellow" "hi-pink" "hi-green" "hi-blue"))
     (setq color
 	  (nth (% hao-highlight-word-at-point (length hi-colors)) hi-colors))
-    (highlight-regexp regexp-word color)
+    (unless (equal regexp-word "\\b\\b")
+      (highlight-regexp regexp-word color))
     (setq hao-highlight-word-at-point (1+ hao-highlight-word-at-point))))
 (global-set-key [f3] 'hao-highlight-word-at-point)
 
