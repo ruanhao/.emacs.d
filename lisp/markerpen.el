@@ -11,7 +11,7 @@
 
 (defvar markerpen-current-pen 1)
 
-(global-set-key (kbd "<f12>") 'markerpen-mark-region) ; Use this to apply a markerpen
+(global-set-key (kbd "<f4>") 'markerpen-mark-region) ; Use this to apply a markerpen
 
 (defconst markerpens '())
 

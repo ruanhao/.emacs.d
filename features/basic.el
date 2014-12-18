@@ -78,7 +78,7 @@
  ((= emacs-major-version 23)
   (add-to-list 'load-path "~/.emacs.d/themes/")
   (require 'molokai-theme))
- ((= emacs-major-version 24)
+ ((>= emacs-major-version 24)
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
   (load-theme 'molokai t)))
 
@@ -111,7 +111,7 @@
 
 ;; Dirtree
 (add-to-list 'load-path "~/.emacs.d/dirtree")
-(global-set-key [f4] 'dirtree)
+(global-set-key [f2] 'dirtree)
 (require 'dirtree)
 
 ;; Bookmark

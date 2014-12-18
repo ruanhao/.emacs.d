@@ -1,0 +1,1 @@
+(load-file "~/.emacs.d/lisp/graphviz-dot-mode.el")
