@@ -82,7 +82,7 @@
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
   (load-theme 'molokai t)))
 
-(global-set-key (kbd "M--") 'kill-whole-line)
+;; (global-set-key (kbd "M--") 'kill-whole-line)
 
 ;; Set CUA-Utils
 (setq cua-enable-cua-keys nil)
@@ -133,3 +133,9 @@
 (add-to-list 'load-path "~/.emacs.d/expand-region")
 (require 'expand-region)
 (global-set-key (kbd "M-@") 'er/expand-region)
+
+(global-set-key [(meta -)] 'shrink-window)
+(global-set-key [(meta =)] (lambda () (interactive) (shrink-window -1)))
+
+(global-set-key [(meta \[)] 'shrink-window-horizontally)
+(global-set-key [(meta \])] (lambda () (interactive)(shrink-window-horizontally -1)))
