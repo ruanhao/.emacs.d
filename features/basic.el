@@ -25,9 +25,9 @@
 ;; (global-superword-mode t)
 (line-number-mode t)
 (column-number-mode t)
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 (set-face-foreground 'highlight nil)
-(set-face-background 'hl-line "#262626")
+;; (set-face-background 'hl-line "#262626")
 (set-face-attribute 'region nil :background "#808080")
 
 ;; Dynamicaly update line number
@@ -82,7 +82,7 @@
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
   (load-theme 'molokai t)))
 
-;; (global-set-key (kbd "M--") 'kill-whole-line)
+(global-set-key (kbd "M--") 'kill-whole-line)
 
 ;; Set CUA-Utils
 (setq cua-enable-cua-keys nil)
@@ -114,13 +114,16 @@
 (global-set-key [f2] 'dirtree)
 (require 'dirtree)
 
+;; (require 'neotree)
+;; (global-set-key [f2] 'neotree-toggle)
+
 ;; Bookmark
-(define-key global-map [f9] 'bookmark-set)
-(define-key global-map [f10] 'bookmark-jump)
-(setq bookmark-save-flag 1)
+;; (define-key global-map [f9] 'bookmark-set)
+;; (define-key global-map [f10] 'bookmark-jump)
+;; (setq bookmark-save-flag 1)
 
 ;; Revert buffer
-(define-key global-map [f11] 'revert-buffer)
+;; (define-key global-map [f11] 'revert-buffer)
 
 ;; Markerpen
 (load-file "~/.emacs.d/lisp/markerpen.el")
@@ -134,8 +137,8 @@
 (require 'expand-region)
 (global-set-key (kbd "M-@") 'er/expand-region)
 
-(global-set-key [(meta -)] 'shrink-window)
-(global-set-key [(meta =)] (lambda () (interactive) (shrink-window -1)))
+(global-set-key [(f9)] 'shrink-window)
+(global-set-key [(f10)] (lambda () (interactive) (shrink-window -1)))
 
-(global-set-key [(meta \[)] 'shrink-window-horizontally)
-(global-set-key [(meta \])] (lambda () (interactive)(shrink-window-horizontally -1)))
+(global-set-key [(f11)] 'shrink-window-horizontally)
+(global-set-key [(f12)] (lambda () (interactive)(shrink-window-horizontally -1)))
