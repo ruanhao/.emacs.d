@@ -39,6 +39,10 @@
          (linum-format (concat "%" (number-to-string w) "d ")))
     ad-do-it))
 
+;; Go to last change
+(require 'goto-last-change)
+(global-set-key (kbd "C-c C-c") 'goto-last-change)
+
 ;; yes or no
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -58,7 +62,7 @@
 
 ;; Show whitespace
 (require 'whitespace)
-(global-set-key [f6] 'whitespace-mode)
+(global-set-key [f7] 'whitespace-mode)
 
 ;; emacs-lisp-mode-hook
 (add-hook 'emacs-lisp-mode-hook
@@ -85,9 +89,9 @@
 (global-set-key (kbd "M--") 'kill-whole-line)
 
 ;; Set CUA-Utils
-(setq cua-enable-cua-keys nil)
-(cua-mode)
-(global-set-key [f5] 'cua-set-rectangle-mark)
+;; (setq cua-enable-cua-keys nil)
+;; (cua-mode)
+;; (global-set-key [f5] 'cua-set-rectangle-mark)
 
 ;; Set multiple-cursors
 (add-to-list 'load-path "~/.emacs.d/multiple-cursors")
@@ -142,3 +146,6 @@
 
 (global-set-key [(f11)] 'shrink-window-horizontally)
 (global-set-key [(f12)] (lambda () (interactive)(shrink-window-horizontally -1)))
+
+(global-set-key [(f5)] (lambda () (interactive)(window-configuration-to-register 'w)))
+(global-set-key [(f6)] (lambda () (interactive)(jump-to-register 'w)))

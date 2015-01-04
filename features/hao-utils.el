@@ -161,4 +161,4 @@ this function would move cursor to the beginning of the word"
       (fci-mode 1)
     (fci-mode 0))
   (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
-(global-set-key [f7] 'hao-toggle-column-ruler)
+;; (global-set-key [f7] 'hao-toggle-column-ruler)
