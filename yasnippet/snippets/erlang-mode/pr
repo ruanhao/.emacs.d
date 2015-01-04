@@ -1,0 +1,4 @@
+#name: pr
+#key: pr
+# --
+io:format("$1", [$2]),$0
