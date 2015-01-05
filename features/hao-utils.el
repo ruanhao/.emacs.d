@@ -162,3 +162,21 @@ this function would move cursor to the beginning of the word"
     (fci-mode 0))
   (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
 ;; (global-set-key [f7] 'hao-toggle-column-ruler)
+
+
+(defun hao-increment-number-at-point ()
+  (interactive)
+  (skip-chars-backward "-0123456789")
+  (or (looking-at "-?[0123456789]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
+
+(defun hao-decrement-number-at-point ()
+  (interactive)
+  (skip-chars-backward "-0123456789")
+  (or (looking-at "-?[0123456789]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (- (string-to-number (match-string 0)) 1))))
+
+(global-set-key (kbd "<insertchar>") 'hao-increment-number-at-point)
+(global-set-key (kbd "<deletechar>") 'hao-decrement-number-at-point)
