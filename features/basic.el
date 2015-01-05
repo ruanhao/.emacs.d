@@ -22,6 +22,9 @@
 ;; No automatically newline
 (setq mode-require-final-newline nil)
 
+;; Can use Ctrl-<right> Ctrl-<left> to toggle sessions
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 ;; (global-superword-mode t)
 (line-number-mode t)
 (column-number-mode t)
@@ -149,3 +152,8 @@
 
 (global-set-key [(f5)] (lambda () (interactive)(window-configuration-to-register 'w)))
 (global-set-key [(f6)] (lambda () (interactive)(jump-to-register 'w)))
+
+(require 'sticky-windows)
+(global-set-key [(control x) (?0)] 'sticky-window-delete-window)
+(global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
+(global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
