@@ -102,9 +102,25 @@
 (global-set-key (kbd "M--") 'kill-whole-line)
 
 ;; Set CUA-Utils
-;; (setq cua-enable-cua-keys nil)
-;; (cua-mode)
-;; (global-set-key [f5] 'cua-set-rectangle-mark)
+;; [M-a]: Leftify
+;; [M-b]: Fill rect with space/tab
+;; [M-c]: Remove all space on the left
+;; [M-f]: Replace all characters in the rect by a specified char
+;; [M-i]: Increment first number on every line
+;; [M-k]: Cut rect
+;; [M-l]: Downcase
+;; [M-m]: Copy rect
+;; [M-n]: Number the lines
+;; [M-o]: Fill the rect with space in order to move right
+;; [M-r]: Replace by regex
+;; [M-R]: Revert up and down
+;; [M-s]: Replace each line with a string
+;; [M-t]: Replace the whole rect with a string
+;; [M-u]: Uppercase
+;; [M-|]: Do shell command on the content of the rect
+(setq cua-enable-cua-keys nil)
+(cua-mode)
+(global-set-key (kbd "C-c SPC") 'cua-set-rectangle-mark)
 
 ;; Set multiple-cursors
 (add-to-list 'load-path "~/.emacs.d/multiple-cursors")
