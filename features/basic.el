@@ -33,6 +33,10 @@
 ;; (set-face-background 'hl-line "#262626")
 (set-face-attribute 'region nil :background "#808080")
 
+;; Powerline is fancy
+(require 'powerline)
+(powerline-default-theme)
+
 ;; Dynamicaly update line number
 (require 'linum)
 (global-linum-mode t)
@@ -87,7 +91,13 @@
   (require 'molokai-theme))
  ((>= emacs-major-version 24)
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-  (load-theme 'molokai t)))
+  (load-theme 'moe-dark t)))
+
+;; Setup moe-theme
+(load-file "~/.emacs.d/themes/moe-theme.el")
+(powerline-moe-theme)
+;;(moe-theme-set-color 'orange)
+(moe-theme-random-color)
 
 (global-set-key (kbd "M--") 'kill-whole-line)
 
