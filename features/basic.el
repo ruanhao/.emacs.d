@@ -48,7 +48,7 @@
 
 ;; Go to last change
 (require 'goto-last-change)
-(global-set-key (kbd "C-c C-c") 'goto-last-change)
+(global-set-key "\C-x\C-\\" 'goto-last-change)
 
 ;; yes or no
 (fset 'yes-or-no-p 'y-or-n-p)
