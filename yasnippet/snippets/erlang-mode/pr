@@ -1,4 +1,4 @@
 #name: pr
 #key: pr
 # --
-io:format("$1~n", [$2]),$0
+io:format("[~p:~p]<eruahao> $1~n", [?MODULE, ?LINE | [$2]]),$0
