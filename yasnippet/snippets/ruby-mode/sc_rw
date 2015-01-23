@@ -1,4 +1,0 @@
-#name: sc_rw
-#key: sc_rw
-# --
-attr_accessor :

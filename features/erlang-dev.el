@@ -69,7 +69,7 @@
             (erlang-font-lock-level-3)
 	    (modify-syntax-entry ?_ "w")
             ;; when starting an Erlang shell in Emacs, set default node name
-            (setq inferior-erlang-machine-options '("-sname" "emacs" "-setcookie" "emacs"))))
+            (setq inferior-erlang-machine-options (list "-sname" (user-login-name) "-setcookie" "emacs"))))
 
 (global-set-key (kbd "M-.") (lambda () (interactive) (find-tag (find-tag-default))))
 (global-set-key (kbd "M-,") 'pop-tag-mark)
