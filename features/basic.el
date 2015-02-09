@@ -188,6 +188,8 @@
 (add-hook 'org-mode-hook
           (lambda ()
             (org-indent-mode t)
+            (setq truncate-lines nil)
+            (setq org-src-fontify-natively t)
             (set-face-attribute 'org-level-1 nil :height 2.0 :bold t)
             (set-face-attribute 'org-level-2 nil :height 1.8 :bold t)
             (set-face-attribute 'org-level-3 nil :height 1.6 :bold t)))
