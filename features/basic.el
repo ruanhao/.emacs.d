@@ -179,10 +179,24 @@
 (global-set-key [(f5)] (lambda () (interactive)(window-configuration-to-register 'w)))
 (global-set-key [(f6)] (lambda () (interactive)(jump-to-register 'w)))
 
-(require 'sticky-windows)
-(global-set-key [(control x) (?0)] 'sticky-window-delete-window)
-(global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
-(global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
+;; (require 'sticky-windows)
+;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
+;; (global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
+;; (global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
+
+;; Toggle window dedication
+
+(defun hao-toggle-window-dedicated ()
+"Toggle whether the current active window is dedicated or not"
+(interactive)
+(message
+ (if (let (window (get-buffer-window (current-buffer)))
+       (set-window-dedicated-p window
+        (not (window-dedicated-p window))))
+     "Window '%s' is dedicated"
+   "Window '%s' is normal")
+ (current-buffer)))
+(global-set-key [(control x) (?9)] 'hao-toggle-window-dedicated)
 
 ;; ORG
 (add-hook 'org-mode-hook
