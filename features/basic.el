@@ -207,3 +207,9 @@
             (set-face-attribute 'org-level-1 nil :height 2.0 :bold t)
             (set-face-attribute 'org-level-2 nil :height 1.8 :bold t)
             (set-face-attribute 'org-level-3 nil :height 1.6 :bold t)))
+
+;; Vertical split as default
+(setq split-width-threshold nil)
+
+;; Horizontal split as default
+;; (setq split-width-threshold 1)
