@@ -1,0 +1,5 @@
+#! /bin/bash
+
+rm -rf ./cscope.*
+find . /usr/include -type f | grep -E '\.(c|h|cpp|cc|hh)$' >> cscope.files
+cscope -Rbkq
