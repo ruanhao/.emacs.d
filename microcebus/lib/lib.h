@@ -79,5 +79,7 @@ pthread_t MkThrd(void *(*fn)(void *), void *arg);
 void *Malloc(size_t size);
 void *Calloc(size_t n, size_t size);
 
+/* IO */
+ssize_t Getline(char **lineptr, FILE *stream);
 
 #endif /* LIB_H */

@@ -698,3 +698,15 @@ void PrintFdReadBuffer(int fd)
     H_DEBUG_MSG("Read buffer for fd(%d): %d", fd, nread);
     return;
 }
+
+ssize_t Getline(char **lineptr, FILE *stream) {
+    size_t n = 0;
+    ssize_t nread = 0;
+    nread = getline(lineptr, &n, stream);
+    if (nread > 0)
+        if ((*lineptr)[nread - 1] == '\n') {
+            (*lineptr)[nread - 1] = '\0';
+            return nread - 1;
+        }
+    return nread;
+}
