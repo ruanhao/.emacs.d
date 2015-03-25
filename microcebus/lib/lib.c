@@ -40,12 +40,12 @@ void h_do_msg(int errflag, const char *file, const char *func, int line, const c
     asprintf(&str_with_err, "%s (%s)", str, strerror(errno));
     char *str2 = Trim(str);
     char *str_with_err2 = Trim(str_with_err);
-    fprintf(fp, "[%s] %s%s" ANSI_COLOR_RESET "  %-70s  <%s#%s@%d>\n",
+    fprintf(fp, "[%s] %s%s" ANSI_COLOR_RESET "  %-70s  | %s:%d\n",
             current_time,
             errflag ? ANSI_COLOR_RED : ANSI_COLOR_GREEN,
             errflag ? "ERROR" : "DEBUG",
             errflag ? str_with_err2 : str2,
-            file, func, line);
+            file, /*func,*/ line);
     fflush(fp);
     free(current_time);
     free(str);
