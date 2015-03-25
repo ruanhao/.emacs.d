@@ -24,7 +24,7 @@
 #include <sys/un.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
-
+#include <ctype.h>
 
 #include "def.h"
 
@@ -81,5 +81,6 @@ void *Calloc(size_t n, size_t size);
 
 /* IO */
 ssize_t Getline(char **lineptr, FILE *stream);
+char *Trim(const char*);
 
 #endif /* LIB_H */

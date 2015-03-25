@@ -38,16 +38,20 @@ void h_do_msg(int errflag, const char *file, const char *func, int line, const c
     char *current_time = HHMMSS();
     vasprintf(&str, fmt, ap);
     asprintf(&str_with_err, "%s (%s)", str, strerror(errno));
+    char *str2 = Trim(str);
+    char *str_with_err2 = Trim(str_with_err);
     fprintf(fp, "[%s] %s%s" ANSI_COLOR_RESET "  %-70s  <%s#%s@%d>\n",
             current_time,
             errflag ? ANSI_COLOR_RED : ANSI_COLOR_GREEN,
             errflag ? "ERROR" : "DEBUG",
-            errflag ? str_with_err : str,
+            errflag ? str_with_err2 : str2,
             file, func, line);
     fflush(fp);
     free(current_time);
     free(str);
     free(str_with_err);
+    free(str2);
+    free(str_with_err2);
     return;
 }
 
@@ -709,4 +713,15 @@ ssize_t Getline(char **lineptr, FILE *stream) {
             return nread - 1;
         }
     return nread;
+}
+
+char *Trim(const char *string) {
+    size_t len = strlen(string);
+    len--;
+    while (isspace(string[len]))
+        len--;
+    char *s = Malloc((len + 2) * sizeof(char));
+    memcpy(s, string, len + 1);
+    s[len + 1] = '\0';
+    return s;
 }
