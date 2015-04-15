@@ -213,3 +213,7 @@
 
 ;; Horizontal split as default
 ;; (setq split-width-threshold 1)
+
+(ido-mode 1)
+(setq ido-everywhere t)
+(setq ido-enable-flex-matching t)
