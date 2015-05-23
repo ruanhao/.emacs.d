@@ -1,0 +1,5 @@
+#! /bin/bash
+
+rm -rf ./cscope.*
+find . -type f | grep -E '\.py$' >> cscope.files
+cscope -Rbkq
