@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inspect
+# key: ins
+# --
+from inspect import currentframe as ins_cf, getframeinfo as ins_gfi

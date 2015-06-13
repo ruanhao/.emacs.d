@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: print
-# key: p
+# key: pr
 # --
-print($0)
+print $0"%3s[%s:%s]"%('',__file__,ins_gfi(ins_cf()).lineno)

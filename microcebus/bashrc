@@ -55,6 +55,7 @@ export PS1="\\[$NORMAL\]\[\$(pick_color)\]\$(get_face)\[$BLUE_BOLD\][\A]\[$GREEN
 export HISTTIMEFORMAT="%F %T "
 export PATH="~/.emacs.d/microcebus/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/.emacs.d/microcebus/lib:$LD_LIBRARY_PATH"
+export PYTHONSTARTUP=~/.pythonrc
 
 ### ALIAS ###
 alias grep='grep --color=auto --line-buffered'
