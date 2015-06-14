@@ -1,6 +1,5 @@
 # -*- mode: snippet -*-
-# name: doc
+# name: debug
 # key: d
 # --
-"""$0
-"""
+logging.debug("$1"$2)$0

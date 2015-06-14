@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: error
+# key: err
+# --
+logging.error("$1"$2)$0
