@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: groupby
+# key: gb
+# --
+GROUP BY $0

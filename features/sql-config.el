@@ -1,6 +1,6 @@
-;; Step1: M-x sql-mysql
-;; Step2: Goto *.sql file buffer
-;;        M-x sqlset-product
+;; Step1: M-x sql-mysql ;; Create an interactive shell
+;; Step2: Open a buffer in sql mode
+;;        M-x sql-set-product
 ;;        M-x sql-set-sqli-buffer
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
