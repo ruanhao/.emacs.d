@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: left_join
-# key: lj
-# --
-LEFT JOIN $1 ON $2

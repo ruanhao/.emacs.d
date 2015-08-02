@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: having
-# key: h
-# --
-HAVING $0

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: concat
-# key: cat
-# --
-Concat($1)$0

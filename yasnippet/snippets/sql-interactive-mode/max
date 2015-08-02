@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: max
-# key: max
-# --
-MAX($1) $0

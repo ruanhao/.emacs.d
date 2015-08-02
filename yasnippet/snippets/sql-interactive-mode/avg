@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: avg
-# key: avg
-# --
-AVG($1) $0

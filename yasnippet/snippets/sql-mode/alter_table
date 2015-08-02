@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: alter_table
+# key: alter
+# --
+ALTER TABLE ${1:tbl} MODIFY ${2:column} ${3:AUTO_INCREMENT}$0

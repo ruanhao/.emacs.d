@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: orderby
-# key: ob
-# --
-ORDER BY $0

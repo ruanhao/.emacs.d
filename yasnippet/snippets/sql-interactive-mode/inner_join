@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: inner_join
-# key: ij
-# --
-INNER JOIN $1 ON $2

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: right_join
-# key: rj
-# --
-RIGHT JOIN $1 ON $2
