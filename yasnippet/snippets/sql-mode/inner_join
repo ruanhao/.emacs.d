@@ -2,4 +2,4 @@
 # name: inner_join
 # key: ij
 # --
-INNER JOIN $1 ON $2
+INNER JOIN $0 ON

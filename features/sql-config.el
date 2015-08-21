@@ -6,7 +6,6 @@
           (lambda ()
             (toggle-truncate-lines t)))
 
-
 (setq sql-connection-alist
       '((pool-a
          (sql-product 'mysql)
@@ -43,3 +42,6 @@
   ;; you call the function
   (setq sql-product product)
   (sql-connect connection))
+
+(eval-after-load "sql"
+  '(load-library "sql-indent"))

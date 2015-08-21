@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: show_column
-# key: d
+# key: sc
 # --
-DESCRIBE $1;
+DESCRIBE $0;

@@ -2,4 +2,4 @@
 # name: all
 # key: all
 # --
-SELECT * FROM $1;
+SELECT * FROM $0;

@@ -2,4 +2,4 @@
 # name: trim
 # key: tr
 # --
-Trim($1)$0
+TRIM($1)

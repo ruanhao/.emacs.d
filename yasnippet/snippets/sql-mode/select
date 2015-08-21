@@ -2,4 +2,4 @@
 # name: select
 # key: s
 # --
-SELECT $0
+SELECT $0 FROM

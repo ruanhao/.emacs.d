@@ -2,4 +2,4 @@
 # name: orderby
 # key: ob
 # --
-ORDER BY $0
+ORDER BY ${1:col} ${2:DESC}

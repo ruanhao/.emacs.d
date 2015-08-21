@@ -2,4 +2,4 @@
 # name: concat
 # key: cat
 # --
-Concat($1)$0
+CONCAT($1)

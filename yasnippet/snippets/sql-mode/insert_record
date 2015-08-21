@@ -2,5 +2,7 @@
 # name: insert_item
 # key: insert
 # --
-INSERT INTO ${1:table_name} ${2:column_list} VALUES
-$0
+INSERT INTO ${1:table}
+(${2:cols})
+VALUES
+(${3:vals})

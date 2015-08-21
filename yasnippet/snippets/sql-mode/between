@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: between
-# key: b
+# key: bet
 # --
 BETWEEN $1 AND $2

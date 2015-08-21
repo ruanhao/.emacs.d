@@ -1,8 +1,18 @@
 # -*- mode: snippet -*-
 # name: create_table
-# key: new_table
+# key: create_table
 # --
-CREATE TABLE ${1:table_name}
+CREATE TABLE IF NOT EXISTS ${1:table_name}
 (
-    ${2:column_name} ${3:options},$0
-)
+    t_id    bigint(20)    NOT NULL AUTO_INCREMENT,
+    t_name  varchar(100)  NOT NULL,
+    t_date  datetime      NOT NULL,
+    t_flag  smallint(6)   NOT NULL DEFAULT 0,
+    t_intro text          NOT NULL,
+    t_value decimal(10,2) NOT NULL DEFAULT 0.00,
+    t_ts    timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    t_day   ENUM('Sunday', 'Monday', 'Tuesday'),
+    PRIMARY KEY (t_id),
+    INDEX       (t_flag),
+    UNIQUE      (t_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

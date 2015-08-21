@@ -2,4 +2,4 @@
 # name: min
 # key: min
 # --
-MIN($1) $0
+MIN($1)

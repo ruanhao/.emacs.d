@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: use
-# key: use
+# key: u
 # --
-USE $0
+USE $1;

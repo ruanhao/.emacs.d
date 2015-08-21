@@ -2,4 +2,4 @@
 # name: sum
 # key: sum
 # --
-SUM($1) $0
+SUM($1)

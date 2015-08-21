@@ -2,4 +2,4 @@
 # name: avg
 # key: avg
 # --
-AVG($1) $0
+AVG($1)

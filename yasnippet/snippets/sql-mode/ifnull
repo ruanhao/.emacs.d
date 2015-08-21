@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ifnull
+# key: ifn
+# --
+IFNULL($1, ${2:default})$0
