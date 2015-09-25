@@ -182,45 +182,28 @@ this function would move cursor to the beginning of the word"
 (global-set-key (kbd "<deletechar>") 'hao-decrement-number-at-point)
 
 ;; Move line up and down
-(defun hao-move-text-internal (arg)
-  (cond
-   ((and mark-active transient-mark-mode)
-    (if (> (point) (mark))
-        (exchange-point-and-mark))
-    (let ((column (current-column))
-          (text (delete-and-extract-region (point) (mark))))
-      (forward-line arg)
-      (move-to-column column t)
-      (set-mark (point))
-      (insert text)
-      (exchange-point-and-mark)
-      (setq deactivate-mark nil)))
-   (t
-    (let ((column (current-column)))
-      (beginning-of-line)
-      (when (or (> arg 0) (not (bobp)))
-        (forward-line)
-        (when (or (< arg 0) (not (eobp)))
-          (transpose-lines arg)
-          (when (and (eval-when-compile
-                       '(and (>= emacs-major-version 24)
-                             (>= emacs-minor-version 3)))
-                     (< arg 0))
-            (forward-line -1)))
-        (forward-line -1))
-      (move-to-column column t)))))
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (setq col (current-column))
+  (beginning-of-line) (setq start (point))
+  (end-of-line) (forward-char) (setq end (point))
+  (let ((line-text (delete-and-extract-region start end)))
+    (forward-line n)
+    (insert line-text)
+    ;; restore point to original column in moved line
+    (forward-line -1)
+    (forward-char col)))
 
-(defun hao-move-text-down (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines down."
-  (interactive "*p")
-  (hao-move-text-internal arg))
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (if (null n) -1 (- n))))
 
-(defun hao-move-text-up (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines up."
-  (interactive "*p")
-  (hao-move-text-internal (- arg)))
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (if (null n) 1 n)))
 
-(global-set-key (kbd "M-k") 'hao-move-text-up)
-(global-set-key (kbd "M-j") 'hao-move-text-down)
+(global-set-key (kbd "M-k") 'move-line-up)
+(global-set-key (kbd "M-j") 'move-line-down)

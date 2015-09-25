@@ -221,3 +221,6 @@
 
 ;; Case insensitive
 (setq case-fold-search t)
+
+(setq mac-option-modifier nil)
+(setq mac-command-modifier 'meta)
