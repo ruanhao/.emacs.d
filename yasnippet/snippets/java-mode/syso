@@ -1,4 +1,4 @@
 # name: syso
 # key: syso
 # --
-System.out.println("[`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.java:`(number-to-string (line-number-at-pos))`] " + "$0");
+System.out.println("[`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.java:`(number-to-string (line-number-at-pos))`] " + "$1");$0
