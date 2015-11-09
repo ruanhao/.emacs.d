@@ -207,3 +207,15 @@ this function would move cursor to the beginning of the word"
 
 (global-set-key (kbd "M-k") 'move-line-up)
 (global-set-key (kbd "M-j") 'move-line-down)
+
+;; Duplicate current line
+(defun hao-duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank))
+
+(global-set-key (kbd "M-i") 'hao-duplicate-line)
