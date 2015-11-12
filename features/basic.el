@@ -282,6 +282,8 @@ by using nxml's indentation rules."
             (concat "find "
                     my-project-root
                     " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang)$\"" ;; ADD FILENAME FILTER HERE
+                    ;; example:
+                    ;; " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang|el|org|xsd)$\" | grep -E -v \"(META-INF|WEB-INF|target|checkstyle)\""
                     )) "\n"))
     ;; populate hash table (display repr => path)
     (setq tbl (make-hash-table :test 'equal))

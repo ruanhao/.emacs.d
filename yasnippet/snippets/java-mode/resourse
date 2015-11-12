@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: resource
+# key: res
+# --
+InputStream ${1:ips} = ${2:ClassName}.class.getResourceAsStream("${3:resourse-file-name}");$0
