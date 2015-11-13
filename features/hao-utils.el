@@ -205,9 +205,6 @@ this function would move cursor to the beginning of the word"
   (interactive "p")
   (move-line (if (null n) 1 n)))
 
-(global-set-key (kbd "M-k") 'move-line-up)
-(global-set-key (kbd "M-j") 'move-line-down)
-
 ;; Duplicate current line
 (defun hao-duplicate-line()
   (interactive)

@@ -281,7 +281,7 @@ by using nxml's indentation rules."
            (shell-command-to-string
             (concat "find "
                     my-project-root
-                    " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang)$\"" ;; ADD FILENAME FILTER HERE
+                    " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang|el|org|xsd)$\" | grep -E -v \"(META-INF|WEB-INF|target|checkstyle|yang-gen)\"" ;; ADD FILENAME FILTER HERE
                     ;; example:
                     ;; " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang|el|org|xsd)$\" | grep -E -v \"(META-INF|WEB-INF|target|checkstyle)\""
                     )) "\n"))
@@ -308,3 +308,20 @@ by using nxml's indentation rules."
 
 ;; yang-mode
 (load-file "~/.emacs.d/lisp/yang-mode.el")
+
+;; my-keys-minor-mode-map
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
+(define-key my-keys-minor-mode-map (kbd "M-j") 'move-line-down)
+(define-key my-keys-minor-mode-map (kbd "M-k") 'move-line-up)
+
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t "my-keys" 'my-keys-minor-mode-map)
+(my-keys-minor-mode 1)
+
+;; yang-mode-hook
+(add-hook 'yang-mode-hook
+          '(lambda ()
+             (setq indent-tabs-mode nil)
+             (setq c-basic-offset 4)))
