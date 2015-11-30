@@ -90,6 +90,7 @@ alias gcc='gcc -g -rdynamic -L$HOME/.emacs.d/microcebus/lib -lpthread -lmicroceb
 alias cde='cd ~/.emacs.d'
 alias cdk='/lib/modules/$(uname -r)/kernel'
 alias j='jobs -l'
+alias ag='ag -f -u -t --depth -1'
 alias ..='cd ..'
 alias .2='cd ../..'
 alias ...='.2'

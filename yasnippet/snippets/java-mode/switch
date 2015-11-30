@@ -1,0 +1,11 @@
+# name: switch
+# key: switch
+# --
+switch (${1:key}) {
+    case value:
+        $2
+        break;
+
+        default:
+            break;
+        }$0

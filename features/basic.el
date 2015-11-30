@@ -325,3 +325,7 @@ by using nxml's indentation rules."
           '(lambda ()
              (setq indent-tabs-mode nil)
              (setq c-basic-offset 4)))
+
+;; ag
+(require 'ag)
+(setq ag-highlight-search t)

@@ -1,0 +1,8 @@
+# name: finally
+# key: fi
+# --
+try {
+$1
+} finally {
+$0
+}
