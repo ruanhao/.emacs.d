@@ -201,6 +201,8 @@
 ;; ORG
 (add-hook 'org-mode-hook
           (lambda ()
+            (add-to-list 'org-emphasis-alist
+                         '("*" (:foreground "yellow" :background "red")))
             (org-indent-mode t)
             (setq truncate-lines nil)
             (setq org-src-fontify-natively t)

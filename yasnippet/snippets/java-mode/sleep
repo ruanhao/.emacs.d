@@ -1,0 +1,4 @@
+# name: sleep
+# key: sleep
+# --
+Thread.sleep(${1:1000});$0

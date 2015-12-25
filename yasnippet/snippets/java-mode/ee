@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cisco-common-error
+# key: ee
+# --
+throw new McBusinessException("common.internal.error");
