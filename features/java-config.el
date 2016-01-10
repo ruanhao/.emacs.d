@@ -8,7 +8,7 @@
              '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-jee/4.5/Eclipse.app/Contents/Eclipse/eclim")
              '(ac-auto-start nil)
              '(company-minimum-prefix-length 99))
-            (add-to-list 'load-path "~/Desktop/Projects/emacs-eclim/")
+            (add-to-list 'load-path "~/.emacs.d/emacs-eclim")
             (require 'eclim)
             (global-eclim-mode)
             ;; add the emacs-eclim source
@@ -29,5 +29,3 @@
             ;;(define-key java-mode-map (kbd "M-RET") 'jdee-complete)
             (define-key java-mode-map (kbd "M-RET") 'company-emacs-eclim)
             ))
-
-(setq jdee-server-dir "/Users/ruan/.emacs.d/jdee-server/target")
