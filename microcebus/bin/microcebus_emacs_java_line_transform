@@ -1,0 +1,12 @@
+#! /bin/bash
+
+tmpfile="/tmp/emacs.java.line.format.tmp"
+
+files=$( find . -type f -name "*.java" 2>/dev/null )
+
+for file in $files; do
+    name=$( basename $file )
+    grep -q "$name:[0-9]*" $file && {
+	awk -v fname=$name '{gsub(fname":[0-9]*",fname":"NR,$0);print}' $file > $tmpfile && mv $tmpfile $file
+    }
+done
