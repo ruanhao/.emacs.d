@@ -1,0 +1,4 @@
+#name : emphasis
+#key  : ee
+# --
+* $1 *$0

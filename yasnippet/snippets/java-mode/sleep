@@ -1,4 +1,8 @@
 # name: sleep
 # key: sleep
 # --
-Thread.sleep(${1:1000});$0
+try {
+    TimeUnit.SECONDS.sleep($1);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+}$0

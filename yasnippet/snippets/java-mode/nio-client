@@ -18,10 +18,4 @@ try {
     f.channel().closeFuture().sync();
 } catch (Exception e) {
     e.printStackTrace();
-} finally {
-    try {
-        group.shutdownGracefully();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
 }$0

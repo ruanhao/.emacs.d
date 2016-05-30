@@ -1,0 +1,4 @@
+#name : image
+#key  : ii
+# --
+![${1:Alt Text}](${2:URL})$0

@@ -1,0 +1,10 @@
+# name: do
+# key: do
+# --
+ExecutorService exec = Executors.newCachedThreadPool();
+exec.execute(new Runnable() {
+    @Override
+    public void run() {
+        $1
+    }
+});$0

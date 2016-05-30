@@ -80,6 +80,7 @@ export HISTTIMEFORMAT="%F %T "
 export PATH="~/.emacs.d/microcebus/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/.emacs.d/microcebus/lib:$LD_LIBRARY_PATH"
 export PYTHONSTARTUP=~/.pythonrc
+export CDPATH=/etc:$CDPATH
 
 ### ALIAS ###
 alias grep='grep --color=auto --line-buffered'

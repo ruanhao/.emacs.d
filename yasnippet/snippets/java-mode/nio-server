@@ -2,27 +2,26 @@
 # name: nio-server
 # key: ss
 # --
-EventLoopGroup group = new NioEventLoopGroup();
+EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+EventLoopGroup workerGroup = new NioEventLoopGroup(16);
 try {
     ServerBootstrap b = new ServerBootstrap();
-    b.group(group)
+    b.group(bossGroup, workerGroup)
         .channel(NioServerSocketChannel.class)
-        .localAddress(new InetSocketAddress(${1:port}))
+        .localAddress(new InetSocketAddress(${1:40839}))
         .childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(${2:MyServerHandler});
-                }
-            });
+            @Override
+            public void initChannel(SocketChannel ch) throws Exception {
+                ch.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>() {
+                    @Override
+                    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+                        ctx.writeAndFlush(Unpooled.copiedBuffer(new Date().toString() + "\n", Charsets.UTF_8));
+                    }
+                });
+            }
+        });
     ChannelFuture f = b.bind().sync();
     f.channel().closeFuture().sync();
 } catch (Exception e) {
     e.printStackTrace();
-}finally {
-    try {
-        group.shutdownGracefully().sync();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
 }$0
