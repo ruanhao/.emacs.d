@@ -258,6 +258,10 @@ by using nxml's indentation rules."
 (add-hook 'nxml-mode-hook 'hs-minor-mode)
 (add-hook 'nxml-mode-hook
 	  (lambda ()
+            (setq indent-tabs-mode nil)
+            (setq
+             nxml-child-indent 4
+             nxml-attribute-indent 4)
             (define-key nxml-mode-map (kbd "M-RET") 'completion-at-point)
             (define-key nxml-mode-map (kbd "C-c C-c") 'hs-toggle-hiding)
             (define-key nxml-mode-map (kbd "C-M-\\") 'hao-pretty-print-xml-region)))

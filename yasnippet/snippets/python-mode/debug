@@ -2,4 +2,4 @@
 # name: debug
 # key: d
 # --
-logging.debug("$1"$2)$0
+print($0, " [%s:%s]" % (__file__, __import__('inspect').getframeinfo(__import__('inspect').currentframe()).lineno))
