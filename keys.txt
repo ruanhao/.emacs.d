@@ -1,0 +1,17 @@
+C-x 8 <Enter>               # 输入特殊字符
+
+C-x [ENTER] f unix [ENTER]  # dos2unix
+
+C-x i                       # insert-file
+
+C-_                         # redo
+
+C-x z                       # Repeat the previous emacs command
+
+M-s o                       # occurs
+
+C-x <tab>                   # indent as a whole
+
+C-x r N                     # insert line nums
+
+M-C-o                       # Split line at cursor into two lines

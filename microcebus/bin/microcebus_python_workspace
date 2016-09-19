@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Sanity check.
+if [ "$1" == "" ]; then
+    echo "No project name was specified."
+    exit 1
+fi
+
+# Setup skeleton.
+
+# make directories
+current_dir=${PWD##*/}
+if [ "$current_dir" != "$1" ]; then
+    mkdir $1
+    cd $1
+fi
+
+# mkdir bin
+# mkdir build
+mkdir docs
+mkdir $1
+
+# create template files
+touch "$1/__init__.py"
+
+echo "# setup.py
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
+config = {
+    'description' : 'Description of $1',
+    'author' : 'Hao Ruan',
+    'url' : 'https://github.com/ruanhao/',
+    'author_email' : 'haoru@cisco.com',
+    'version' : '0.1',
+    # 'install_requires' : ['nose'],
+    'packages' : ['$1'],
+    'scripts' : [],
+    'name' : '$1'
+    }
+
+setup(**config)
+# end-of-setup.py" >> setup.py
