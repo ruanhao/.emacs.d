@@ -335,3 +335,6 @@ by using nxml's indentation rules."
 ;; ag
 (require 'ag)
 (setq ag-highlight-search t)
+(setq grep-highlight-matches t)
+(global-set-key (kbd "M-s g") 'project-root-grep)
+(setq grep-command "grep --color=auto -iInRH * --regexp=")
