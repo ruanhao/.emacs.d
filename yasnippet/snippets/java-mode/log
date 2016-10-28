@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: log
-# key: log
+# key: e
 # --
-LOGGER.${1:error}($2);$0
+log.error($1);$0
