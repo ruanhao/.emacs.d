@@ -340,3 +340,13 @@ by using nxml's indentation rules."
 (global-set-key (kbd "M-s g") 'ag-project-files)
 (setq grep-command "grep --color=auto -iInRH * --regexp=")
 (setq ag-arguments (list "--smart-case" "--column")) ;; fix bug on MacOS
+
+;; make it fast to go to the head of very large file
+(defun hao-goto-beginning-of-buffer-quickly ()
+  "Go to beginning of the buffer quickly"
+  (interactive)
+  (global-linum-mode 0)
+  (goto-line 1)
+  (global-linum-mode 1)
+  )
+(global-set-key [(meta <)] 'hao-goto-beginning-of-buffer-quickly)
