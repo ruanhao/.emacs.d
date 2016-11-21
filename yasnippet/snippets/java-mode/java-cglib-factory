@@ -1,0 +1,20 @@
+# name: java-cglib-factory
+# key: java-cglib-factory
+# --
+@SuppressWarnings("unchecked")
+public static <T> T createCglibProxyObject(T target) {
+    Class<T> clazz = (Class<T>) target.getClass();
+    Enhancer enhancer = new Enhancer();
+    enhancer.setSuperclass(target.getClass());
+    MethodInterceptor mi = new MethodInterceptor() {
+            @Override
+            public Object intercept(Object proxyObj,
+                                    Method method,
+                                    Object[] args,
+                                    MethodProxy proxyMethod) throws Throwable {
+                return method.invoke(target, args);
+            }
+        };
+    enhancer.setCallback(mi);
+    return clazz.cast(enhancer.create());
+}

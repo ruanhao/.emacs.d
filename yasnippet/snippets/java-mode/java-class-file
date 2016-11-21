@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: class_file
+# name: java-class-file
 # key: file
 # --
 public class ${1:`(file-name-base

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: netty-tcp-client
+# key: netty-tcp-client
+# --
+EventLoopGroup group = new NioEventLoopGroup();
+Bootstrap b = new Bootstrap();
+b.group(group)
+    .channel(NioSocketChannel.class)
+    .remoteAddress(${1:host}, ${2:port})
+    .handler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            public void initChannel(SocketChannel ch) throws Exception {
+                ch.pipeline().addLast(${3:MyClientHandler});
+            }
+        });
+b.connect();$0

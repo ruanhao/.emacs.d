@@ -1,5 +1,5 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: override
+# name: java-override
 # key: o
 # --
 @Override$0

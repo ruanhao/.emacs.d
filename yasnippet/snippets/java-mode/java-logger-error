@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: log
-# key: e
+# name: java-logger-error
+# key: error
 # --
 log.error($1);$0
