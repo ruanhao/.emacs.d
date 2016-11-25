@@ -1,7 +1,7 @@
 # name: spring-controller-mapping
 # key: mp
 # --
-@RequstMapping("${1:path}")
+@RequestMapping("${1:path}")
 @ResponseBody
 public ${2:void} ${3:method}() {
     $0
