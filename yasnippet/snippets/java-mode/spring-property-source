@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: spring-property-source
+# key: ps
+# --
+@PropertySource({"classpath:${filename}"})

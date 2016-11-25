@@ -1,0 +1,4 @@
+# name: java-inputstream-to-string
+# key: is2s
+# --
+CharStreams.toString(new InputStreamReader(${1:inputstream}, Charsets.UTF_8));$0

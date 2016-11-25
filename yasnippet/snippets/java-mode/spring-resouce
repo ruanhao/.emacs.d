@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: spring-resource
+# key: res
+# --
+@Value("classpath:${1:filename}")
+private Resource ${2:_myResource};$0
