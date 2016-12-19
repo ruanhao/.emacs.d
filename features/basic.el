@@ -43,7 +43,7 @@
 (defadvice linum-update-window (around linum-format-dynamic activate)
   (let* ((w (length (number-to-string
                      (count-lines (point-min) (point-max)))))
-         (linum-format (concat "%" (number-to-string w) "d ")))
+         (linum-format (concat "%" (number-to-string w) "d| ")))
     ad-do-it))
 
 ;; Go to last change
@@ -350,3 +350,7 @@ by using nxml's indentation rules."
   (global-linum-mode 1)
   )
 (global-set-key [(meta <)] 'hao-goto-beginning-of-buffer-quickly)
+
+;; highlight-symbol.el
+(require 'highlight-symbol)
+(global-set-key [f3] 'highlight-symbol)

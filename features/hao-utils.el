@@ -35,37 +35,37 @@ this function would move cursor to the beginning of the word"
   (save-excursion
       (concat "\\b" (hao-pick-word-at-point) "\\b")))
 
-(defun hao-highlight-word-at-point ()
-  "Highlight the word at point"
-  (interactive)
-  (let ((regexp-word (hao-pick-regexp-word-at-point)) color hi-colors)
-    (unless (boundp 'hao-highlight-word-at-point)
-      (setq hao-highlight-word-at-point 0))
-    (unhighlight-regexp regexp-word)
-    (add-to-list 'regexp-search-ring regexp-word)
-    ;; only 4 highlight colors supported now
-    (setq hi-colors '("hi-yellow" "hi-pink" "hi-green" "hi-blue"))
-    (setq color
-	  (nth (% hao-highlight-word-at-point (length hi-colors)) hi-colors))
-    (unless (equal regexp-word "\\b\\b")
-      (highlight-regexp regexp-word color))
-    (setq hao-highlight-word-at-point (1+ hao-highlight-word-at-point))))
-(global-set-key [f3] 'hao-highlight-word-at-point)
+;; (defun hao-highlight-word-at-point ()
+;;   "Highlight the word at point"
+;;   (interactive)
+;;   (let ((regexp-word (hao-pick-regexp-word-at-point)) color hi-colors)
+;;     (unless (boundp 'hao-highlight-word-at-point)
+;;       (setq hao-highlight-word-at-point 0))
+;;     (unhighlight-regexp regexp-word)
+;;     (add-to-list 'regexp-search-ring regexp-word)
+;;     ;; only 4 highlight colors supported now
+;;     (setq hi-colors '("hi-yellow" "hi-pink" "hi-green" "hi-blue"))
+;;     (setq color
+;; 	  (nth (% hao-highlight-word-at-point (length hi-colors)) hi-colors))
+;;     (unless (equal regexp-word "\\b\\b")
+;;       (highlight-regexp regexp-word color))
+;;     (setq hao-highlight-word-at-point (1+ hao-highlight-word-at-point))))
+;; (global-set-key [f3] 'hao-highlight-word-at-point)
 
-(defun hao-unhighlight-all ()
-  "Unhighlight all highlighted words"
-  (interactive)
-  ;; in case of a lot of overlays
-  (dotimes (i 10)
-    (mapc (lambda (regex) (unhighlight-regexp regex))
-	(append regexp-history regexp-search-ring))))
+;; (defun hao-unhighlight-all ()
+;;   "Unhighlight all highlighted words"
+;;   (interactive)
+;;   ;; in case of a lot of overlays
+;;   (dotimes (i 10)
+;;     (mapc (lambda (regex) (unhighlight-regexp regex))
+;; 	(append regexp-history regexp-search-ring))))
 
-(defun hao-unhighlight-word-at-point ()
-  "unhighlight the word at point"
-  ;; in case of a lot of overlays
-  (interactive)
-  (dotimes (i 10)
-    (unhighlight-regexp (hao-pick-regexp-word-at-point))))
+;; (defun hao-unhighlight-word-at-point ()
+;;   "unhighlight the word at point"
+;;   ;; in case of a lot of overlays
+;;   (interactive)
+;;   (dotimes (i 10)
+;;     (unhighlight-regexp (hao-pick-regexp-word-at-point))))
 
 (defun hao-buffer-menu-friendly ()
   "Show buffer menu friendly"
