@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: bang
-# key: !
+# key: she
 # --
-#!/bin/bash
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 $0

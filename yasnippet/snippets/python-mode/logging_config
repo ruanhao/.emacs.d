@@ -3,8 +3,7 @@
 # key: lc
 # --
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='[%(asctime)s] %(levelname)-8s - %(message)-100s <%(pathname)s:%(lineno)d>',
-    datefmt="%Y/%m/%d %H:%M:%S"
+    level = logging.DEBUG,
+    format = '%(asctime)s %(levelname)-5s - %(message)s'
 )
 $0
