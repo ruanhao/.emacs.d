@@ -100,6 +100,9 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 # alias diff='diff -Naur'
 # alias patch='patch -b'
+alias new='tmux new -s'
+alias att='tmux att -d -t'
+alias name='tmux display-message -p "#S"'
 
 if [[ -n $DISPLAY ]]; then
     # Load the user's own X resource settings

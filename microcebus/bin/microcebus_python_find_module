@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+search=$1
+[[ -z $search ]] && echo "wrong args" && exit 1
+
+python3 -c 'help("modules '$search'")'
