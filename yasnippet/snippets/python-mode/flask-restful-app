@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: flask-restful-app
+# key: flask-restful-app
+# expand-env: ((yas-indent-line 'fixed))
+# --
+from flask import Flask
+from flask_restful import Resource, Api
+
+app = Flask(__name__)
+api = Api(app)
+
+class MyResource(Resource):
+    def get(self):
+        return {'hello': 'world'}
+
+    def post(self, id):
+        return {'id': id}
+
+api.add_resource(MyResource, r'/',            endpoint='ep1')
+api.add_resource(MyResource, r'/<string:id>', endpoint='ep2')
+
+if __name__ == '__main__':
+    app.run()
