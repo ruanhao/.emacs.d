@@ -20,3 +20,5 @@
    (plantuml . t)))
 (setq org-plantuml-jar-path
       (expand-file-name "~/plantuml.jar"))
+
+(setq org-confirm-babel-evaluate nil)

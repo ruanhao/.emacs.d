@@ -354,3 +354,11 @@ by using nxml's indentation rules."
 ;; highlight-symbol.el
 (require 'highlight-symbol)
 (global-set-key [f3] 'highlight-symbol)
+
+;; I hate tab
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;; highlight current line num
+(require 'hlinum)
+(hlinum-activate)
