@@ -161,10 +161,40 @@
 ;; Markerpen
 (load-file "~/.emacs.d/lisp/markerpen.el")
 
+;; Package
+
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t))
+  (setq
+   package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                      ("org" . "http://orgmode.org/elpa/")
+                      ("melpa-stable" . "http://stable.melpa.org/packages/")
+                      ("melpa" . "http://melpa.milkbox.net/packages/")
+                      ))
+  )
+
+;; package preinstalled
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it’s not.
+   Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     (unless (package-installed-p package)
+       (package-install package)))
+     packages)
+)
+
+;; simply add package names to the list
+(ensure-package-installed
+ 's
+ 'company-emacs-eclim
+ 'ag
+ 'dash
+ 'auto-complete
+ 'yasnippet
+ ;; ... etc
+)
 
 (add-to-list 'load-path "~/.emacs.d/expand-region")
 (require 'expand-region)
@@ -362,3 +392,14 @@ by using nxml's indentation rules."
 ;; highlight current line num
 (require 'hlinum)
 (hlinum-activate)
+
+;; Toggle maximize buffer (I like it)
+(defun hao-toggle-maximize-buffer ()
+  "Maximize buffer"
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_)
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
+(global-set-key [(control x) (?1)] 'hao-toggle-maximize-buffer)
