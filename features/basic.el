@@ -4,6 +4,40 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+;; Package
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (setq
+   package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                      ("org" . "http://orgmode.org/elpa/")
+                      ("melpa-stable" . "http://stable.melpa.org/packages/")
+                      ("melpa" . "http://melpa.milkbox.net/packages/")
+                      ))
+  (package-initialize)
+  )
+
+;; package preinstalled
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it’s not.
+   Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     (unless (package-installed-p package)
+       (package-install package)))
+     packages)
+)
+
+;; simply add package names to the list
+(ensure-package-installed
+ 's
+ 'company-emacs-eclim
+ 'ag
+ 'dash
+ 'auto-complete
+ 'yasnippet
+ ;; ... etc
+)
+
 ;; Can't live without C-h
 (define-key key-translation-map [?\C-h] [?\C-?])
 
@@ -160,41 +194,6 @@
 
 ;; Markerpen
 (load-file "~/.emacs.d/lisp/markerpen.el")
-
-;; Package
-
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (package-initialize)
-  (setq
-   package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                      ("org" . "http://orgmode.org/elpa/")
-                      ("melpa-stable" . "http://stable.melpa.org/packages/")
-                      ("melpa" . "http://melpa.milkbox.net/packages/")
-                      ))
-  )
-
-;; package preinstalled
-(defun ensure-package-installed (&rest packages)
-  "Assure every package is installed, ask for installation if it’s not.
-   Return a list of installed packages or nil for every skipped package."
-  (mapcar
-   (lambda (package)
-     (unless (package-installed-p package)
-       (package-install package)))
-     packages)
-)
-
-;; simply add package names to the list
-(ensure-package-installed
- 's
- 'company-emacs-eclim
- 'ag
- 'dash
- 'auto-complete
- 'yasnippet
- ;; ... etc
-)
 
 (add-to-list 'load-path "~/.emacs.d/expand-region")
 (require 'expand-region)
