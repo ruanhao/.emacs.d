@@ -35,6 +35,7 @@
  'dash
  'auto-complete
  'yasnippet
+ 'nlinum
  ;; ... etc
 )
 
@@ -59,8 +60,7 @@
 ;; Can use Ctrl-<right> Ctrl-<left> to toggle sessions
 (when (fboundp 'winner-mode)
   (winner-mode 1))
-;; (global-superword-mode t)
-(line-number-mode t)
+
 (column-number-mode t)
 ;; (global-hl-line-mode 1)
 (set-face-foreground 'highlight nil)
@@ -72,13 +72,26 @@
 (powerline-default-theme)
 
 ;; Dynamicaly update line number
-(require 'linum)
-(global-linum-mode t)
-(defadvice linum-update-window (around linum-format-dynamic activate)
-  (let* ((w (length (number-to-string
-                     (count-lines (point-min) (point-max)))))
-         (linum-format (concat "%" (number-to-string w) "d| ")))
-    ad-do-it))
+;; (require 'linum)
+;; (global-linum-mode t)
+;; (defadvice linum-update-window (around linum-format-dynamic activate)
+;;   (let* ((w (length (number-to-string
+;;                      (count-lines (point-min) (point-max)))))
+;;          (linum-format (concat "%" (number-to-string w) "d| ")))
+;;     ad-do-it))
+
+;; nlinum
+(require 'nlinum)
+(global-nlinum-mode t)
+
+(defun my-nlinum-mode-hook ()
+  (when nlinum-mode
+    (setq-local nlinum-format
+                (concat "%" (number-to-string
+                             ;; Guesstimate number of buffer lines.
+                             (ceiling (log (max 1 (/ (buffer-size) 80)) 10)))
+                        "d "))))
+(add-hook 'nlinum-mode-hook 'my-nlinum-mode-hook)
 
 ;; Go to last change
 (require 'goto-last-change)
@@ -94,8 +107,7 @@
 ;; Display time and system load
 (display-time)
 
-(setq save-place t)
-(require 'saveplace)
+(save-place-mode 1)
 
 ;; Scroll line by line
 (setq scroll-step 1)
