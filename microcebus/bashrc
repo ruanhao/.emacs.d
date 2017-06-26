@@ -167,7 +167,7 @@ alias .5='cd ../../../../..'
 alias new='tmux new -s'
 alias att='tmux att -d -t'
 alias name='tmux display-message -p "#S"'
-alias h='h -d'
+alias h='h -in'
 
 if [[ -n $DISPLAY ]]; then
     # Load the user's own X resource settings
