@@ -146,6 +146,7 @@ export LD_LIBRARY_PATH="$HOME/.emacs.d/microcebus/lib:$LD_LIBRARY_PATH"
 export PYTHONSTARTUP=~/.pythonrc
 export CDPATH=/etc:$CDPATH
 export LESS="-MQi"
+export GREP_COLOR="1;37;42"
 
 ### ALIAS ###
 alias grep='grep --color=auto --line-buffered'
