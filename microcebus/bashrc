@@ -134,6 +134,45 @@ h() {
     cat - | eval $_COMMAND
 }
 
+# search string with multiple patterns
+# limit: only one file at one time
+function grepa() {
+    filename=$( echo "${@:${#@}}" )
+    set -- "${@:1:$#-1}"
+    if [[ $1 == "-i" ]]; then
+        # echo "ignorecase mode"
+        local ignorecase_flag=true
+        shift
+    fi
+    result=""
+    local i=0
+    if [[ $ignorecase_flag == true ]]; then
+        for s in "$@"; do
+            if [[ $i == 0 ]]; then
+                result="s~/${s,,}/"
+                ((i++))
+            else
+                result="$result && s~/${s,,}/"
+            fi
+        done
+        result="{s=tolower(\$0)} $result { print FILENAME,NR,\":\",\$0 }"
+        # /a/ && /b/ && /c/ { print FILENAME,NR,":",$0 }
+    else
+        for s in "$@"; do
+            if [[ $i == 0 ]]; then
+                result="/$s/"
+                ((i++))
+            else
+                result="$result && /$s/"
+            fi
+        done
+        result="$result { print FILENAME,NR,\":\",\$0 }"
+    fi
+    # echo $result # {s=tolower($0)} s~/a/ && s~/b/ && s~/c/ { print FILENAME,NR,":",$0 }
+    awk "${result}" $filename
+}
+
+
 ### EXPORT ###
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
