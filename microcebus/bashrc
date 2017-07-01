@@ -136,20 +136,21 @@ function h() {
 
 function m() {
 
-    function __usage() {
-	echo "usage: COMMAND [-inHhp] -p<pattern1> -p<pattern2> <filename>"
+    function _usage() {
+	echo "usage: COMMAND [-inHRp] -p<pattern1> -p<pattern2> <filename>"
 	echo "-i : ignore case"
 	echo "-n : show line number"
 	echo "-H : show filename"
 	echo "-h : show header"
 	echo "-p : specify pattern"
+	echo "-R : search recursively"
     }
 
     declare -a patterns
     # it is important to declare OPTIND as local
-    local ignorecase_flag filename linum header_flag colon result OPTIND
+    local ignorecase_flag recursive_flag filename linum header_flag colon result OPTIND
 
-    while getopts "iHhnp:" opt; do
+    while getopts "iHhnRp:" opt; do
 	case $opt in
 	    i)
 		ignorecase_flag=true ;;
@@ -161,8 +162,10 @@ function m() {
 		patterns+=( "$OPTARG" ) ;;
 	    h)
 		header_flag=true ;;
+	    R)
+		recursive_flag=true ;;
 	    \?)
-		__usage
+		_usage
 		return ;;
 	esac
     done
@@ -175,29 +178,42 @@ function m() {
 
     if [[ $ignorecase_flag == true ]]; then
 	for s in "${patterns[@]}"; do
-            result+=" && s~/${s,,}/"
+	    result+=" && s~/${s,,}/"
 	done
 	result=${result# && }
 	result="{s=tolower(\$0)} $result"
     else
 	for s in "${patterns[@]}"; do
-            result="$result && /$s/"
+	    result="$result && /$s/"
 	done
 	result=${result# && }
     fi
 
     result+=" { print "$filename$linum$colon"\$0 }"
 
-    if [[ ! -t 0 ]]; then 		# pipe case
-	cat - | awk "${result}"
+    if [[ ! -t 0 ]]; then		# pipe case
+        cat - | awk "${result}"
     else
 	for f in "$@"; do
-	    [[ $header_flag == true ]] && echo "########## $f ##########"
-	    awk "${result}" $f
+            if [[ -d $f ]]; then # directory
+		if [[ $recursive_flag == true ]]; then
+		    find -L $f -not -path '*/\.*' -type f -print0 2>/dev/null | while IFS= read -r -d '' ff; do
+			if file "$ff" | grep -q "text"; then # only search text file
+			    [[ $header_flag == true ]] && echo "########## processing $ff ##########"
+			    awk "${result}" "$ff"
+			fi
+		    done
+		fi
+            else                  # file
+		if file "$f" | grep -q "text"; then # only search text file
+		    [[ $header_flag == true ]] && echo "########## processing $f ##########"
+		    awk "${result}" "$f"
+		fi
+            fi
+
 	done
     fi
 }
-
 
 ### EXPORT ###
 export LANG=en_US.UTF-8
