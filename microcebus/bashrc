@@ -22,11 +22,11 @@ CYAN_BOLD="\e[1;36m"
 ### FUNCTIONS ###
 function pick_color() {
     if [[ $? = 0 ]]; then
-	echo ":)" > /tmp/bash.face
-	echo -e "\e[1;36m"
+	    echo ":)" > /tmp/bash.face
+	    echo -e "\e[1;36m"
     else
-	echo ":(" > /tmp/bash.face
-	echo -e "\e[1;35m"
+	    echo ":(" > /tmp/bash.face
+	    echo -e "\e[1;35m"
     fi
 }
 
@@ -74,7 +74,7 @@ function cd {
 function h() {
 
     _usage() {
-	echo "usage: YOUR_COMMAND | h [-idn] args...
+	    echo "usage: YOUR_COMMAND | h [-idn] args...
 	-i : ignore case
 	-d : disable regexp
 	-n : invert colors"
@@ -84,29 +84,29 @@ function h() {
 
     # detect pipe or tty
     if test -t 0; then
-	_usage
-	return
+	    _usage
+	    return
     fi
 
     # manage flags
     while getopts ":idnQ" opt; do
-	case $opt in
-	    i) _OPTS+=" -i " ;;
-	    d)  _OPTS+=" -Q " ;;
-	    n) n_flag=true ;;
-	    Q)  _OPTS+=" -Q " ;;
-	    # let's keep hidden compatibility with -Q for original ack users
-	    \?) _usage
-		return ;;
-	esac
+	    case $opt in
+	        i) _OPTS+=" -i " ;;
+	        d)  _OPTS+=" -Q " ;;
+	        n) n_flag=true ;;
+	        Q)  _OPTS+=" -Q " ;;
+	        # let's keep hidden compatibility with -Q for original ack users
+	        \?) _usage
+		        return ;;
+	    esac
     done
 
     shift $(($OPTIND - 1))
 
     # check maximum allowed input
     if (( ${#@} > 12)); then
-	echo "Too many terms. h supports a maximum of 12 groups. Consider relying on regular expression supported patterns like \"word1\\|word2\""
-	exit -1
+	    echo "Too many terms. h supports a maximum of 12 groups. Consider relying on regular expression supported patterns like \"word1\\|word2\""
+	    exit -1
     fi;
 
     # set zsh compatibility
@@ -115,18 +115,18 @@ function h() {
     local _i=0
 
     if [ -z $n_flag ]; then
-	#inverted-colors-last scheme
-	_COLORS=( "underline bold red" "underline bold green" "underline bold yellow"  "underline bold blue"  "underline bold magenta"  "underline bold cyan" "bold on_red" "bold on_green" "bold black on_yellow" "bold on_blue"  "bold on_cyan" "bold on_magenta"  )
+	    #inverted-colors-last scheme
+	    _COLORS=( "underline bold red" "underline bold green" "underline bold yellow"  "underline bold blue"  "underline bold magenta"  "underline bold cyan" "bold on_red" "bold on_green" "bold black on_yellow" "bold on_blue"  "bold on_cyan" "bold on_magenta"  )
     else
-	#inverted-colors-first scheme
-	_COLORS=( "bold on_red" "bold on_green" "bold black on_yellow" "bold on_blue" "bold on_magenta" "bold on_cyan" "bold black on_white"  "underline bold red" "underline bold green" "underline bold yellow"  "underline bold blue"  "underline bold magenta" 	)
+	    #inverted-colors-first scheme
+	    _COLORS=( "bold on_red" "bold on_green" "bold black on_yellow" "bold on_blue" "bold on_magenta" "bold on_cyan" "bold black on_white"  "underline bold red" "underline bold green" "underline bold yellow"  "underline bold blue"  "underline bold magenta" 	)
     fi
 
     # build the filtering command
     for keyword in "$@"
     do
-	local _COMMAND=$_COMMAND"ack $_OPTS --noenv --flush --passthru --color --color-match=\"${_COLORS[$_i]}\" '$keyword' |"
-	_i=$_i+1
+	    local _COMMAND=$_COMMAND"ack $_OPTS --noenv --flush --passthru --color --color-match=\"${_COLORS[$_i]}\" '$keyword' |"
+	    _i=$_i+1
     done
     #trim ending pipe
     _COMMAND=${_COMMAND%?}
@@ -137,13 +137,13 @@ function h() {
 function m() {
 
     function _usage() {
-	echo "usage: COMMAND [-inHRp] -p<pattern1> -p<pattern2> <filename>"
-	echo "-i : ignore case"
-	echo "-n : show line number"
-	echo "-H : show filename"
-	echo "-h : show header"
-	echo "-p : specify pattern"
-	echo "-R : search recursively"
+	    echo "usage: COMMAND [-inHRp] -p<pattern1> -p<pattern2> <filename>"
+	    echo "-i : ignore case"
+	    echo "-n : show line number"
+	    echo "-H : show filename"
+	    echo "-h : show header"
+	    echo "-p : specify pattern"
+	    echo "-R : search recursively"
     }
 
     declare -a patterns
@@ -151,67 +151,68 @@ function m() {
     local ignorecase_flag recursive_flag filename linum header_flag colon result OPTIND
 
     while getopts "iHhnRp:" opt; do
-	case $opt in
-	    i)
-		ignorecase_flag=true ;;
-	    H)
-		filename="FILENAME," ;;
-	    n)
-		linum="NR," ;;
-	    p)
-		patterns+=( "$OPTARG" ) ;;
-	    h)
-		header_flag=true ;;
-	    R)
-		recursive_flag=true ;;
-	    \?)
-		_usage
-		return ;;
-	esac
+	    case $opt in
+	        i)
+		        ignorecase_flag=true ;;
+	        H)
+		        filename="FILENAME," ;;
+	        n)
+		        linum="NR," ;;
+	        p)
+		        patterns+=( "$OPTARG" ) ;;
+	        h)
+		        header_flag=true ;;
+	        R)
+		        recursive_flag=true ;;
+	        \?)
+		        _usage
+		        return ;;
+	    esac
     done
 
     if [[ -n $filename || -n $linum ]]; then
-	colon="\":\","
+	    colon="\":\","
     fi
 
     shift $(( $OPTIND - 1 ))
 
     if [[ $ignorecase_flag == true ]]; then
-	for s in "${patterns[@]}"; do
-	    result+=" && s~/${s,,}/"
-	done
-	result=${result# && }
-	result="{s=tolower(\$0)} $result"
+	    for s in "${patterns[@]}"; do
+	        result+=" && s~/${s,,}/"
+	    done
+	    result=${result# && }
+	    result="{s=tolower(\$0)} $result"
     else
-	for s in "${patterns[@]}"; do
-	    result="$result && /$s/"
-	done
-	result=${result# && }
+	    for s in "${patterns[@]}"; do
+	        result="$result && /$s/"
+	    done
+	    result=${result# && }
     fi
 
     result+=" { print "$filename$linum$colon"\$0 }"
 
     if [[ ! -t 0 ]]; then		# pipe case
-        cat - | awk "${result}"
+        # use 'while read' in order to disable buffering
+        cat - | while read l; do echo $l | awk "${result}"; done
     else
-	for f in "$@"; do
+	    for f in "$@"; do
             if [[ -d $f ]]; then # directory
-		if [[ $recursive_flag == true ]]; then
-		    find -L $f -not -path '*/\.*' -type f -print0 2>/dev/null | while IFS= read -r -d '' ff; do
-			if file "$ff" | grep -q "text"; then # only search text file
-			    [[ $header_flag == true ]] && echo "########## processing $ff ##########"
-			    awk "${result}" "$ff"
-			fi
-		    done
-		fi
+		        if [[ $recursive_flag == true ]]; then
+		            find -L $f -not -path '*/\.*' -type f -print0 2>/dev/null | while IFS= read -r -d '' ff; do
+			            if file "$ff" | grep -q "text"; then # only search text file
+			                [[ $header_flag == true ]] && echo "########## processing $ff ##########"
+			                awk "${result}" "$ff"
+			            fi
+		            done
+		        fi
             else                  # file
-		if file "$f" | grep -q "text"; then # only search text file
-		    [[ $header_flag == true ]] && echo "########## processing $f ##########"
-		    awk "${result}" "$f"
-		fi
+		        if file "$f" | grep -q "text"; then # only search text file
+		            [[ $header_flag == true ]] && echo "########## processing $f ##########"
+		            awk "${result}" "$f"
+		        fi
             fi
 
-	done
+	    done
     fi
 }
 
