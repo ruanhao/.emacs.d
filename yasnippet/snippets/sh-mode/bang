@@ -4,4 +4,6 @@
 # --
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
+#
+# Description: $1
 $0

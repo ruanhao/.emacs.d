@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: err
+# key: err
+# --
+err() {
+  echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+}
+$0
