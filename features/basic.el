@@ -378,7 +378,7 @@ by using nxml's indentation rules."
 (setq ag-highlight-search t)
 (setq grep-highlight-matches t)
 ;; (global-set-key (kbd "M-s g") 'project-root-grep)
-(global-set-key (kbd "M-a") 'ag-project-files)
+(global-set-key (kbd "M-q") 'ag-project-files)
 (setq grep-command "grep --color=auto -iInRH * --regexp=")
 (setq ag-arguments (list "--smart-case" "--column")) ;; fix bug on MacOS
 
