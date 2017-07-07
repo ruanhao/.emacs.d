@@ -2,7 +2,6 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-### CONSTANTS ###
 NORMAL="\e[0m"
 WHITE="\e[0;37m"
 WHITE_BOLD="\e[1;37m"
@@ -19,7 +18,6 @@ MAGENTA_BOLD="\e[1;35m"
 CYAN="\e[0;36m"
 CYAN_BOLD="\e[1;36m"
 
-### FUNCTIONS ###
 function pick_color() {
     if [[ $? = 0 ]]; then
 	    echo ":)" > /tmp/bash.face
@@ -216,7 +214,6 @@ function m() {
     fi
 }
 
-### EXPORT ###
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export TERM=xterm-256color
@@ -230,7 +227,6 @@ export CDPATH=/etc:$CDPATH
 export LESS="-MRQi"
 export GREP_COLOR="1;37;42"
 
-### ALIAS ###
 alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lh --color=auto'
 alias ec='emacs -nw'
@@ -246,12 +242,14 @@ alias ...='.2'
 alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
-# alias diff='diff -Naur'
-# alias patch='patch -b'
+alias diff='diff -Naur'
+alias patch='patch -b'
 alias new='tmux new -s'
 alias att='tmux att -d -t'
 alias name='tmux display-message -p "#S"'
-alias h='h -in'
+alias hi='h -in'
+alias mi='m -iHRn'
+alias timewatch='time cat'
 
 if [[ -n $DISPLAY ]]; then
     # Load the user's own X resource settings
