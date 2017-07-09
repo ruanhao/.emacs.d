@@ -256,6 +256,9 @@ if [[ -n $DISPLAY ]]; then
     [[ -r $HOME/.Xresources ]] && xrdb $HOME/.Xresources
 fi
 
+# show complete command if there is a '!'
+bind Space:magic-space
+
 ## .inputrc
 
 ## C-x C-r command re-reads this init file
