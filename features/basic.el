@@ -29,6 +29,7 @@
 
 ;; simply add package names to the list
 (ensure-package-installed
+ 'hl-highlight-mode
  's
  'company-emacs-eclim
  'ag
@@ -393,8 +394,15 @@ by using nxml's indentation rules."
 (global-set-key [(meta <)] 'hao-goto-beginning-of-buffer-quickly)
 
 ;; highlight-symbol.el
-(require 'highlight-symbol)
-(global-set-key [f3] 'highlight-symbol)
+;; (require 'highlight-symbol)
+;; (global-set-key [f3] 'highlight-symbol)
+
+;; hl-highlight-mode.el
+(hl-highlight-mode t)
+(global-set-key [f3] (lambda ()
+                       (interactive)
+                       (hl-highlight-thingatpt-local)
+                       (deactivate-mark)))
 
 ;; I hate tab
 (setq-default indent-tabs-mode nil)
