@@ -1,71 +1,38 @@
-;; hao-utils
-(defun hao-show-system-type ()
-  "Find out what OS Emacs is currently running on"
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; utilities functions
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; delete pair forward
+(global-set-key (kbd "M-)") 'delete-pair)
+;; delete pair backward
+(defun hao-delete-pair-backward ()
+  "Delete a pair of characters enclosing the sexp that follows point (backward)."
   (interactive)
-  (message "%s" system-type))
+  (save-excursion (backward-sexp 1) (delete-char 1))
+  (delete-char -1))
+(global-set-key (kbd "M-(") 'hao-delete-pair-backward)
 
-(defun hao-show-features-loaded ()
-  "Find out all features loaded"
+(defun hao-toggle-window-dedicated ()
+  "Toggle whether the current active window is dedicated or not"
   (interactive)
-  (message "%S" features))
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window
+                                 (not (window-dedicated-p window))))
+       "Window '%s' is dedicated"
+     "Window '%s' is normal")
+   (current-buffer)))
+(global-set-key [(control x) (?9)] 'hao-toggle-window-dedicated)
 
-(defun hao-delete-word-at-point ()
-  "Delete word at current point"
-  (interactive)
-  (let (head tail)
-    (save-excursion
-      (skip-chars-backward "-_A-Za-z0-9")
-      (setq head (point))
-      (skip-chars-forward "-_A-Za-z0-9")
-      (setq tail (point))
-      (delete-region head tail))))
-(global-set-key (kbd "\C-c \C-d") 'hao-delete-word-at-point)
-
-(defun hao-pick-word-at-point ()
-  "Pick current word under cursor
-this function would move cursor to the beginning of the word"
-  (let (tail-point)
-    (skip-chars-forward "-_A-Za-z0-9")
-    (setq tail-point (point))
-    (skip-chars-backward "-_A-Za-z0-9")
-    (buffer-substring-no-properties (point) tail-point)))
-
-(defun hao-pick-regexp-word-at-point ()
-  "Pick current regexp word at point"
+(defun hao-pretty-print-xml-region (begin end)
+  (interactive "r")
   (save-excursion
-      (concat "\\b" (hao-pick-word-at-point) "\\b")))
-
-;; (defun hao-highlight-word-at-point ()
-;;   "Highlight the word at point"
-;;   (interactive)
-;;   (let ((regexp-word (hao-pick-regexp-word-at-point)) color hi-colors)
-;;     (unless (boundp 'hao-highlight-word-at-point)
-;;       (setq hao-highlight-word-at-point 0))
-;;     (unhighlight-regexp regexp-word)
-;;     (add-to-list 'regexp-search-ring regexp-word)
-;;     ;; only 4 highlight colors supported now
-;;     (setq hi-colors '("hi-yellow" "hi-pink" "hi-green" "hi-blue"))
-;;     (setq color
-;; 	  (nth (% hao-highlight-word-at-point (length hi-colors)) hi-colors))
-;;     (unless (equal regexp-word "\\b\\b")
-;;       (highlight-regexp regexp-word color))
-;;     (setq hao-highlight-word-at-point (1+ hao-highlight-word-at-point))))
-;; (global-set-key [f3] 'hao-highlight-word-at-point)
-
-;; (defun hao-unhighlight-all ()
-;;   "Unhighlight all highlighted words"
-;;   (interactive)
-;;   ;; in case of a lot of overlays
-;;   (dotimes (i 10)
-;;     (mapc (lambda (regex) (unhighlight-regexp regex))
-;; 	(append regexp-history regexp-search-ring))))
-
-;; (defun hao-unhighlight-word-at-point ()
-;;   "unhighlight the word at point"
-;;   ;; in case of a lot of overlays
-;;   (interactive)
-;;   (dotimes (i 10)
-;;     (unhighlight-regexp (hao-pick-regexp-word-at-point))))
+    (nxml-mode)
+    (goto-char begin)
+    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+      (backward-char) (insert "\n"))
+    (indent-region begin end))
+  (message "Ah, much better!"))
 
 (defun hao-buffer-menu-friendly ()
   "Show buffer menu friendly"
@@ -80,7 +47,7 @@ this function would move cursor to the beginning of the word"
   (interactive)
   (split-window-horizontally)
   (windmove-right))
-  (global-set-key (kbd "\C-x 3") 'hao-open-window-horizontally-friendly)
+(global-set-key (kbd "\C-x 3") 'hao-open-window-horizontally-friendly)
 
 (defun hao-open-window-vertically-friendly ()
   "Open a new widow at beneth side and move into it"
@@ -120,49 +87,33 @@ this function would move cursor to the beginning of the word"
     (dotimes (i (length (window-list)))
       (goto-line line-number)
       (recenter-top-bottom)
-    (other-window 1))))
+      (other-window 1))))
 (global-set-key (kbd "\C-c l") 'hao-same-line)
 
 (defun hao-toggle-window ()
   (interactive)
   (if (= (count-windows) 2)
       (let* ((this-win-buffer (window-buffer))
-	     (next-win-buffer (window-buffer (next-window)))
-	     (this-win-edges (window-edges (selected-window)))
-	     (next-win-edges (window-edges (next-window)))
-	     (this-win-2nd (not (and (<= (car this-win-edges)
-					 (car next-win-edges))
-				     (<= (cadr this-win-edges)
-					 (cadr next-win-edges)))))
-	     (splitter
-	      (if (= (car this-win-edges)
-		     (car (window-edges (next-window))))
-		  'split-window-horizontally
-		'split-window-vertically)))
-	(delete-other-windows)
-	(let ((first-win (selected-window)))
-	  (funcall splitter)
-	  (if this-win-2nd (other-window 1))
-	  (set-window-buffer (selected-window) this-win-buffer)
-	  (set-window-buffer (next-window) next-win-buffer)
-	  (select-window first-win)
-	  (if this-win-2nd (other-window 1))))))
-;; (global-set-key [f12] 'hao-toggle-window)
-
-;; Fill column indicator
-(load-file "~/.emacs.d/lisp/fill-column-indicator.el")
-(defun hao-toggle-column-ruler ()
-  "Toggle column ruler"
-  (interactive)
-  (setq fill-column 80)
-  (unless (boundp 'hao-toggle-column-ruler)
-    (setq hao-toggle-column-ruler nil))
-  (if (not hao-toggle-column-ruler)
-      (fci-mode 1)
-    (fci-mode 0))
-  (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
-;; (global-set-key [f7] 'hao-toggle-column-ruler)
-
+	         (next-win-buffer (window-buffer (next-window)))
+	         (this-win-edges (window-edges (selected-window)))
+	         (next-win-edges (window-edges (next-window)))
+	         (this-win-2nd (not (and (<= (car this-win-edges)
+					                     (car next-win-edges))
+				                     (<= (cadr this-win-edges)
+					                     (cadr next-win-edges)))))
+	         (splitter
+	          (if (= (car this-win-edges)
+		             (car (window-edges (next-window))))
+		          'split-window-horizontally
+		        'split-window-vertically)))
+	    (delete-other-windows)
+	    (let ((first-win (selected-window)))
+	      (funcall splitter)
+	      (if this-win-2nd (other-window 1))
+	      (set-window-buffer (selected-window) this-win-buffer)
+	      (set-window-buffer (next-window) next-win-buffer)
+	      (select-window first-win)
+	      (if this-win-2nd (other-window 1))))))
 
 (defun hao-increment-number-at-point ()
   (interactive)
@@ -177,9 +128,6 @@ this function would move cursor to the beginning of the word"
   (or (looking-at "-?[0123456789]+")
       (error "No number at point"))
   (replace-match (number-to-string (- (string-to-number (match-string 0)) 1))))
-
-(global-set-key (kbd "<insertchar>") 'hao-increment-number-at-point)
-(global-set-key (kbd "<deletechar>") 'hao-decrement-number-at-point)
 
 ;; Move line up and down
 (defun move-line (n)
@@ -214,8 +162,17 @@ this function would move cursor to the beginning of the word"
   (open-line 1)
   (next-line 1)
   (yank))
-
 (global-set-key (kbd "M-i") 'hao-duplicate-line)
+
+;; Toggle maximize buffer (I like it)
+(defun hao-toggle-maximize-buffer () "Maximize buffer"
+       (interactive)
+       (if (= 1 (length (window-list)))
+           (jump-to-register '_)
+         (progn
+           (window-configuration-to-register '_)
+           (delete-other-windows))))
+(global-set-key [(control x) (?1)] 'hao-toggle-maximize-buffer)
 
 (defun hao-sort-lines-by-length (reverse beg end)
   "Sort lines by length."

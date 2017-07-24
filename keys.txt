@@ -79,3 +79,23 @@ C-u M-.					: 寻找标签的下一个定义
 其它：
 
 F9 : 在头文件和对应源文件之间跳转: (global-set-key [(f9)] 'ff-find-other-file)
+
+
+
+;; Set CUA-Utils
+;; [M-a]: Leftify
+;; [M-b]: Fill rect with space/tab
+;; [M-c]: Remove all space on the left
+;; [M-f]: Replace all characters in the rect by a specified char
+;; [M-i]: Increment first number on every line
+;; [M-k]: Cut rect
+;; [M-l]: Downcase
+;; [M-m]: Copy rect
+;; [M-n]: Number the lines
+;; [M-o]: Fill the rect with space in order to move right
+;; [M-r]: Replace by regex
+;; [M-R]: Revert up and down
+;; [M-s]: Replace each line with a string
+;; [M-t]: Replace the whole rect with a string
+;; [M-u]: Uppercase
+;; [M-|]: Do shell command on the content of the rect

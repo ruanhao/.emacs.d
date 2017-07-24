@@ -1,217 +1,67 @@
-;; -*- coding: utf-8 -*-
-;; author: Hao Ruan
-;; date: 2013/09/27
-
+;;;;;;;;;;;;;;;;;;;;
+;; load-path
+;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-;; Package
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (setq
-   package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                      ("org" . "http://orgmode.org/elpa/")
-                      ("melpa-stable" . "http://stable.melpa.org/packages/")
-                      ("melpa" . "http://melpa.milkbox.net/packages/")
-                      ))
-  (package-initialize)
-  )
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; personal information
+;;;;;;;;;;;;;;;;;;;;;;;;
+(setq user-full-name "Hao Ruan"
+      user-mail-address "ruanhao1116@google.com")
 
-;; package preinstalled
-(defun ensure-package-installed (&rest packages)
-  "Assure every package is installed, ask for installation if it’s not.
-   Return a list of installed packages or nil for every skipped package."
-  (mapcar
-   (lambda (package)
-     (unless (package-installed-p package)
-       (package-install package)))
-     packages)
-)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; package setup
+;; use M-x package-refresh-contents to reload the list of packages for the first time
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(package-initialize)
+(require 'package)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/"))
+      package-archive-priorities '(("melpa-stable" . 1)))
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(setq use-package-verbose t)
+(setq use-package-always-ensure t)
+(require 'use-package)
+(use-package auto-compile
+  :config (auto-compile-on-load-mode))
+(setq load-prefer-newer t)
 
-;; simply add package names to the list
-(ensure-package-installed
- 'hl-highlight-mode
- 's
- 'company-emacs-eclim
- 'ag
- 'dash
- 'auto-complete
- 'yasnippet
- 'nlinum
- ;; ... etc
-)
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; global variables
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq-default
+ indent-tabs-mode nil
+ tab-width        4
+ c-basic-offset   4
+ )
 
-;; Can't live without C-h
-(define-key key-translation-map [?\C-h] [?\C-?])
+(setq
+ custom-file "~/.emacs.d/custom-settings.el"
+ default-major-mode               'text-mode
+ mac-option-modifier              'ctrl
+ mac-command-modifier             'meta
+ show-paren-delay                 0
+ bookmark-save-flag               1
+ scroll-step                      1
+ scroll-conservatively            9999
+ split-width-threshold            nil
+ create-lockfiles                 nil
+ make-backup-files                nil
+ auto-save-default                nil
+ mode-require-final-newline       nil
+ case-fold-search                 t
+ column-number-mode               t
+ inhibit-splash-screen            t
+ tags-revert-without-query        t
+ set-mark-command-repeat-pop      t)
 
-;; I like tap Ctrl-J to indent, not Enter
-(electric-indent-mode 0)
-
-(setq default-major-mode 'text-mode)
-
-(add-hook 'before-save-hook (lambda ()
-                              (unless (equal "md" (file-name-extension (buffer-file-name)))
-                                (delete-trailing-whitespace))))
-
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq auto-save-default nil)
-
-;; No automatically newline
-(setq mode-require-final-newline nil)
-
-;; Can use Ctrl-<right> Ctrl-<left> to toggle sessions
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
-
-(column-number-mode t)
-;; (global-hl-line-mode 1)
-(set-face-foreground 'highlight nil)
-;; (set-face-background 'hl-line "#262626")
-(set-face-attribute 'region nil :background "#808080")
-
-;; Powerline is fancy
-(require 'powerline)
-(powerline-default-theme)
-
-;; Dynamicaly update line number
-;; (require 'linum)
-;; (global-linum-mode t)
-;; (defadvice linum-update-window (around linum-format-dynamic activate)
-;;   (let* ((w (length (number-to-string
-;;                      (count-lines (point-min) (point-max)))))
-;;          (linum-format (concat "%" (number-to-string w) "d| ")))
-;;     ad-do-it))
-
-;; nlinum
-(require 'nlinum)
-(global-nlinum-mode t)
-
-(defun my-nlinum-mode-hook ()
-  (when nlinum-mode
-    (setq-local nlinum-format
-                (concat "%" (number-to-string
-                             ;; Guesstimate number of buffer lines.
-                             (ceiling (log (max 1 (/ (buffer-size) 80)) 10)))
-                        "d "))))
-(add-hook 'nlinum-mode-hook 'my-nlinum-mode-hook)
-
-;; Go to last change
-(require 'goto-last-change)
-(global-set-key "\C-x\C-\\" 'goto-last-change)
-
-;; yes or no
-(fset 'yes-or-no-p 'y-or-n-p)
-
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(setq inhibit-splash-screen t)
-
-;; Display time and system load
-(display-time)
-
-(save-place-mode 1)
-
-;; Scroll line by line
-(setq scroll-step 1)
-(setq scroll-conservatively 9999)
-
-;; Show whitespace
-(require 'whitespace)
-(global-set-key [f7] 'whitespace-mode)
-
-;; emacs-lisp-mode-hook
-(add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    (modify-syntax-entry ?- "w")
-	    (setq indent-tabs-mode nil)))
-
-;; Parenthesis pair utilities
-(show-paren-mode t)
-(load-file "~/.emacs.d/lisp/autopair.el")
-(autopair-global-mode)
-
-(setq tags-revert-without-query t)
-
-;; Set molokai theme
-(cond
- ((= emacs-major-version 23)
-  (add-to-list 'load-path "~/.emacs.d/themes/")
-  (require 'molokai-theme))
- ((>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-  (load-theme 'moe-dark t)))
-
-;; Setup moe-theme
-(load-file "~/.emacs.d/themes/moe-theme.el")
-(powerline-moe-theme)
-;;(moe-theme-set-color 'orange)
-(moe-theme-random-color)
-
-(global-set-key (kbd "M--") 'kill-whole-line)
-
-;; Set CUA-Utils
-;; [M-a]: Leftify
-;; [M-b]: Fill rect with space/tab
-;; [M-c]: Remove all space on the left
-;; [M-f]: Replace all characters in the rect by a specified char
-;; [M-i]: Increment first number on every line
-;; [M-k]: Cut rect
-;; [M-l]: Downcase
-;; [M-m]: Copy rect
-;; [M-n]: Number the lines
-;; [M-o]: Fill the rect with space in order to move right
-;; [M-r]: Replace by regex
-;; [M-R]: Revert up and down
-;; [M-s]: Replace each line with a string
-;; [M-t]: Replace the whole rect with a string
-;; [M-u]: Uppercase
-;; [M-|]: Do shell command on the content of the rect
-(setq cua-enable-cua-keys nil)
-(cua-mode)
-(global-set-key (kbd "C-c SPC") 'cua-set-rectangle-mark)
-
-;; Set multiple-cursors
-(add-to-list 'load-path "~/.emacs.d/multiple-cursors")
-(require 'multiple-cursors)
-(global-set-key [f8] 'mc/mark-more-like-this-extended)
-
-;; Set delete-pair
-(global-set-key (kbd "M-)") 'delete-pair)
-
-;; Delete pair backward
-(defun hao-delete-pair-backward ()
-  "Delete a pair of characters enclosing the sexp that follows point (backward)."
-  (interactive)
-  (save-excursion (backward-sexp 1) (delete-char 1))
-  (delete-char -1))
-(global-set-key (kbd "M-(") 'hao-delete-pair-backward)
-
-;; Set direction
-;; (global-set-key (kbd "<down>") 'next-logical-line)
-;; (global-set-key (kbd "<up>") 'previous-logical-line)
-
-;; Dirtree
-(add-to-list 'load-path "~/.emacs.d/dirtree")
-(global-set-key [f2] 'dirtree)
-(require 'dirtree)
-
-;; (require 'neotree)
-;; (global-set-key [f2] 'neotree-toggle)
-
-;; Bookmark
-;; (define-key global-map [f9] 'bookmark-set)
-;; (define-key global-map [f10] 'bookmark-jump)
-;; (setq bookmark-save-flag 1)
-
-;; Revert buffer
-;; (define-key global-map [f11] 'revert-buffer)
-
-;; Markerpen
-(load-file "~/.emacs.d/lisp/markerpen.el")
-
-(add-to-list 'load-path "~/.emacs.d/expand-region")
-(require 'expand-region)
-(global-set-key (kbd "M-@") 'er/expand-region)
-
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; global-set-key
+;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key [(f9)] 'shrink-window)
 (global-set-key [(f10)] (lambda () (interactive) (shrink-window -1)))
 
@@ -221,26 +71,26 @@
 (global-set-key [(f5)] (lambda () (interactive)(window-configuration-to-register 'w)))
 (global-set-key [(f6)] (lambda () (interactive)(jump-to-register 'w)))
 
-;; (require 'sticky-windows)
-;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
-;; (global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
-;; (global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+(define-key my-keys-minor-mode-map (kbd "M-j") 'move-line-down)
+(define-key my-keys-minor-mode-map (kbd "M-k") 'move-line-up)
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t "my-keys" 'my-keys-minor-mode-map)
+(my-keys-minor-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; hooks
+;;;;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'emacs-lisp-mode-hook
+	      (lambda ()
+	        (modify-syntax-entry ?- "w")
+	        (setq indent-tabs-mode nil)))
 
-;; Toggle window dedication
+(add-hook 'before-save-hook
+          (lambda ()
+            (unless (equal "md" (file-name-extension (buffer-file-name)))
+              (delete-trailing-whitespace))))
 
-(defun hao-toggle-window-dedicated ()
-"Toggle whether the current active window is dedicated or not"
-(interactive)
-(message
- (if (let (window (get-buffer-window (current-buffer)))
-       (set-window-dedicated-p window
-        (not (window-dedicated-p window))))
-     "Window '%s' is dedicated"
-   "Window '%s' is normal")
- (current-buffer)))
-(global-set-key [(control x) (?9)] 'hao-toggle-window-dedicated)
-
-;; ORG
 (add-hook 'org-mode-hook
           (lambda ()
             (add-to-list 'org-emphasis-alist
@@ -248,71 +98,187 @@
             (org-indent-mode t)
             (setq truncate-lines nil)
             (setq org-src-fontify-natively t)
+            (modify-syntax-entry ?= "w")
             (set-face-attribute 'org-level-1 nil :height 2.0 :bold t)
             (set-face-attribute 'org-level-2 nil :height 1.8 :bold t)
             (set-face-attribute 'org-level-3 nil :height 1.6 :bold t)))
 
-;; Vertical split as default
-(setq split-width-threshold nil)
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; personal preferences
+;;;;;;;;;;;;;;;;;;;;;;;;
+(define-key key-translation-map [?\C-h] [?\C-?])
+(fset 'yes-or-no-p 'y-or-n-p)
+(save-place-mode 1)
+(menu-bar-mode -1)
+(electric-indent-mode 0)
+(prefer-coding-system 'utf-8)
+(show-paren-mode t)
+(global-auto-revert-mode t)
+(global-hi-lock-mode t)
 
-;; Horizontal split as default
-;; (setq split-width-threshold 1)
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; expand-region
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package expand-region
+  :defer t
+  :bind ("M-@" . er/expand-region))
 
-;; Ido
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; highlight
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package highlight-symbol
+  :demand
+  :init (require 'highlight-symbol)
+  :config (progn
+           (global-set-key [f3] 'highlight-symbol)))
+
+(use-package hl-anything
+  :pin melpa-stable
+  :config (progn
+            (hl-highlight-mode t)
+            (global-set-key [f4] (lambda ()
+                                   (interactive)
+                                   (hl-highlight-thingatpt-local)
+                                   (deactivate-mark)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; yasnippet
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :init (yas-global-mode)
+  :config (progn
+            (yas-global-mode)
+            (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
+            (setq yas-key-syntaxes '("w_" "w_." "^ "))
+            (setq yas-installed-snippets-dir "~/.emacs.d/yasnippet/snippets")
+            (setq yas-expand-only-for-last-commands nil)
+            (yas-global-mode 1)
+            (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; winner mode
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package winner
+  :defer t)
+
+;;;;;;;;;;;;;;;;;;;;
+;; ag
+;;;;;;;;;;;;;;;;;;;;
+(use-package ag
+  :config (progn
+            (setq ag-highlight-search t)
+            (setq grep-highlight-matches t)
+            (global-set-key (kbd "M-s g") 'ag-project-files)
+            (setq grep-command "grep --color=auto -iInRH * --regexp=")
+            (setq ag-arguments (list "--smart-case" "--column")) ;; fix bug on MacOS
+            ))
+
+;;;;;;;;;;;;;;;;;;;;
+;; auto-complete
+;;;;;;;;;;;;;;;;;;;;
+(require 'auto-complete-config)
+(ac-config-default)
+(global-auto-complete-mode t)
+(ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
+(define-key ac-mode-map (kbd "M-/") 'auto-complete)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; powerline
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package powerline
+  :init (powerline-default-theme))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; nlinum
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package nlinum
+  :init (global-nlinum-mode t))
+(defun my-nlinum-mode-hook ()
+  (when nlinum-mode
+    (setq-local nlinum-format
+                (concat "%" (number-to-string
+                             ;; Guesstimate number of buffer lines.
+                             (ceiling (log (max 1 (/ (buffer-size) 80)) 10)))
+                        "d "))))
+(add-hook 'nlinum-mode-hook 'my-nlinum-mode-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; whitespace-mode
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package whitespace
+  :bind ([f7] . whitespace-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; autopair
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package autopair
+  :init (autopair-global-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; theme
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package molokai-theme
+;;   :demand)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'solarized-dark t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; CUA
+;;;;;;;;;;;;;;;;;;;;;;;;
+(setq cua-enable-cua-keys nil)
+(cua-mode)
+(global-set-key (kbd "C-c SPC") 'cua-set-rectangle-mark)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; multiple-cursors
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package multiple-cursors
+  :bind ([f8] . mc/mark-more-like-this-extended))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; fill column indicator
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package fill-column-indicator
+  :defer t)
+(defun hao-toggle-column-ruler ()
+  "Toggle column ruler"
+  (interactive)
+  (setq fill-column 80)
+  (unless (boundp 'hao-toggle-column-ruler)
+    (setq hao-toggle-column-ruler nil))
+  (if (not hao-toggle-column-ruler)
+      (fci-mode 1)
+    (fci-mode 0))
+  (setq hao-toggle-column-ruler (not hao-toggle-column-ruler)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido
+;;;;;;;;;;;;;;;;;;;;;;;;
 (ido-mode 1)
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 
-;; Case insensitive
-(setq case-fold-search t)
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; neotree
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package neotree
+  :bind ([f2] . neotree-toggle))
 
-(setq mac-option-modifier nil)
-(setq mac-command-modifier 'meta)
-
-;; nxml-mode-hook
-(defun hao-pretty-print-xml-region (begin end)
-  "Pretty format XML markup in region. You need to have nxml-mode
-http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
-this.  The function inserts linebreaks to separate tags that have
-nothing but whitespace between them.  It then indents the markup
-by using nxml's indentation rules."
-  (interactive "r")
-  (save-excursion
-    (nxml-mode)
-    (goto-char begin)
-    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-      (backward-char) (insert "\n"))
-    (indent-region begin end))
-  (message "Ah, much better!"))
-
-(require 'hideshow)
-(require 'sgml-mode)
-
-(add-to-list 'hs-special-modes-alist
-             '(nxml-mode
-               "<!--\\|<[^/>]*[^/]>"
-               "-->\\|</[^/>]*[^/]>"
-
-               "<!--"
-               sgml-skip-tag-forward
-               nil))
-
-(add-hook 'nxml-mode-hook 'hs-minor-mode)
-(add-hook 'nxml-mode-hook
-	  (lambda ()
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; yang mode
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package yang-mode
+  :demand
+  :config (progn
             (setq indent-tabs-mode nil)
-            (setq
-             nxml-child-indent 4
-             nxml-attribute-indent 4)
-            (define-key nxml-mode-map (kbd "M-RET") 'completion-at-point)
-            (define-key nxml-mode-map (kbd "C-c C-c") 'hs-toggle-hiding)
-            (define-key nxml-mode-map (kbd "C-M-\\") 'hao-pretty-print-xml-region)))
+            (setq c-basic-offset 4)))
 
-(customize-set-variable 'nxml-slash-auto-complete-flag t)
-
-;; Project Root
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; project root
+;;;;;;;;;;;;;;;;;;;;;;;;
 (load-file "~/.emacs.d/lisp/project-root.el")
-
 (setq project-roots
       `(("Git Project"
          :root-contains-files (".gitignore"))))
@@ -329,9 +295,7 @@ by using nxml's indentation rules."
            (shell-command-to-string
             (concat "find "
                     my-project-root
-                    " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang|el|org|xsd)$\" | grep -E -v \"(META-INF|WEB-INF|target|checkstyle|yang-gen)\"" ;; ADD FILENAME FILTER HERE
-                    ;; example:
-                    ;; " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(java|xml|yang|el|org|xsd)$\" | grep -E -v \"(META-INF|WEB-INF|target|checkstyle)\""
+                    " \\( -name \"*.svn\" -o -name \"*.git\" \\) -prune -o -type f -print | grep -E \"\.(py|java|xml|yang|el|org|xsd|jsp)$\" | grep -E -v \"(META-INF|WEB-INF|target|checkstyle|yang-gen)\"" ;; ADD FILENAME FILTER HERE
                     )) "\n"))
     ;; populate hash table (display repr => path)
     (setq tbl (make-hash-table :test 'equal))
@@ -350,75 +314,3 @@ by using nxml's indentation rules."
             )
       (find-file (gethash (ido-completing-read "project-files: " ido-list) tbl)))))
 (global-set-key (kbd "C-x f") 'hao-ido-project-files)
-
-;; Auto Revert
-(global-auto-revert-mode t)
-
-;; yang-mode
-(load-file "~/.emacs.d/lisp/yang-mode.el")
-
-;; my-keys-minor-mode-map
-(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
-
-(define-key my-keys-minor-mode-map (kbd "M-j") 'move-line-down)
-(define-key my-keys-minor-mode-map (kbd "M-k") 'move-line-up)
-
-(define-minor-mode my-keys-minor-mode
-  "A minor mode so that my key settings override annoying major modes."
-  t "my-keys" 'my-keys-minor-mode-map)
-(my-keys-minor-mode 1)
-
-;; yang-mode-hook
-(add-hook 'yang-mode-hook
-          '(lambda ()
-             (setq indent-tabs-mode nil)
-             (setq c-basic-offset 4)))
-
-;; ag
-(require 'ag)
-(setq ag-highlight-search t)
-(setq grep-highlight-matches t)
-;; (global-set-key (kbd "M-s g") 'project-root-grep)
-(global-set-key (kbd "M-s g") 'ag-project-files)
-(setq grep-command "grep --color=auto -iInRH * --regexp=")
-(setq ag-arguments (list "--smart-case" "--column")) ;; fix bug on MacOS
-
-;; make it fast to go to the head of very large file
-(defun hao-goto-beginning-of-buffer-quickly ()
-  "Go to beginning of the buffer quickly"
-  (interactive)
-  (global-linum-mode 0)
-  (goto-line 1)
-  (global-linum-mode 1)
-  )
-(global-set-key [(meta <)] 'hao-goto-beginning-of-buffer-quickly)
-
-;; highlight-symbol.el
-;; (require 'highlight-symbol)
-;; (global-set-key [f3] 'highlight-symbol)
-
-;; hl-highlight-mode.el
-(hl-highlight-mode t)
-(global-set-key [f3] (lambda ()
-                       (interactive)
-                       (hl-highlight-thingatpt-local)
-                       (deactivate-mark)))
-
-;; I hate tab
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
-;; highlight current line num
-(require 'hlinum)
-(hlinum-activate)
-
-;; Toggle maximize buffer (I like it)
-(defun hao-toggle-maximize-buffer ()
-  "Maximize buffer"
-  (interactive)
-  (if (= 1 (length (window-list)))
-      (jump-to-register '_)
-    (progn
-      (window-configuration-to-register '_)
-      (delete-other-windows))))
-(global-set-key [(control x) (?1)] 'hao-toggle-maximize-buffer)
