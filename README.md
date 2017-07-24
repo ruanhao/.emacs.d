@@ -6,6 +6,7 @@ Usage
 =====
     - select features in emacs.config
     - run `./setup`
+    - Manually install `use-package` first (optional)
 
 Note
 ====
