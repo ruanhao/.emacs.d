@@ -130,13 +130,13 @@
   :demand
   :init (require 'highlight-symbol)
   :config (progn
-           (global-set-key [f3] 'highlight-symbol)))
+           (global-set-key [f4] 'highlight-symbol)))
 
 (use-package hl-anything
   :pin melpa-stable
   :config (progn
             (hl-highlight-mode t)
-            (global-set-key [f4] (lambda ()
+            (global-set-key [f3] (lambda ()
                                    (interactive)
                                    (hl-highlight-thingatpt-local)
                                    (deactivate-mark)))))
