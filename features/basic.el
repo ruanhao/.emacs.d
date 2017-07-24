@@ -177,11 +177,13 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; auto-complete
 ;;;;;;;;;;;;;;;;;;;;
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
-(ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
-(define-key ac-mode-map (kbd "M-/") 'auto-complete)
+(use-package auto-complete
+  :config (progn
+            (ac-config-default)
+            (global-auto-complete-mode t)
+            (ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
+            (define-key ac-mode-map (kbd "M-/") 'auto-complete)
+            ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; powerline
@@ -265,15 +267,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package neotree
   :bind ([f2] . neotree-toggle))
-
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; yang mode
-;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package yang-mode
-  :demand
-  :config (progn
-            (setq indent-tabs-mode nil)
-            (setq c-basic-offset 4)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; project root
