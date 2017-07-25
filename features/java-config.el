@@ -3,11 +3,12 @@
 ;; Java IDE
 ;;;;;;;;;;;;;;;;;;;;
 (use-package s
-  :demand)
+  :defer t)
 (use-package dash
-  :demand)
+  :defer t)
 (use-package company
-  :demand)
+  :defer t)
+
 (add-hook 'java-mode-hook
           (lambda ()
             (custom-set-variables
