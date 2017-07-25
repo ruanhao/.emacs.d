@@ -81,6 +81,7 @@
   "A minor mode so that my key settings override annoying major modes."
   t "my-keys" 'my-keys-minor-mode-map)
 (my-keys-minor-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hooks
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -169,11 +170,12 @@
 ;; ag
 ;;;;;;;;;;;;;;;;;;;;
 (use-package ag
+  :pin melpa                            ; vertion should be [0.48,)
   :config (progn
-            (setq ag-highlight-search t)
-            (setq grep-highlight-matches t)
             (global-set-key (kbd "M-s g") 'ag-project-files)
-            (setq grep-command "grep --color=auto -iInRH * --regexp=")
+            ;; (setq grep-highlight-matches t)
+            ;; (setq grep-command "grep --color=auto -iInRH * --regexp=")
+            (setq ag-highlight-search t)
             (setq ag-arguments (list "--smart-case" "--column")) ;; fix bug on MacOS
             ))
 
