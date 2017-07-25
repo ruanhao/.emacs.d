@@ -131,25 +131,26 @@
 ;; highlight
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package highlight-symbol
-  :demand
+  :defer t
   :init (require 'highlight-symbol)
   :config (progn
            (global-set-key [f4] 'highlight-symbol)))
 
 (use-package hl-anything
   :pin melpa-stable
-  :config (progn
-            (hl-highlight-mode t)
-            (global-set-key [f3] (lambda ()
-                                   (interactive)
-                                   (hl-highlight-thingatpt-local)
-                                   (deactivate-mark)))))
+  :defer t
+  :init (hl-highlight-mode t)
+  :config (global-set-key [f3] (lambda ()
+                                 (interactive)
+                                 (hl-highlight-thingatpt-local)
+                                 (deactivate-mark))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yasnippet
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yasnippet
   :diminish yas-minor-mode
+  :defer t
   :init (yas-global-mode)
   :config (progn
             (yas-global-mode)
@@ -159,12 +160,6 @@
             (setq yas-expand-only-for-last-commands nil)
             (yas-global-mode 1)
             (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; winner mode
-;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package winner
-  :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; ag
