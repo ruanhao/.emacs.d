@@ -1,0 +1,167 @@
+* 1, 基本操作
+
+** 1.1, 编辑
+- 块注释
+  =M-;=
+
+- 输入特殊字符
+  =C-x 8 <Enter>=
+
+- dos2unix
+  =C-x [ENTER] f unix [ENTER]=
+
+- 整体缩进
+  =C-x <tab>=
+
+- 插入行号
+  =C-x r N=
+
+- 在光标位置分行
+  =M-C-o=
+
+- tab 2 space
+  =M-x untabify=
+
+- 将整个 region 小写
+  =C-x C-l=
+
+- 将整个 region 大写
+  =C-x C-u=
+
+** 1.2, 文件操作
+
+- 另存为
+  =C-x C-w=
+
+- redo
+  =C-_=
+
+- 重复上个命令
+  =C-x z=
+
+** 1.3, 搜索
+
+- 询问并替换
+  =M-%=
+
+- 在缓冲区内搜索
+
+  =M-s o=
+
+  按 e 可以进入 occur-edit-mode，可以编辑搜索结果\\
+  =C-c C-c=: 退出编辑模式
+
+
+* 2, 块操作
+
+- 杀掉块
+  =C-x r k=
+
+- 删除块
+  =C-x r d=
+  CUA: =[M-k]=
+
+- 复制块
+  =C-x r M-w=
+
+- 黏贴块
+  =C-x r y=
+
+- 在块中插入空格，原来的内容右移
+  =C-x r o=
+  CUA: =[M-o]=
+
+- 清除块（用空格填充）
+  =C-x r c=
+  CUA: =[M-b]=
+
+- 插入行号
+  =C-x r N=
+  输入起始行： =M-0 C-x r N=
+
+- 删除左侧空格
+  =M-x delete-whitespace-rectangle=
+  CUA: =[M-c]=
+
+- 用字符串替换每一行
+  =C-x r t <string> <RET>=
+  CUA: =[M-s]=
+
+- 在行首插入字符串
+  =M-x string-insert-rectangle <RET> string <RET>=
+
+- 左对齐
+  CUA: =[M-a]=
+
+- 用字符填充
+  CUA: =[M-f]=
+
+- 对行首的数字 +1
+  CUA: =[M-i]=
+
+- 小写
+  CUA: =[M-l]=
+
+- 大写
+  CUA: =[M-u]=
+
+- 复制
+  CUA: =[M-m]=
+
+- 增加行号
+  CUA: =[M-n]=
+
+- 正则替换
+  CUA: =[M-r]=
+
+- 逆序
+  CUA: =[M-R]=
+
+- 用字符串替换整个块区域
+  CUA: =[M-t]=
+
+- 对块内容执行 shell 命令
+  CUA: =[M-|]=
+
+
+* 3, xcscope
+
+- 在根目录下递归生成数据库
+  =cscope -r=
+- Set initial directory
+  =C-c s a=
+- Unset initial directory
+  =C-c s A=
+- create list of files to index
+  =C-c s I=
+- Find symbol
+  =C-c s s=
+- Find global definition
+  =C-c s d=
+- Find functions calling a function
+  =C-c s c=
+- Find called functions (list functions called from a function)
+  =C-c s C=
+- Find text string
+  =C-c s t=
+- Find egrep pattern
+  =C-c s e=
+- Find a file
+  =C-c s f=
+- Find files #including a file
+  =C-c s i=
+- Display cscope buffer
+  =C-c s b=
+
+* 4, etags
+
+- 生成 tags
+  =find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -print | etags -=
+- 选择tags文件
+  =M-x visit-tags-table <RET> FILE <RET>=
+- 访问标签
+  =M-. [TAG] <RET>=
+- 返回
+  =M-*=
+- 寻找标签的下一个定义
+  =C-u M-.=
