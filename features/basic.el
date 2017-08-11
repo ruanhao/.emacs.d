@@ -239,6 +239,16 @@
 (use-package multiple-cursors
   :bind ([f8] . mc/mark-more-like-this-extended))
 
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; undo-tree
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package undo-tree
+  :init (require 'undo-tree)
+  :config (progn
+            (global-undo-tree-mode t)
+            (global-set-key (kbd "M--") 'undo-tree-redo)
+            ))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; fill column indicator
 ;;;;;;;;;;;;;;;;;;;;;;;;;
