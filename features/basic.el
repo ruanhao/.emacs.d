@@ -145,6 +145,14 @@
                                  (hl-highlight-thingatpt-local)
                                  (deactivate-mark))))
 
+;;;;;;;;;;;;;;;;;;;;
+;; ace-jump-mode
+;;;;;;;;;;;;;;;;;;;;
+(use-package ace-jump-mode
+  :bind (("C-c j" . ace-jump-char-mode)
+         ("C-c l" . ace-jump-line-mode)
+         ("C-x SPC" . ace-jump-mode-pop-mark)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yasnippet
 ;;;;;;;;;;;;;;;;;;;;;;;;
