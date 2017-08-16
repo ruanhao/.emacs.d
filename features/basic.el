@@ -245,6 +245,7 @@
 ;; multiple-cursors
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package multiple-cursors
+  :init (require 'multiple-cursors)
   :bind ([f8] . mc/mark-more-like-this-extended))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
