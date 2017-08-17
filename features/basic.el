@@ -161,7 +161,6 @@
   :defer t
   :init (yas-global-mode)
   :config (progn
-            (yas-global-mode)
             (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
             (setq yas-key-syntaxes '("w_" "w_." "^ "))
             (setq yas-installed-snippets-dir "~/.emacs.d/yasnippet/snippets")
