@@ -16,9 +16,9 @@
 (require 'package)
 (setq  package-archives
        '(("gnu" . "http://elpa.gnu.org/packages/")
-	 ("org" . "http://orgmode.org/elpa/")
-	 ("melpa" . "http://melpa.org/packages/")
-	 ("melpa-stable" . "http://stable.melpa.org/packages/"))
+         ("org" . "http://orgmode.org/elpa/")
+         ("melpa" . "http://melpa.org/packages/")
+         ("melpa-stable" . "http://stable.melpa.org/packages/"))
        package-archive-priorities '(("melpa-stable" . 1)))
 (package-initialize)
 (setq use-package-verbose t)
@@ -121,6 +121,15 @@
 (global-hi-lock-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
+;; key-chord
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package key-chord
+  :init (require 'key-chord)
+  :config (key-chord-mode 1))
+(key-chord-define-global "rp" 'point-to-register)
+(key-chord-define-global "rj" 'register-to-point)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
 ;; expand-region
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package expand-region
@@ -134,7 +143,7 @@
   :defer t
   :init (require 'highlight-symbol)
   :config (progn
-           (global-set-key [f4] 'highlight-symbol)))
+            (global-set-key [f4] 'highlight-symbol)))
 
 (use-package hl-anything
   :pin melpa-stable
@@ -149,9 +158,8 @@
 ;; ace-jump-mode
 ;;;;;;;;;;;;;;;;;;;;
 (use-package ace-jump-mode
-  :bind (("C-c j" . ace-jump-char-mode)
-         ("C-c l" . ace-jump-line-mode)
-         ("C-x SPC" . ace-jump-mode-pop-mark)))
+  :defer t)
+(key-chord-define-global "jj" 'ace-jump-char-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yasnippet
