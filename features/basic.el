@@ -125,7 +125,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package key-chord
   :init (require 'key-chord)
-  :config (key-chord-mode 1))
+  :config (progn
+            (key-chord-mode 1)
+            (setq key-chord-one-key-delay  1.0)
+            (setq key-chord-two-keys-delay 1.0)))
 (key-chord-define-global "rp" 'point-to-register)
 (key-chord-define-global "rj" 'register-to-point)
 
