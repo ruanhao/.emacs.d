@@ -176,6 +176,7 @@
             (setq yas-key-syntaxes '("w_" "w_." "^ "))
             (setq yas-installed-snippets-dir "~/.emacs.d/yasnippet/snippets")
             (setq yas-expand-only-for-last-commands nil)
+            (setq yas-indent-line nil)
             (yas-global-mode 1)
             (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
 
