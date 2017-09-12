@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: options
+# key: op
+# --
+from optparse import OptionParser
+
+def parser_options():
+    global options
+    global args
+    parser = OptionParser(usage="%prog [options] arg")
+    parser.add_option('--host', dest='host', help="address")
+    parser.add_option('-p', '--port', dest='port', type='int', default=9996, help="ip port")
+    parser.add_option('-v', '--verbose', dest='verbose', action='store_true', default=False, help="show details")
+    options, args = parser.parse_args()
+    if not options.host:
+        parser.error("host not specified")$0
