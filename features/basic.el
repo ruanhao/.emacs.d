@@ -199,6 +199,7 @@
 (use-package auto-complete
   :config (progn
             (ac-config-default)
+            (setq ac-auto-start 4)
             (global-auto-complete-mode t)
             (ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
             (define-key ac-mode-map (kbd "M-/") 'auto-complete)
