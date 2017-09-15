@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: options
-# key: op
+# key: pargs
 # --
 from optparse import OptionParser
 
