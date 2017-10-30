@@ -1,6 +1,6 @@
 auto-save-list
 *.beam
-distel/ebin
+/distel
 *.elc
 *.dat
 auto-complete-clang-async.el

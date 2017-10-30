@@ -52,24 +52,36 @@
                 ;; (backward-char)
                 (hao-erlang-pair-find 'search-backward-regexp '(-1) (point)))))))))
 
-;; Emacs Erlang mode setup
-(setq load-path (cons "/lab/testtools/rhel664/otp/R15B01_halfword/lib/erlang/lib/tools-2.6.7/emacs"
-		      load-path))
-(setq erlang-root-dir "/lab/testtools/rhel664/otp/R15B01_halfword/lib/erlang/erts-5.9.1")
-(setq exec-path (cons "/lab/testtools/rhel664/otp/R15B01_halfword/lib/erlang/erts-5.9.1/bin" exec-path))
 
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; erlang setup
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1. git clone git@github.com:massemanet/distel.git under ~/.emacs.d
+;; 2. cd ~/.emacs.d/distel; make
+;; 3. echo 'code:add_pathsz(["~/.emacs.d/distel/ebin"]).' >> ~/.erlang
+;; 4. C-c C-z when enter emacs
+
+(add-to-list 'load-path  "/usr/local/opt/erlang@19/lib/erlang/lib/tools-2.9.1/emacs")
+(setq erlang-root-dir "/usr/local/opt/erlang@19/lib/erlang/erts-8.3")
+(setq exec-path (cons "/usr/local/opt/erlang@19/lib/erlang/erts-8.3/bin" exec-path))
 (require 'erlang-start)
+(add-to-list 'load-path "/Users/haoruan/.emacs.d/distel/elisp")
+(require 'distel)
+(distel-setup)
 
-(add-to-list 'auto-mode-alist '("\\.\\(erl\\|hrl\\|app\\|app.src\\)" . erlang-mode))
+;; prevent annoying hang-on-compile
+(defvar inferior-erlang-prompt-timeout t)
 
-;; erlang-mode-hook
+;; default node name to emacs@localhost
+(setq inferior-erlang-machine-options '("-sname" "emacs"))
+
+;; tell distel to default to that node
+(setq erl-nodename-cache
+      (make-symbol "emacs@localhost"))
+
 (add-hook 'erlang-mode-hook
           (lambda ()
-	    (setq indent-tabs-mode nil)
+            (setq indent-tabs-mode nil)
             (erlang-font-lock-level-3)
-	    (modify-syntax-entry ?_ "w")
-            ;; when starting an Erlang shell in Emacs, set default node name
-            (setq inferior-erlang-machine-options (list "-sname" (user-login-name) "-setcookie" "emacs"))))
-
-(global-set-key (kbd "M-.") (lambda () (interactive) (find-tag (find-tag-default))))
-(global-set-key (kbd "M-,") 'pop-tag-mark)
+            (modify-syntax-entry ?_ "w")))
