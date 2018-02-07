@@ -1,10 +1,15 @@
 # -*- mode: snippet -*-
+# name: hh
+# key: hh
+# --
 #+TITLE:     $1
 #+AUTHOR:    Hao Ruan
 #+EMAIL:     haoru@cisco.com
 #+LANGUAGE:  en
 #+LINK_HOME: http://www.github.com/ruanhao
-#+OPTIONS: h:6 html-postamble:nil html-preamble:t tex:t f:t ^:nil
+#+OPTIONS:   h:6 html-postamble:nil html-preamble:t tex:t f:t ^:nil
+#+STARTUP:   showall
+#+TOC:       headlines 3
 #+HTML_DOCTYPE: <!DOCTYPE html>
 #+HTML_HEAD: <link href="http://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css" />
 #+HTML_HEAD: <link href="../org-html-themes/css/style.css" rel="stylesheet" type="text/css" />
@@ -12,5 +17,4 @@
 | Author   | {{{author}}} ({{{email}}})    |
 | Date     | {{{time(%Y-%m-%d %H:%M:%S)}}} |
 #+HTML: </div>
-#+TOC: headlines 3
 $0
