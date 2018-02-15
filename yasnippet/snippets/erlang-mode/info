@@ -1,0 +1,4 @@
+#name: info
+#key: info
+# --
+error_logger:info_msg("[~p: ~p] $1~n", [?MODULE, ?LINE | [$2]]),$0

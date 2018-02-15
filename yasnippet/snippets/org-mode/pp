@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: ipython block
+# key: pp
+# --
+#+BEGIN_SRC ipython :session ${1::var path="${2:$$(replace-regexp-in-string "^.*/" "img/" (let () (make-temp-file "fig" nil ".png")))}" }
+
+$0
+#+END_SRC
+
+[[file:$2]]
