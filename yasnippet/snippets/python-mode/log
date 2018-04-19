@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: print variable
+# key: log
+# --
+log("$1", $1)$0

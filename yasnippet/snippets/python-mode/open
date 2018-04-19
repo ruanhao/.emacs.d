@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: open
+# key: open
+# --
+with open('$1', '${2:r}') as f:
+    ${3:pass}$0

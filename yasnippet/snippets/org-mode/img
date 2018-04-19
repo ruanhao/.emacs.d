@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: insert html image
+# key: img
+# --
+#+HTML: <img src="$1"/>$0
