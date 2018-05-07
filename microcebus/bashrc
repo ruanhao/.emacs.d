@@ -230,8 +230,8 @@ export LESS="-MRQi"
 export GREP_COLOR="1;37;42"
 
 alias grep='grep --color=auto --line-buffered'
-alias ll='ls -lh --color=auto'
-alias ec='emacs -nw'
+alias ll='ls -lhrt --color=auto'
+alias e='emacs -nw'
 alias dirs='dirs -v'
 alias gcc='gcc -g -rdynamic -L$HOME/.emacs.d/microcebus/lib -lpthread -lmicrocebus `pkg-config --cflags --libs glib-2.0`'
 alias cde='cd ~/.emacs.d'
@@ -248,10 +248,13 @@ alias diff='diff -Naur'
 alias patch='patch -b'
 alias new='tmux new -s'
 alias att='tmux att -d -t'
+alias tls='tmux ls'
+alias d='cd ~/Desktop'
 alias name='tmux display-message -p "#S"'
 alias hi='h -in'
 alias mi='m -iHRn'
 alias timewatch='time cat'
+alias mpv='mpv --border=no --save-position-on-quit=yes --autofit=1200x1000 --no-osd-bar'
 
 if [[ -n $DISPLAY ]]; then
     # Load the user's own X resource settings
