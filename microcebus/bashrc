@@ -232,6 +232,8 @@ export GREP_COLOR="1;37;42"
 alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lhrt --color=auto'
 alias e='emacs -nw'
+alias cat='bat --style=grid,numbers'
+alias less='bat --style=grid,numbers'
 alias dirs='dirs -v'
 alias gcc='gcc -g -rdynamic -L$HOME/.emacs.d/microcebus/lib -lpthread -lmicrocebus `pkg-config --cflags --libs glib-2.0`'
 alias cde='cd ~/.emacs.d'

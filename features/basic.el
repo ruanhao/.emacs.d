@@ -338,3 +338,11 @@
             )
       (find-file (gethash (ido-completing-read "project-files: " ido-list) tbl)))))
 (global-set-key (kbd "C-x f") 'hao-ido-project-files)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; org
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq org-log-done t)
