@@ -165,3 +165,16 @@
   =M-*=
 - 寻找标签的下一个定义
   =C-u M-.=
+
+
+
+* 自定义 mode
+
+#+BEGIN_SRC el
+(defun yang-mode-hook ())
+(add-to-list 'auto-mode-alist '("\\.yang\\'" . yang-mode))
+(add-hook 'yang-mode-hook
+          (lambda ())
+          (load-file "~/.emacs.d/lisp/yang-mode.el")
+          )
+#+END_SRC
