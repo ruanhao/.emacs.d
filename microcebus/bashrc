@@ -214,6 +214,17 @@ function m() {
     fi
 }
 
+function kill-emacs-daemon() {
+    emacsclient -a "false" -e "(boundp 'server-process)" &>/dev/null
+    if [[ "$?" == "0" ]]; then
+        echo "Shutting down Emacs server"
+        emacsclient -e '(kill-emacs)'
+    else
+        echo "Emacs server not running"
+    fi
+}
+
+
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export TERM=xterm-256color
@@ -232,6 +243,7 @@ export GREP_COLOR="1;37;42"
 alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lhrt --color=auto'
 alias e='emacs -nw'
+alias ec='emacsclient -t -a ""'
 alias cat='bat --style=grid,numbers'
 alias less='bat --style=grid,numbers'
 alias dirs='dirs -v'
