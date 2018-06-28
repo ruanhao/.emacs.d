@@ -2,6 +2,6 @@
 # name: ipython common block
 # key: py
 # --
-#+BEGIN_SRC ipython :session :exports both :results output
+#+BEGIN_SRC ipython :session :exports both :results output :eval never-export
 $0
 #+END_SRC
