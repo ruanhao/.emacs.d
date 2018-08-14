@@ -193,3 +193,11 @@
   (save-excursion
     (indent-region (point-min) (point-max) nil)))
 (global-set-key (kbd "C-x i") 'hao-indent-whole-buffer)
+
+
+;; used in Ag
+(defun hao-find-java-implementation ()
+  (interactive)
+  (ag-project-files (ag/dwim-at-point) (list :file-regex (ag/buffer-extension-regex)))
+  (other-window 1))
+(global-set-key (kbd "M-s j") 'hao-find-java-implementation)

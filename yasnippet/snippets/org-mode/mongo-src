@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: mongo-src
+# key: <m
+# --
+#+BEGIN_SRC mongo :host localhost :port 27017 :db emacs :exports both
+  $0
+#+END_SRC
