@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: get_logger
+# key: ll
+# --
+logger = logging.getLogger(${1:__name__})
+$0

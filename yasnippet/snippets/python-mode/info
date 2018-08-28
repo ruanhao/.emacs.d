@@ -2,4 +2,4 @@
 # name: info
 # key: info
 # --
-logging.info($0)
+logger.info($0)

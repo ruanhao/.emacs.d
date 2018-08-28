@@ -2,4 +2,4 @@
 # name: error
 # key: error
 # --
-logging.error($0)
+logger.error($0)
