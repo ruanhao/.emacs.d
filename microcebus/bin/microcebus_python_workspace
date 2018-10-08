@@ -9,11 +9,11 @@ fi
 # Setup skeleton.
 
 # make directories
-current_dir=${PWD##*/}
-if [ "$current_dir" != "$1" ]; then
-    mkdir $1
-    cd $1
-fi
+# current_dir=${PWD##*/}
+# if [ "$current_dir" != "$1" ]; then
+#     mkdir $1
+#     cd $1
+# fi
 
 # mkdir bin
 # mkdir build
