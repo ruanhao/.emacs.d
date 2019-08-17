@@ -6,8 +6,6 @@
   :defer t)
 (use-package dash
   :defer t)
-(use-package company
-  :defer t)
 
 (add-hook 'java-mode-hook
           (lambda ()
@@ -66,3 +64,10 @@
  "black"))))
  ;; ...
 )
+
+;; used in Ag
+(defun hao-find-java-implementation ()
+  (interactive)
+  (ag-project-files (ag/dwim-at-point) (list :file-regex (ag/buffer-extension-regex)))
+  (other-window 1))
+(global-set-key (kbd "M-s j") 'hao-find-java-implementation)

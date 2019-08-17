@@ -129,8 +129,8 @@
             (key-chord-mode 1)
             (setq key-chord-one-key-delay  1.0)
             (setq key-chord-two-keys-delay 1.0)))
-(key-chord-define-global "rp" 'point-to-register)
-(key-chord-define-global "rj" 'register-to-point)
+;; (key-chord-define-global "rp" 'point-to-register)
+;; (key-chord-define-global "rj" 'register-to-point)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; expand-region
@@ -142,11 +142,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; highlight
 ;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package highlight-symbol
-  :defer t
-  :init (require 'highlight-symbol)
-  :config (progn
-            (global-set-key [f4] 'highlight-symbol)))
+;; (use-package highlight-symbol
+;;   :defer t
+;;   :init (require 'highlight-symbol)
+;;   :config (progn
+;;             (global-set-key [f4] 'highlight-symbol)))
 
 (use-package hl-anything
   :pin melpa-stable
@@ -196,14 +196,14 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; auto-complete
 ;;;;;;;;;;;;;;;;;;;;
-(use-package auto-complete
-  :config (progn
-            (ac-config-default)
-            (setq ac-auto-start 4)
-            (global-auto-complete-mode t)
-            (ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
-            (define-key ac-mode-map (kbd "M-/") 'auto-complete)
-            ))
+;; (use-package auto-complete
+;;   :config (progn
+;;             (ac-config-default)
+;;             (setq ac-auto-start 4)
+;;             (global-auto-complete-mode t)
+;;             (ac-linum-workaround) ;; fix auto-complete-mode and linum-mode annoyance
+;;             (define-key ac-mode-map (kbd "M-/") 'auto-complete)
+;;             ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; powerline
@@ -294,6 +294,18 @@
 (setq ido-enable-flex-matching t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
+;; recentf
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package recentf
+  :defer t
+  :init (require 'recentf)
+  :config (progn
+            (recentf-mode 1)
+            (setq recentf-max-menu-item 10))
+  :bind ("C-x C-r" . 'recentf-open-files)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;
 ;; neotree
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package neotree
@@ -346,6 +358,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq org-log-done t)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; company
+;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package company
+  :defer t
+  :config (global-company-mode 1)
+  )
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Disable annoying error
