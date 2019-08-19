@@ -10,9 +10,6 @@
 (add-hook 'java-mode-hook
           (lambda ()
             (custom-set-variables
-             ;; '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.5.2/Eclipse.app/Contents/Eclipse"))
-             '(eclim-eclipse-dirs '("/Users/haoruan/Applications/Eclipse.app/Contents/Eclipse"))
-             ;; '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.5.2/Eclipse.app/Contents/Eclipse/eclim")
              '(eclim-executable "/Users/haoruan/Applications/Eclipse.app/Contents/Eclipse/eclim")
              '(ac-auto-start nil)
              '(company-minimum-prefix-length 99))
