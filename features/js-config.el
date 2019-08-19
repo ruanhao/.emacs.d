@@ -31,7 +31,14 @@
   ;; `M-x package-install [ret] company`
   (company-mode +1))
 
-(add-hook 'js2-mode-hook (lambda ()
-                           (setup-tide-mode)
-                           (define-key js2-mode-map (kbd "M-/") 'company-complete)
-                           ))
+
+(dolist (hook (list
+               'js2-mode-hook
+               'web-mode-hook
+               'typescript-mode-hook
+               ))
+  (add-hook hook (lambda ()
+                   (setup-tide-mode)
+                   (define-key js2-mode-map (kbd "M-RET") 'company-complete)
+                   )))
+(add-hook 'before-save-hook 'tide-format-before-save)
