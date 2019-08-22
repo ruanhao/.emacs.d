@@ -174,7 +174,7 @@
   :config (progn
             (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
             (setq yas-key-syntaxes '("w_" "w_." "^ "))
-            (setq yas-installed-snippets-dir "~/.emacs.d/yasnippet/snippets")
+            (setq yas-snippet-dirs '("~/.emacs.d/yasnippet/snippets"))
             (setq yas-expand-only-for-last-commands nil)
             (setq yas-indent-line nil)
             (yas-global-mode 1)
