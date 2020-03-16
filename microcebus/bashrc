@@ -240,6 +240,7 @@ export PYTHONSTARTUP=~/.pythonrc
 export CDPATH=/etc:$CDPATH
 export LESS="-MRQi"
 export GREP_COLOR="1;37;42"
+export FZF_DEFAULT_OPTS='--layout=reverse --height 50%'
 
 alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lhrt --color=auto'
@@ -288,3 +289,9 @@ bind Space:magic-space
 ## "\C-n": history-search-forward
 ## "\e\C-h": unix-word-rubout
 ## "\e\C-?": unix-word-rubout
+
+
+function ee() {
+    filename=`fzf`
+    $EDITOR $filename
+}
