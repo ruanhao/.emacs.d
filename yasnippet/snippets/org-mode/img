@@ -2,4 +2,5 @@
 # name: insert html image
 # key: img
 # --
-#+HTML: <img src="$1"/>$0
+#+ATTR_HTML: :width ${1:50}%
+[[$0]]

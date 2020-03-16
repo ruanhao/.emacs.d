@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: insert html tag
+# key: html
+# --
+#+HTML: $0

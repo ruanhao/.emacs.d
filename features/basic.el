@@ -358,6 +358,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq org-log-done t)
+(setq org-html-postamble t)
+(setq org-html-postamble-format
+      '(("en"
+         "<p class=\"author\">Author: %a (%e)</p>
+<p class=\"date\">Created: %d</p>
+<p class=\"date\">Updated: %C</p>
+")))
+
+;; %t stands for the title.
+;; %a stands for the author's name.
+;; %e stands for the author's email.
+;; %d stands for the date.
+;; %c will be replaced by `org-html-creator-string'.
+;; %v will be replaced by `org-html-validation-link'.
+;; %T will be replaced by the export time.
+;; %C will be replaced by the last modification time.
+
 
 
 
