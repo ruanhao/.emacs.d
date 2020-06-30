@@ -3,4 +3,5 @@
 # key: img
 # --
 #+ATTR_HTML: :width ${1:50}%
+#+CAPTION: $2
 [[$0]]

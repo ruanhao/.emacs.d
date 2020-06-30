@@ -2,6 +2,6 @@
 # name: plantuml-src
 # key: <p
 # --
-#+BEGIN_SRC plantuml :file $1.png
+#+BEGIN_SRC plantuml :file ${1:filename}.png :eval never-export
   $0
 #+END_SRC
