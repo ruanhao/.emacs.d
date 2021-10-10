@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: export html without details
+# key: ee
+# --
+#+begin_export html
+<pre style="background:black;color:#00ff00">
+$0
+</pre>
+#+end_export

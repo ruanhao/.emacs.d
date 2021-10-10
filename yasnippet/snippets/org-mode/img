@@ -2,6 +2,6 @@
 # name: insert html image
 # key: img
 # --
-#+ATTR_HTML: :width ${1:50}%
+#+ATTR_HTML: :width ${1:60}%
 #+CAPTION: $2
 [[$0]]

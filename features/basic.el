@@ -375,8 +375,10 @@
 ;; %T will be replaced by the export time.
 ;; %C will be replaced by the last modification time.
 
-
-
+;; automatically loads markdown export mode
+;; https://superuser.com/questions/452649/org-mode-to-markdown-converter
+(eval-after-load "org"
+  '(require 'ox-md nil t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company

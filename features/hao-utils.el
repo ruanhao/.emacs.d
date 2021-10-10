@@ -201,3 +201,45 @@
   (ag-project-files (ag/dwim-at-point) (list :file-regex (ag/buffer-extension-regex)))
   (other-window 1))
 (global-set-key (kbd "M-s j") 'hao-find-java-implementation)
+
+
+;; pop local mark ring
+(setq mark-ring-max 6)
+(setq global-mark-ring-max 6)
+(defun hao-pop-local-mark-ring ()
+  "Move cursor to last mark position of current buffer.
+Call this repeatedly will cycle all positions in `mark-ring'.
+"
+  (interactive)
+  (set-mark-command t))
+(global-set-key (kbd "C-x C-x") 'hao-pop-local-mark-ring)
+
+;; https://emacs.stackexchange.com/questions/2186/have-org-modes-exported-html-use-custom-id-when-linking-to-sub-sections-in-toc
+(defun my/org-custom-id-get (&optional pom create prefix)
+  "Get the CUSTOM_ID property of the entry at point-or-marker POM.
+If POM is nil, refer to the entry at point. If the entry does not
+have an CUSTOM_ID, the function returns nil. However, when CREATE
+is non nil, create a CUSTOM_ID if none is present already. PREFIX
+will be passed through to `org-id-new'. In any case, the
+CUSTOM_ID of the entry is returned."
+  (interactive)
+  (org-with-point-at pom
+    (let ((id (org-entry-get nil "CUSTOM_ID")))
+      (cond
+       ((and id (stringp id) (string-match "\\S-" id))
+        id)
+       (create
+        (setq id (org-id-new prefix))
+        (org-entry-put pom "CUSTOM_ID" id)
+        (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
+        id)))))
+
+(defun my/org-add-ids-to-headlines-in-file ()
+  "Add CUSTOM_ID properties to all headlines in the
+current file which do not already have one."
+  (interactive)
+  (org-map-entries (lambda () (my/org-custom-id-get (point) 'create))))
+
+;; automatically add ids to captured headlines
+(add-hook 'org-capture-prepare-finalize-hook
+          (lambda () (my/org-custom-id-get (point) 'create)))

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: details and summary
+# key: ds
+# --
+#+begin_export html
+<details>
+<summary>$1</summary>
+#+end_export
+$0
+#+begin_export html
+</details>
+#+end_export

@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: export html
+# key: eh
+# --
+{{{comment($1)}}}
+#+begin_export html
+<details>
+<summary>$1</summary>
+<pre style="background:black;color:#00ff00">
+$0
+</pre>
+</details>
+#+end_export
