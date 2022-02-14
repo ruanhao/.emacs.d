@@ -235,8 +235,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; autopair
 ;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package autopair
-  :init (autopair-global-mode))
+;; (use-package autopair
+;;   :init (autopair-global-mode))
+(electric-pair-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; theme
