@@ -2,4 +2,4 @@
 # name: insert html span with color style
 # key: cc
 # --
-<span style="color:${1:red}">$0</span>
+<span style="color:${1:tomato}">$0</span>

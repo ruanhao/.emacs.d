@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: insert html span with color style yellow
+# key: yy
+# --
+<span style="color:${1:yellow}">$0</span>
