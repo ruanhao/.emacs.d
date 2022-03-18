@@ -1,13 +1,13 @@
 # -*- mode: snippet -*-
-# name: export html without details
-# key: ee
+# name: export html with textarea
+# key: ta
 # --
 #+begin_export html
-<pre style="background:black;color:#00ff00">
+<textarea class='cfg' sytle='height:300px' readonly>
 ! ###################################################
 ! #                     $1                          #
 ! ###################################################
 
 $0
-</pre>
+</textarea>
 #+end_export

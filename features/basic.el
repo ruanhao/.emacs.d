@@ -403,3 +403,18 @@ end-of-buffer signals; pass the rest to the default handler."
     (command-error-default-function data context caller)))
 
 (setq command-error-function #'my-command-error-function)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config for GUI
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+(if (display-graphic-p)
+    (progn
+      (load-theme 'manoj-dark t)
+      (setq-default cursor-type 'bar)
+      ;; (setq-default mode-line-format nil)
+      (load-file "~/.emacs.d/lisp/mouse3.el")
+      (custom-set-variables
+       '(mouse3-menu-always-flag t))
+      (cd "/Users/haoru/Workspace")
+      ))

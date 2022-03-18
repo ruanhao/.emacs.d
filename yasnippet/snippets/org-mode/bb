@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: open new window when clicking link
+# key: bb
+# --
+#+ATTR_HTML: :target _blank
