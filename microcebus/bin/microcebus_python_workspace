@@ -15,31 +15,80 @@ fi
 #     cd $1
 # fi
 
-# mkdir bin
+mkdir bin
 # mkdir build
 mkdir docs
 mkdir $1
 
-# create template files
-touch "$1/__init__.py"
 
-echo "# setup.py
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+touch "$1/__init__.py"
+touch requirements.txt
+touch README
+
+wget -O .gitignore https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore
+
+cat <<EOF >$1/test.py
+def main():
+    print("hello world")
+
+EOF
+
+cat <<EOF >bin/$1_test
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# Description:
+
+echo "hello world"
+EOF
+
+
+cat <<EOF >build.sh
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# Description:
+
+pip install --upgrade pip
+pip install build
+python -m build
+pip install .
+# python setup.py bdist_wheel --universal
+# pip install dist/$1-*-py2.py3-none-any.whl --force-reinstall
+EOF
+chmod a+x build.sh
+
+cat <<EOF  >setup.py
+# setup.py
+import os
+from setuptools import setup, find_packages
+
+requirements = os.path.dirname(os.path.realpath(__file__)) + '/requirements.txt'
+install_requires = []
+if os.path.isfile(requirements):
+    with open(requirements) as f:
+        install_requires = f.read().splitlines()
 
 config = {
     'description' : 'Description of $1',
     'author' : 'Hao Ruan',
-    'url' : 'https://github.com/ruanhao/',
     'author_email' : 'haoru@cisco.com',
-    'version' : '0.1',
-    # 'install_requires' : ['nose'],
-    'packages' : ['$1'],
-    'scripts' : [],
-    'name' : '$1'
-    }
+    'url' : '',
+    'version' : '1.0',
+    'packages' : find_packages(),
+    'scripts' : ['bin/$1_test'],
+    'name' : '$1',
+    'install_requires': install_requires,
+    'package_data': {
+        '$1': ['*'],
+    },
+    'entry_points': {
+        'console_scripts': [
+            '$1_cli = $1.test:main'
+        ]
+    },
+}
 
 setup(**config)
-# end-of-setup.py" >> setup.py
+# end-of-setup.py
+EOF

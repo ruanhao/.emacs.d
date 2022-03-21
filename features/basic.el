@@ -418,3 +418,13 @@ end-of-buffer signals; pass the rest to the default handler."
        '(mouse3-menu-always-flag t))
       (cd "/Users/haoru/Workspace")
       ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config for text-mode auto-save
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my-text-mode-autosave-settings ()
+  ;; (auto-save-mode 1)   ; this is unnecessary as it is on by default
+  (set (make-local-variable 'auto-save-visited-file-name) t)
+  (auto-save-mode t)
+  (setq auto-save-interval 20))
+(add-hook 'text-mode-hook 'my-text-mode-autosave-settings)
