@@ -302,7 +302,7 @@
   :init (require 'recentf)
   :config (progn
             (recentf-mode 1)
-            (setq recentf-max-menu-item 10))
+            (setq recentf-max-menu-item 1024))
   :bind ("C-x C-r" . 'recentf-open-files)
   )
 

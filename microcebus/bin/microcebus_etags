@@ -1,0 +1,5 @@
+#! /bin/bash
+
+rm -rf TAGS
+find . /usr/local/include ${MICROCEBUS_INCLUDE_PATH//:/ } -type f | grep -E '\.(c|h|cpp|cc|hh)$' | etags -
+# add search dirs by `gcc -xc++ -E -v -`

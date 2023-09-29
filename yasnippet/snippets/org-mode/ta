@@ -3,10 +3,8 @@
 # key: ta
 # --
 #+begin_export html
-<textarea class='cfg' sytle='height:300px' readonly>
-! ###################################################
-! #                     $1                          #
-! ###################################################
+<textarea class='cfg' style='height:300px'>
+! ####################### $1 #######################
 
 $0
 </textarea>

@@ -238,7 +238,7 @@ export PATH="~/.emacs.d/microcebus/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/.emacs.d/microcebus/lib:$LD_LIBRARY_PATH"
 export PYTHONSTARTUP=~/.pythonrc
 export CDPATH=/etc:$CDPATH
-export LESS="-MRQi"
+export LESS="-MRQiXF"
 export GREP_COLOR="1;37;42"
 export FZF_DEFAULT_OPTS='--layout=reverse --height 50%'
 
