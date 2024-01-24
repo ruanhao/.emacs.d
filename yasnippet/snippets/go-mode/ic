@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ic
+# key: ic
+# --
+ic.Ic($0)

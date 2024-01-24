@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sc_hinfo
+# key: info
+# --
+H_INFO_MSG("${1:hello world!}"$2);$0

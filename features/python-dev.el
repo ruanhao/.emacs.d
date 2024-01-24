@@ -1,7 +1,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Python IDE
-;; pip instal jedi
+;; pip instal jedi virtualenv
+
+;; M-x package-install RET jedi
+;; M-x jedi:install-server
+;; If run into [deferred error : (error "\"AttributeError(\\\"type object 'Script' has no attribute 'goto_assignments'\\\")\"")'], try:
+;;  ~/.emacs.d/.python-environments/default/bin/pip install jedi==0.17.2
+
+;; Reference:
+;; https://tkf.github.io/emacs-jedi/latest/
+;; https://github.com/tkf/emacs-jedi/issues/352
 ;;;;;;;;;;;;;;;;;;;;
 (use-package elpy
   :defer t
@@ -39,3 +48,4 @@
             (define-key elpy-mode-map (kbd "C-x M-.") 'hao-find-python-definition-other-window)
             (define-key elpy-mode-map (kbd "M-RET")   'jedi:complete)
             ))
+(add-hook 'python-mode-hook 'jedi:setup)

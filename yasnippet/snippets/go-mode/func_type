@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: func type
+# key: type
+# --
+type ${1:name} func($2) $3

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: drop
+# key: dd
+# group: object oriented
+# --
+DROP TABLE IF EXISTS $1;$0
