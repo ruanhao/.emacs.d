@@ -1,5 +1,4 @@
 #! /bin/bash
-git clone https://github.com/zerolfx/copilot.el.git
 DIR=$( dirname $0 )
 CONFIG_LIST=$( grep -v '^[[:space:]]*#' $DIR/emacs.config )
 echo ";; -*- coding: utf-8 -*-" > $DIR/init.el
