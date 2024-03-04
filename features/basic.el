@@ -231,19 +231,23 @@
   :init (powerline-default-theme))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; nlinum
-;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package nlinum
-  :init (global-nlinum-mode t))
-(defun my-nlinum-mode-hook ()
-  (when nlinum-mode
-    (setq-local nlinum-format
-                (concat "%" (number-to-string
-                             ;; Guesstimate number of buffer lines.
-                             (ceiling (log (max 1 (/ (buffer-size) 80)) 10)))
-                        "d "))))
-(add-hook 'nlinum-mode-hook 'my-nlinum-mode-hook)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; nlinum (deprecated since v29)
+;; use display-line-numbers-mode instead
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package nlinum
+;;   :init (global-nlinum-mode t))
+;; (defun my-nlinum-mode-hook ()
+;;   (when nlinum-mode
+;;     (setq-local nlinum-format
+;;                 (concat "%" (number-to-string
+;;                              ;; Guesstimate number of buffer lines.
+;;                              (ceiling (log (max 1 (/ (buffer-size) 80)) 10)))
+;;                         "d "))))
+;; (add-hook 'nlinum-mode-hook 'my-nlinum-mode-hook)
+(global-display-line-numbers-mode 1)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; whitespace-mode
