@@ -33,8 +33,8 @@
  'late-night
 
  '(default ((t (:background "#000" :foreground "#666"))))
- '(cursor ((t (:foregound "#888"))))
- '(border ((t (:foregound "#000"))))
+ '(cursor ((t (:background "#888"))))
+ '(border ((t (:foreground "#000"))))
 
  '(erc-action-face ((t (nil))))
  '(erc-bold-face ((t (:bold t))))
@@ -188,11 +188,11 @@
  '(italic ((t (:bold t))))
  '(menu ((t (:background "#111" :foreground "#444"))))
  '(minibuffer-prompt ((t (:foreground "555"))))
- '(modeline ((t (:background "#111" :foreground "#444"))))
+ '(mode-line ((t (:background "#111" :foreground "#444"))))
  '(mode-line-inactive ((t (:background "#000" :foreground "#444"))))
- '(modeline-buffer-id ((t (:background "#000" :foreground "#555"))))
- '(modeline-mousable ((t (:background "#000" :foreground "#555"))))
- '(modeline-mousable-minor-mode ((t (:background "#000" :foreground "#555"))))
+ '(mode-line-buffer-id ((t (:background "#000" :foreground "#555"))))
+ '(mode-line-mousable ((t (:background "#000" :foreground "#555"))))
+ '(mode-line-mousable-minor-mode ((t (:background "#000" :foreground "#555"))))
  '(region ((t (:background "dark cyan" :foreground "cyan"))))
  '(secondary-selection ((t (:background "Aquamarine" :foreground "SlateBlue"))))
  '(show-paren-match-face ((t (:foreground "white" :background "light slate blue"))))

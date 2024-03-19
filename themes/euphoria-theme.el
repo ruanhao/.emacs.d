@@ -33,9 +33,9 @@
  'euphoria
 
  '(default ((t (:background "black" :foreground "#00ff00"))))
- '(mouse ((t (:foregound "yellow"))))
- '(cursor ((t (:foregound "yellow"))))
- '(border ((t (:foregound "black"))))
+ '(mouse ((t (:background "yellow"))))
+ '(cursor ((t (:background "yellow"))))
+ '(border ((t (:background "black"))))
 
  '(help-highlight-face ((t (:underline t))))
  '(list-matching-lines-face ((t (:bold t :weight bold))))
@@ -43,10 +43,8 @@
 
  '(bold ((t (:bold t :weight bold))))
  '(bold-italic ((t (:italic t :bold t :slant italic :weight bold))))
- '(border ((t (:background "black"))))
  '(comint-highlight-input ((t (:bold t :weight bold))))
  '(comint-highlight-prompt ((t (:foreground "cyan"))))
- '(cursor ((t (:background "yellow"))))
  '(fixed-pitch ((t (:family "courier"))))
  '(font-lock-builtin-face ((t (:foreground "magenta"))))
  '(font-lock-comment-face ((t (:foreground "deeppink"))))
@@ -69,12 +67,11 @@
  '(isearch-lazy-highlight-face ((t (:background "paleturquoise4"))))
  '(italic ((t (:italic t :slant italic))))
  '(menu ((t (:background "gray16" :foreground "green"))))
- '(modeline ((t (:background "gray16" :foreground "#00ff00"
+ '(mode-line ((t (:background "gray16" :foreground "#00ff00"
                  :box (:line-width -1 :style released-button)))))
- '(modeline-buffer-id ((t (:background "gray16" :foreground "#00ff00"))))
- '(modeline-mousable ((t (:background "gray16" :foreground "#00ff00"))))
- '(modeline-mousable-minor-mode ((t (:background "gray16" :foreground "#00ff00"))))
- '(mouse ((t (:background "yellow"))))
+ '(mode-line-buffer-id ((t (:background "gray16" :foreground "#00ff00"))))
+ '(mode-line-mousable ((t (:background "gray16" :foreground "#00ff00"))))
+ '(mode-line-mousable-minor-mode ((t (:background "gray16" :foreground "#00ff00"))))
  '(primary-selection ((t (:background "#00ff00" :foreground "black"))))
  '(region ((t (:background "steelblue" :foreground "white"))))
  '(scroll-bar ((t (:background "gray16" :foreground "#00ff00"))))

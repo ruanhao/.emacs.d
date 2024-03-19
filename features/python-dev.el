@@ -34,15 +34,15 @@
 (add-hook 'elpy-mode-hook
           (lambda ()
             (highlight-indentation-mode -1)
-                        (setq jedi:setup-keys t)
-            (setq jedi:complete-on-dot t)
-            (setq elpy-rpc-python-command "python3")
+            (hs-minor-mode t)
+            (company-mode -1)
+            (auto-complete-mode)
+            (setq jedi:setup-keys t)
+            ;; (setq jedi:complete-on-dot t)
             (setq elpy-rpc-backend "jedi")
-            ;; (define-key elpy-mode-map (kbd "M-.")     'elpy-goto-definition)
-            ;; (define-key elpy-mode-map (kbd "M-,")     'pop-tag-mark)
-            ;; (define-key elpy-mode-map (kbd "C-x M-.") 'elpy-goto-definition-other-window)
-            ;; (define-key elpy-mode-map (kbd "M-RET")   'elpy-company-backend)
-
+            (setq elpy-rpc-python-command "python3")
+            ; disable all auto-completion unless explicitly invoked with M-RET
+            (setq ac-auto-start nil)
             (define-key elpy-mode-map (kbd "M-.")     'jedi:goto-definition)
             (define-key elpy-mode-map (kbd "M-,")     'jedi:goto-definition-pop-marker)
             (define-key elpy-mode-map (kbd "C-x M-.") 'hao-find-python-definition-other-window)

@@ -1,7 +1,11 @@
-;;; color-theme-calm-forest adapted for emacs24 deftheme
+;;; calm-forest-theme.el --- calm-forest theme
 
-;; Li Shuai: 2013-6-13 add cperl-mode support
-;; Copyright (C) 2003 Artur Hefczyc
+;; Copyright (C) 2003 by Artur Hefczyc
+;; Copyright (C) 2013 by Syohei YOSHIDA
+
+;; Author: Syohei YOSHIDA <syohex@gmail.com>
+;; URL: https://github.com/emacs-jp/replace-colorthemes
+;; Version: 0.01
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,20 +20,34 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+;;
+;; Port of calm-forest theme from `color-themes'
+
+;;; Code:
+
 (deftheme calm-forest
-  "color-theme-calm-forest.")
+  "calm-forest theme")
 
 (custom-theme-set-faces
  'calm-forest
- '(default ((t (:stipple nil :background "gray12" :foreground "green" :inverse-video nil :box nil
-			 :strike-through nil :overline nil :underline nil :slant normal))))
+
+ '(default ((t (:background "gray12" :foreground "green"))))
+ '(mouse ((t (:background "yellow"))))
+ '(cursor ((t (:background "orange"))))
+ '(border ((t (:background "black"))))
+
+ '(help-highlight-face ((t (:underline t))))
+ '(list-matching-lines-face ((t (:bold t :weight bold))))
+ '(view-highlight-face ((t (:background "darkolivegreen"))))
+ '(widget-mouse-face ((t (:background "darkolivegreen"))))
+
  '(Info-title-1-face ((t (:bold t :weight bold :family "helv" :height 1.728))))
  '(Info-title-2-face ((t (:bold t :family "helv" :weight bold :height 1.44))))
  '(Info-title-3-face ((t (:bold t :weight bold :family "helv" :height 1.2))))
  '(Info-title-4-face ((t (:bold t :family "helv" :weight bold))))
  '(bold ((t (:bold t :weight bold))))
- '(bold-italic ((t (:italic t :bold t :slant italic :weight bold))))
- '(border ((t (:background "black"))))
+ '(bold-italic ((t (:italic t :bold t :weight bold))))
  '(comint-highlight-input ((t (:bold t :weight bold))))
  '(comint-highlight-prompt ((t (:foreground "cyan"))))
  '(cparen-around-andor-face ((t (:bold t :foreground "maroon" :weight bold))))
@@ -46,48 +64,30 @@
  '(cparen-binding-list-face ((t (:bold t :foreground "ForestGreen" :weight bold))))
  '(cparen-conditional-clause-face ((t (:foreground "RoyalBlue"))))
  '(cparen-normal-paren-face ((t (:foreground "grey50"))))
- '(cperl-array-face ((t (:foreground "gold" :background "gray12"))))
- '(cperl-hash-face ((t (:background "gray12"))))
- '(cursor ((t (:background "orange"))))
- '(custom-button ((t (:background "lightgrey" :foreground "black"
-				  :box (:line-width 2 :style released-button)))))
- '(custom-button-pressed ((t (:background "lightgrey" :foreground "black"
-					  :box (:line-width 2 :style pressed-button)))))
- '(custom-changed ((t (:background "blue" :foreground "white"))))
- '(custom-comment ((t (:background "dim gray"))))
- '(custom-comment-tag ((t (:foreground "gray80"))))
- '(custom-documentation ((t (nil))))
- '(custom-face-tag ((t (:bold t :family "helv" :weight bold :height 1.2))))
- '(custom-group-tag ((t (:bold t :foreground "light blue" :weight bold :height 1.2))))
- '(custom-group-tag-1 ((t (:bold t :family "helv" :foreground "pink"
-				 :weight bold :height 1.2))))
- '(custom-invalid ((t (:background "red" :foreground "yellow"))))
- '(custom-modified ((t (:background "blue" :foreground "white"))))
- '(custom-rogue ((t (:background "black" :foreground "pink"))))
- '(custom-saved ((t (:underline t))))
- '(custom-set ((t (:background "white" :foreground "blue"))))
- '(custom-state ((t (:foreground "lime green"))))
- '(custom-variable-button ((t (:bold t :underline t :weight bold))))
- '(custom-variable-tag ((t (:bold t :family "helv" :foreground "light blue"
-				  :weight bold :height 1.2))))
- ;;'(ediff-current-diff-A ((t (:foreground "white" :background "#666633"))))
- '(ediff-current-diff-A ((t (:background "#383817"))))
- '(ediff-current-diff-B ((t (:inherit ediff-current-diff-A))))
- '(ediff-current-diff-C ((t (:background "#333333"))))
- '(ediff-even-diff-A ((t (:foreground "light gray" :background "#333333"))))
- '(ediff-even-diff-B ((t (:foreground "light gray" :background "#333333"))))
- '(ediff-even-diff-C ((t (:foreground "light gray" :background "#333333"))))
- '(ediff-fine-diff-A ((t (:foreground "navy" :background "sky blue"))))
- '(ediff-fine-diff-B ((t (:foreground "black" :background "cyan"))))
- ;;'(ediff-fine-diff-C ((t (:foreground "black" :background "Turquoise"))))
- '(ediff-odd-diff-A ((t (:foreground "light gray" :background "#333333"))))
- '(ediff-odd-diff-B ((t (:foreground "light gray" :background "#333333"))))
- '(ediff-odd-diff-C ((t (:foreground "light gray" :background "#333333"))))
+ '(custom-button-face ((t (:background "lightgrey" :foreground "black"
+                           :box (:line-width 2 :style released-button)))))
+ '(custom-button-pressed-face ((t (:background "lightgrey" :foreground "black"
+                                   :box (:line-width 2 :style pressed-button)))))
+ '(custom-changed-face ((t (:background "blue" :foreground "white"))))
+ '(custom-comment-face ((t (:background "dim gray"))))
+ '(custom-comment-tag-face ((t (:foreground "gray80"))))
+ '(custom-documentation-face ((t (nil))))
+ '(custom-face-tag-face ((t (:bold t :family "helv" :weight bold :height 1.2))))
+ '(custom-group-tag-face ((t (:bold t :foreground "light blue" :weight bold :height 1.2))))
+ '(custom-group-tag-face-1 ((t (:bold t :family "helv" :foreground "pink" :weight bold :height 1.2))))
+ '(custom-invalid-face ((t (:background "red" :foreground "yellow"))))
+ '(custom-modified-face ((t (:background "blue" :foreground "white"))))
+ '(custom-rogue-face ((t (:background "black" :foreground "pink"))))
+ '(custom-saved-face ((t (:underline t))))
+ '(custom-set-face ((t (:background "white" :foreground "blue"))))
+ '(custom-state-face ((t (:foreground "lime green"))))
+ '(custom-variable-button-face ((t (:bold t :underline t :weight bold))))
+ '(custom-variable-tag-face ((t (:bold t :foreground "light blue" :weight bold :height 1.2))))
  '(eieio-custom-slot-tag-face ((t (:foreground "light blue"))))
  '(extra-whitespace-face ((t (:background "pale green"))))
  '(fixed-pitch ((t (:family "courier"))))
  '(font-latex-bold-face ((t (:bold t :foreground "OliveDrab" :weight bold))))
- '(font-latex-italic-face ((t (:italic t :foreground "OliveDrab" :slant italic))))
+ '(font-latex-italic-face ((t (:italic t :foreground "OliveDrab"))))
  '(font-latex-math-face ((t (:foreground "burlywood"))))
  '(font-latex-sedate-face ((t (:foreground "LightGray"))))
  '(font-latex-string-face ((t (:foreground "RosyBrown"))))
@@ -103,18 +103,18 @@
  '(font-lock-variable-name-face ((t (:foreground "LightGoldenrod"))))
  '(font-lock-warning-face ((t (:bold t :foreground "Pink" :weight bold))))
  '(fringe ((t (:background "grey10"))))
- '(header-line ((t (:box (:line-width -1 :style released-button)
-			 :background "grey20" :foreground "grey90" :box nil))))
- '(highlight ((t (:background "#2E2E2E")))) ;;darkolivegreen
- '(info-header-node ((t (:italic t :bold t :weight bold :slant italic :foreground "white"))))
+ '(header-line ((t (:background "grey20" :foreground"grey90"
+                    :box (:line-width -1 :style released-button)))))
+ '(highlight ((t (:background "darkolivegreen"))))
+ '(info-header-node ((t (:italic t :bold t :weight bold :foreground "white"))))
  '(info-header-xref ((t (:bold t :weight bold :foreground "cyan"))))
  '(info-menu-5 ((t (:foreground "red1"))))
  '(info-menu-header ((t (:bold t :family "helv" :weight bold))))
- '(info-node ((t (:italic t :bold t :foreground "white" :slant italic :weight bold))))
+ '(info-node ((t (:italic t :bold t :foreground "white" :weight bold))))
  '(info-xref ((t (:bold t :foreground "cyan" :weight bold))))
  '(isearch ((t (:background "palevioletred2" :foreground "brown4"))))
- '(lazy-highlight ((t (:background "paleturquoise4"))))
- '(italic ((t (:italic t :slant italic))))
+ '(isearch-lazy-highlight-face ((t (:background "paleturquoise4"))))
+ '(italic ((t (:italic t))))
  '(jde-bug-breakpoint-cursor ((t (:background "brown" :foreground "cyan"))))
  '(jde-db-active-breakpoint-face ((t (:background "red" :foreground "black"))))
  '(jde-db-requested-breakpoint-face ((t (:background "yellow" :foreground "black"))))
@@ -124,7 +124,7 @@
  '(jde-java-font-lock-code-face ((t (nil))))
  '(jde-java-font-lock-constant-face ((t (:foreground "Aquamarine"))))
  '(jde-java-font-lock-doc-tag-face ((t (:foreground "light coral"))))
- '(jde-java-font-lock-italic-face ((t (:italic t :slant italic))))
+ '(jde-java-font-lock-italic-face ((t (:italic t))))
  '(jde-java-font-lock-link-face ((t (:foreground "blue" :underline t :slant normal))))
  '(jde-java-font-lock-modifier-face ((t (:foreground "LightSteelBlue"))))
  '(jde-java-font-lock-number-face ((t (:foreground "LightSalmon"))))
@@ -132,11 +132,9 @@
  '(jde-java-font-lock-package-face ((t (:foreground "steelblue1"))))
  '(jde-java-font-lock-pre-face ((t (nil))))
  '(jde-java-font-lock-underline-face ((t (:underline t))))
- ;; '(linum ((t (:background "color-235"))))
- '(linum ((t (:background "color-235" :foreground "white"))))
  '(menu ((t (nil))))
  '(mode-line ((t (:background "grey75" :foreground "black"
-			      :box (:line-width -1 :style released-button)))))
+                  :box (:line-width -1 :style released-button)))))
  '(region ((t (:background "blue3"))))
  '(scroll-bar ((t (nil))))
  '(secondary-selection ((t (:background "SkyBlue4"))))
@@ -145,7 +143,7 @@
  '(senator-intangible-face ((t (:foreground "gray75"))))
  '(senator-momentary-highlight-face ((t (:background "gray30"))))
  '(senator-read-only-face ((t (:background "#664444"))))
- '(show-paren-match ((t (:foreground "#004242" :background "#B0B7B0"))))
+ '(show-paren-match-face ((t (:background "turquoise"))))
  '(show-paren-mismatch-face ((t (:background "purple" :foreground "white"))))
  '(speedbar-button-face ((t (:foreground "green3"))))
  '(speedbar-directory-face ((t (:foreground "light blue"))))
@@ -155,7 +153,7 @@
  '(speedbar-separator-face ((t (:background "blue" :foreground "white" :overline "gray"))))
  '(speedbar-tag-face ((t (:foreground "yellow"))))
  '(tool-bar ((t (:background "grey75" :foreground "black"
-			     :box (:line-width 1 :style released-button)))))
+                 :box (:line-width 1 :style released-button)))))
  '(trailing-whitespace ((t (:background "red"))))
  '(underline ((t (:underline t))))
  '(variable-pitch ((t (:family "helv"))))
@@ -166,4 +164,11 @@
  '(widget-inactive-face ((t (:foreground "light gray"))))
  '(widget-single-line-field-face ((t (:background "dim gray")))))
 
+;;;###autoload
+(when load-file-name
+  (add-to-list 'custom-theme-load-path
+               (file-name-as-directory (file-name-directory load-file-name))))
+
 (provide-theme 'calm-forest)
+
+;;; calm-forest-theme.el ends here

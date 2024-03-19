@@ -6,6 +6,8 @@
 	     (setq c-basic-offset 4)
              (modify-syntax-entry ?_ "w")
 
+             (hs-minor-mode t)
+
              ;; cscope setup
              (load-file "~/.emacs.d/cscope/contrib/xcscope/xcscope.el")
              (setq cscope-do-not-update-database t)

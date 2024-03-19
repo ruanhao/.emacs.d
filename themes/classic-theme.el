@@ -33,9 +33,12 @@
  'classic
 
  '(default ((t (:background "darkslategrey" :foreground "AntiqueWhite"))))
- '(mouse ((t (:foregound "Grey"))))
- '(cursor ((t (:foregound "Red"))))
- '(border ((t (:foregound "black"))))
+ ;; avoid ugly random fringe color
+ '(fringe ((t (:background "darkslategrey"))))
+ 
+ '(mouse ((t (:foreground "Grey"))))
+ '(cursor ((t (:background "Red"))))
+ '(border ((t (:foreground "black"))))
 
  '(gnus-cite-attribution-face ((t (:lforeground "lemon chiffon" :bold t))))
  '(gnus-cite-face-1 ((t (:foreground "LightSalmon"))))
@@ -179,10 +182,10 @@
  '(info-xref ((t (:underline t :foreground "DodgerBlue1"))))
  '(isearch ((t (:foreground "red" :background "CornflowerBlue"))))
  '(italic ((t (:italic t))))
- '(modeline ((t (:background "LightSlateGray" :foreground "AntiqueWhite"))))
- '(modeline-buffer-id ((t (:background "LightSlateGray" :foreground "DarkBlue"))))
- '(modeline-mousable ((t (:background "LightSlateGray" :foreground "firebrick"))))
- '(modeline-mousable-minor-mode ((t (:background "LightSlateGray" :foreground "wheat"))))
+ '(mode-line ((t (:background "LightSlateGray" :foreground "AntiqueWhite"))))
+ '(mode-line-buffer-id ((t (:background "LightSlateGray" :foreground "DarkBlue"))))
+ '(mode-line-mousable ((t (:background "LightSlateGray" :foreground "firebrick"))))
+ '(mode-line-mousable-minor-mode ((t (:background "LightSlateGray" :foreground "wheat"))))
  '(region ((t (:background "dark cyan" :foreground "cyan"))))
  '(secondary-selection ((t (:background "Aquamarine" :foreground "SlateBlue"))))
  '(show-paren-match-face ((t (:background "Aquamarine" :foreground "SlateBlue"))))
