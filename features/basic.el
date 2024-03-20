@@ -4,6 +4,11 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
+;; key bindings
+;;;;;;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "C-\\") 'hs-toggle-hiding)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
 ;; personal information
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (setq user-full-name "Hao Ruan"
