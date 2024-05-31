@@ -224,13 +224,37 @@ function kill-emacs-daemon() {
     fi
 }
 
+function _prompt_command() {
+    r0=$?
+    col_len=${COLUMNS:-80}
+    date_str="[`date '+%Y-%m-%d %H:%M:%S'`]"
+    date_len=${#date_str}
+    face=":)"
+    face_len=${#face}
+    col_len=$[$col_len-$date_len-$face_len-2]
+    [ $r0 = 0 ] && face="\e[1;32m:)\e[0m" || face="\e[31m:(\e[0m"
+
+    i0=0
+    s0=""
+    while [[ "$i0" -lt $col_len ]]; do
+        s0="-$s0"
+        i0=$[$i0+1]
+    done;
+    builtin echo -e "\e[1;30m$s0\e[0m $date_str $face"
+    PS1="$VIRTUAL_ENV_PROMPT\[$GREEN_BOLD\]\u\[$WHITE_BOLD\]@\[$MAGENTA\]\h\[$NORMAL\]:\[$RED_BOLD\]\w \[$YELLOW_BOLD\]\$(parse_git_branch)\[$WHITE_BOLD\]\[$NORMAL\] \n➤ "
+    history -a # Flush commands to bash history immediately
+}
+
+
+
 
 export LANG=en_US.UTF-8
-export PROMPT_COMMAND='history -a' # Flush commands to bash history immediately
 export LC_ALL=en_US.UTF-8
+# export PROMPT_COMMAND='history -a' # Flush commands to bash history immediately
+PROMPT_COMMAND=_prompt_command
 export TERM=xterm-256color
-export PROMPT_DIRTRIM=3
-export PS1="\\[$NORMAL\]\[\$(pick_color)\]\$(get_face)\[$BLUE_BOLD\][\A]\[$GREEN_BOLD\]\u:\[$RED_BOLD\]\w\[$YELLOW_BOLD\]\$(parse_git_branch)\[$WHITE_BOLD\] \\$ \[$NORMAL\]"
+# export PROMPT_DIRTRIM=3
+# export PS1="\\[$NORMAL\]\[\$(pick_color)\]\$(get_face)\[$BLUE_BOLD\][\A]\[$GREEN_BOLD\]\u:\[$RED_BOLD\]\w\[$YELLOW_BOLD\]\$(parse_git_branch)\[$WHITE_BOLD\] \\$ \[$NORMAL\]"
 export HISTTIMEFORMAT="%F %T "
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000000
@@ -241,6 +265,7 @@ export CDPATH=/etc:$CDPATH
 export LESS="-MRQiXF"
 export GREP_COLOR="1;37;42"
 export FZF_DEFAULT_OPTS='--layout=reverse --height 50%'
+
 
 alias grep='grep --color=auto --line-buffered'
 alias ll='ls -lhrt --color=auto'
@@ -331,4 +356,9 @@ function http() {
     while true; do
         echo -e "HTTP/1.1 200 OK\n\n $(date)" | nc -l $port
     done
+}
+
+# remove leading and trailing whitespaces
+function trim() {
+    awk '{$1=$1};1'
 }

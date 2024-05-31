@@ -3,7 +3,7 @@
 # key: ta
 # --
 #+begin_export html
-<textarea class='cfg' style='height:300px'>
+<textarea class='cfg' style='height:300px;width:800px'>
 ! ####################### $1 #######################
 
 $0
