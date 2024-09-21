@@ -297,6 +297,7 @@
   :config (progn
             (global-undo-tree-mode t)
             (global-set-key (kbd "M--") 'undo-tree-redo)
+            (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
             ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;

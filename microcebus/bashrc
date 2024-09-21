@@ -268,6 +268,7 @@ export FZF_DEFAULT_OPTS='--layout=reverse --height 50%'
 
 
 alias grep='grep --color=auto --line-buffered'
+alias ls='ls --color=auto'
 alias ll='ls -lhrt --color=auto'
 alias e='emacs -nw'
 alias ec='emacsclient -t -a ""'
