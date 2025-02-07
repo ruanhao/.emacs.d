@@ -49,3 +49,8 @@
             (define-key elpy-mode-map (kbd "M-RET")   'jedi:complete)
             ))
 (add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook
+      (lambda ()
+        (setq indent-tabs-mode nil)
+        (setq tab-width 4)
+        (setq python-indent-offset 4)))
