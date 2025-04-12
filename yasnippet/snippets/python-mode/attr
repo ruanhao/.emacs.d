@@ -1,0 +1,33 @@
+# -*- mode: snippet -*-
+# name: attr
+# key: attr
+# group: object oriented
+# --
+# from attrs import define, field, validators, setters, asdict, astuple
+@define(slots=True, kw_only=True, order=True)
+class ${1:Class}:
+    """
+Order of Execution
+    1. __attrs_pre_init__ (if present on current class)
+    2. For each attribute, in the order it was declared:
+      2.1 default factory
+      2.2 converter
+    3. all validators
+    4. __attrs_post_init__ (if present on current class)
+"""
+    id: int = field(
+        default=-1,
+        validator=validators.instance_of(int),
+        on_setattr=setters.frozen,
+        order=False
+    )
+    name: str = field(converter=str.lower, order=False)
+    email: str = field(converter=str.lower, default='', order=False)
+    age: int = field(default=0, validator=validators.instance_of(int), order=int)
+    password: str = field(default='', validator=validators.instance_of(str), order=False, repr=lambda value: '*' * len(value))
+    comments: List[str] = field(factory=list, order=False, hash=False)
+
+    def __attrs_post_init__(self):
+        print(f"Post init: $1 id={self.id} created")
+
+    $0
